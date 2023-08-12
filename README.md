@@ -8,7 +8,7 @@
 |No (Carpeta)|PDF|Fecha Entrega|
 |:---|:-:|:-:|
 |[T_01](./Tareas/Tarea_01/)|[PDF](./Tareas/Tarea_01/[SO1]T1_201906051.pdf)|04/Agosto/2023|
-|[T_02](./Tareas/Tarea_02/)|[PDF]()|11/Agosto/2023|
+|[T_02](./Tareas/Tarea_02/)|[PDF](./Tareas/Tarea_02/)|11/Agosto/2023|
 
 ### Practicas
 
