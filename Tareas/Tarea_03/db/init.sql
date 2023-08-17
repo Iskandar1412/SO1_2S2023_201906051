@@ -1,0 +1,7 @@
+CREATE TABLE libreria_musica (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    artist VARCHAR(255) NOT NULL,
+    year INT NOT NULL,
+    genre VARCHAR(255) NOT NULL
+);
