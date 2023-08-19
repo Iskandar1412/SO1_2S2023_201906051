@@ -9,7 +9,7 @@
 |:---|:-:|:-:|
 |[T_01](./Tareas/Tarea_01/)|[PDF](./Tareas/Tarea_01/[SO1]T1_201906051.pdf)|04/Agosto/2023|
 |[T_02](./Tareas/Tarea_02/)|[MD](./Tareas/Tarea_02/)|11/Agosto/2023|
-|[T_03](./Tareas/Tarea_03/)|[Video](https://drive.google.com/file/d/1mnV9PEcGuNS6zN7jOB6BCr_SWJcBWDHB/view?usp=drive_link)|20/Agosto/2023|
+|[T_03](./Tareas/Tarea_03/)|![Video](https://drive.google.com/file/d/1mnV9PEcGuNS6zN7jOB6BCr_SWJcBWDHB/view?usp=drive_link)|20/Agosto/2023|
 |[T_04]()|[Video]()|27/Agosto/2023|
 
 ### Practicas
