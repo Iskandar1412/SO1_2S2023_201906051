@@ -1,6 +1,6 @@
 ## FUNCIONAMIENTO
 
-<video src='https://drive.google.com/file/d/1mnV9PEcGuNS6zN7jOB6BCr_SWJcBWDHB/view?usp=drive_link' width="180"></video>
+[Video](https://drive.google.com/file/d/1mnV9PEcGuNS6zN7jOB6BCr_SWJcBWDHB/view?usp=drive_link)
 
 ## Crear contenedor mysql (docker)
 
