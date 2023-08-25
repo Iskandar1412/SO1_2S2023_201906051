@@ -1,8 +1,14 @@
-#include <linux/init.h>
 #include <linux/module.h>
+
+#include <linux/kernel.h>
+
+#include <linux/init.h>
+
 #include <linux/proc_fs.h>
-#include <linux/seq_file.h>
+
 #include <linux/sysinfo.h>
+
+#include <linux/seq_file.h>
 
 MODULE_LICENSE("GPL")
 MODULE_AUTHOR("Juan Urbina")
