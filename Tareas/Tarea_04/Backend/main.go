@@ -1,8 +1,5 @@
 package main
 
-// go mod init <nombre modulo>
-// go mod tidy
-
 import (
 	"encoding/json"
 	"fmt"
@@ -11,45 +8,46 @@ import (
 	"time"
 )
 
-type info struct {
-	total_ram      uint64 `json:"total_ram"`
-	ram_in_use     uint64 `json:"ram_en_uso"`
-	ram_libre      uint64 `json:"ram_libre"`
-	porcentaje_uso uint64 `json:"porcentaje_uso"`
-}
-
-func getInfo() (info, error) {
-	resp, err := http.Get("http://localhost:8000/proc/ram_info")
-	if err != nil {
-		return info{}, err
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return info{}, err
-	}
-
-	var info_ram info
-	err = json.Unmarshal(body, &info_ram)
-	if err != nil {
-		return info{}, err
-	}
-
-	return info_ram, nil
+type RamInfo struct {
+	TotalRAM        uint64 `json:"total_ram"`
+	RAMInUse        uint64 `json:"Ram_en_uso"`
+	RAMFree         uint64 `json:"Ram_libre"`
+	PercentageInUse int    `json:"Porcentaje_en_uso"`
 }
 
 func main() {
-	ticker := time.NewTicker(5 * time.Second)
-	defer ticker.Stop()
-
-	for range ticker.C {
-		info_ram, err := getInfo()
+	http.HandleFunc("/ram-info", func(w http.ResponseWriter, r *http.Request) {
+		ramInfo, err := readRamInfo()
 		if err != nil {
-			fmt.Println("Error al obtener información de la RAM", err)
-			continue
+			http.Error(w, "Error reading RAM info", http.StatusInternalServerError)
+			return
 		}
 
-		fmt.Printf("Total Ram: %d MB, RAM en Uso %d MB, RAM libre %d MB, Porcentaje en uso %d%%\n", info_ram.total_ram/1024/1024, info_ram.ram_in_use/1024/1024, info_ram.ram_libre/1024/1024, info_ram.porcentaje_uso)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(ramInfo)
+	})
+
+	server := &http.Server{
+		Addr:         ":8000",
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
+
+	fmt.Println("Backend server is running on :8000")
+	server.ListenAndServe()
+}
+
+func readRamInfo() (*RamInfo, error) {
+	content, err := ioutil.ReadFile("/proc/ram_info")
+	if err != nil {
+		return nil, err
+	}
+
+	var ramInfo RamInfo
+	err = json.Unmarshal(content, &ramInfo)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ramInfo, nil
 }
