@@ -48,6 +48,6 @@ func readRamInfo() (*RamInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	//println("RAM Info: ", ramInfo)
 	return &ramInfo, nil
 }
