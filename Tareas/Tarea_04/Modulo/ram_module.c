@@ -36,10 +36,10 @@ static int show_memory_stat(struct seq_file *f, void *v){
 	
     // seq_printf(f,"%lu\n",((i.freeram*100)/i.totalram));
     seq_printf(f,"{\n");
-    seq_printf(f,"\"total\":" "%lu,\n", ((i.totalram) << (PAGE_SHIFT -10))/1024 );
-    seq_printf(f,"\"free\":" "%lu,\n",( (i.freeram) << (PAGE_SHIFT -10) ) /1024);
-    seq_printf(f,"\"used\":" "%lu,\n",(  ( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )*4) /1024 ) );
-    seq_printf(f,"\"percent\":" "%lu\n",(  (( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )*4) /1024 )/100 ));
+    seq_printf(f,"\"total_ram\":" "%lu,\n", ((i.totalram) << (PAGE_SHIFT -10))/1024 );
+    seq_printf(f,"\"Ram_en_uso\":" "%lu,\n",(  ( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )) /1024 ) );
+    seq_printf(f,"\"Ram_libre\":""%lu,\n",( (i.freeram) << (PAGE_SHIFT -10) ) /1024);
+    seq_printf(f,"\"Porcentaje_en_uso\":" "%lu\n",(  (( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )) /1024 )/100 ));
     
     seq_printf(f,"}\n");
     return 0;

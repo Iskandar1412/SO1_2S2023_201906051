@@ -38,7 +38,7 @@ func main() {
 }
 
 func readRamInfo() (*RamInfo, error) {
-	content, err := ioutil.ReadFile("/proc/ram_info")
+	content, err := ioutil.ReadFile("/proc/ram_201906051")
 	if err != nil {
 		return nil, err
 	}
