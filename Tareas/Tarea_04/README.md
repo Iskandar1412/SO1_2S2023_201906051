@@ -9,3 +9,5 @@
 > Mostrar mensajes `sudo dmesg ram_module`
 
 > cat /proc/ram_201906051
+
+>> Borrar imagenes forzadamente `sudo docker rmi <imagen o id de imagen> -f`
