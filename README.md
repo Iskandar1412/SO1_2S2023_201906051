@@ -33,7 +33,7 @@
     </thead>
     <tbody>
         <tr>
-            <td rowspan=4 align="center">Tarea</td>
+            <td rowspan=5 align="center">Tarea</td>
             <td rowspan=1 align="center"><a href="./Enunciados/Tareas/SO1_T1_2S2023.pdf">T_01</a></td>
             <td align="center">04/Agosto</td>
         </tr>
