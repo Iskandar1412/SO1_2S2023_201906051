@@ -55,7 +55,7 @@
         </tr>
         <tr>
             <td rowspan=2 align="center">Proyecto</td>
-            <td rowspan=1 align="center"><a href="./Enunciados/Proyectos/SO1_P1_2S2023.pdf"></a></td>
+            <td rowspan=1 align="center"><a href="./Enunciados/Proyectos/SO1_P1_2S2023.pdf">Proyecto 1</a></td>
             <td align="center">21/Septiembre</td>
         </tr>
         <tr>
