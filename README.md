@@ -33,7 +33,7 @@
     </thead>
     <tbody>
         <tr>
-            <td rowspan=4 align="center">Tarea</td>
+            <td rowspan=5 align="center">Tarea</td>
             <td rowspan=1 align="center"><a href="./Enunciados/Tareas/SO1_T1_2S2023.pdf">T_01</a></td>
             <td align="center">04/Agosto</td>
         </tr>
@@ -55,7 +55,7 @@
         </tr>
         <tr>
             <td rowspan=2 align="center">Proyecto</td>
-            <td rowspan=1 align="center"><a href="./Enunciados/Proyectos/SO1_P1_2S2023.pdf"></a></td>
+            <td rowspan=1 align="center"><a href="./Enunciados/Proyectos/SO1_P1_2S2023.pdf">Proyecto 1</a></td>
             <td align="center">21/Septiembre</td>
         </tr>
         <tr>
