@@ -11,7 +11,7 @@
 |[T_02](./Tareas/Tarea_02/)|[MD](./Tareas/Tarea_02/)|11/Agosto/2023|
 |[T_03](./Tareas/Tarea_03/)|[Video](https://drive.google.com/file/d/1mnV9PEcGuNS6zN7jOB6BCr_SWJcBWDHB/view?usp=drive_link)|20/Agosto/2023|
 |[T_04](./Tareas/Tarea_04/)|[Video](https://drive.google.com/file/d/1VeqgU8UFpJvqbP32iZCPp42nTT87oADD/view?usp=sharing)|27/Agosto/2023|
-|[T_05]()|[Video]()|01/Septiembre/2023|
+|[T_05](./Tareas//Tarea_05/)|[Video](https://drive.google.com/file/d/1kw1QMrLJW599E-76PYhEImhxe_60Gz3K/view?usp=sharing)|01/Septiembre/2023|
 
 
 
