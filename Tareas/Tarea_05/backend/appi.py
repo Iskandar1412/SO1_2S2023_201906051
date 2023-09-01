@@ -1,9 +1,13 @@
 from flask import Flask
-app = Flask(__name__)
+from flask_cors import CORS
 
-@app.route('/')
-def inicio():
-    return 'Hola Mundo <201906051>'
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/', methods=['GET'])
+def saludo():
+    return 'salu2 saludables <201906051>'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=3300)
+    
