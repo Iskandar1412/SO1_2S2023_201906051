@@ -11,12 +11,14 @@
 #define FileProc "cpu_201906051"
 
 MODULE_AUTHOR("Juan Urbina");
-MODULE_DESCRIPTION("CPU");
+MODULE_DESCRIPTION("Modulo CPU");
 MODULE_LICENSE("GPL");
 
 struct task_struct *task;
 const struct cred *cred;
 char state;
+unsigned long total_time, idle_time, usage;
+unsigned long user, nice, system, idle, iowait, irq, softirq, steal;
 
 static int show_cpu_stat(struct seq_file *f, void *v){
     seq_printf(f,"{\n");
@@ -31,6 +33,21 @@ static int show_cpu_stat(struct seq_file *f, void *v){
 
         put_cred(cred);
     }
+
+    char buf[256];
+    struct file *file;
+    file = filp_open("/proc/stat", O_RDONLY, 0);
+    if (file) {
+        kernel_read(file, buf, sizeof(buf), &file->f_pos);
+        filp_close(file, NULL);
+        sscanf(buf, "cpu %lu %lu %lu %lu %lu %lu %lu %lu", &user, &nice,
+               &system, &idle, &iowait, &irq, &softirq, &steal);
+        total_time = user + nice + system + idle + iowait + irq + softirq + steal;
+        idle_time = idle + iowait;
+        usage = 100 * (total_time - idle_time) / total_time;
+    }
+
+    seq_printf(f,"\"CPU_usage\": %lu,\n", usage);
     seq_printf(f,"}\n");
     return 0;
 }
