@@ -7,6 +7,7 @@
 #include <linux/sched/signal.h>
 #include <linux/seq_file.h>
 #include <linux/cred.h>
+#include <linux/utsname.h>
 
 #define FileProc "cpu_201906051"
 
@@ -22,6 +23,7 @@ unsigned long user, nice, system, idle, iowait, irq, softirq, steal;
 
 static int show_cpu_stat(struct seq_file *f, void *v){
     seq_printf(f,"{\n");
+    seq_printf(f,"\"Nombre_del_ordenador\": \"%s\",\n", utsname()->nodename);
     seq_printf(f,"\"Usuario_actual\": %u,\n", current_uid().val);
 
     for_each_process(task) {

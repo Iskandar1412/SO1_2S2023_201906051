@@ -32,8 +32,8 @@ __used __section("__versions") = {
 	{ 0x45db931b, "proc_create" },
 	{ 0x5b8239ca, "__x86_return_thunk" },
 	{ 0xce4f6bb6, "single_open" },
-	{ 0xd65b4e21, "seq_printf" },
 	{ 0xf72e8c06, "pcpu_hot" },
+	{ 0xd65b4e21, "seq_printf" },
 	{ 0xcbeac83e, "init_task" },
 	{ 0x98f584d4, "get_task_cred" },
 	{ 0x86e1b259, "__put_cred" },
@@ -55,4 +55,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "F004234428BFB49939F44B7");
+MODULE_INFO(srcversion, "09352E6EA420F9DF86500CA");
