@@ -22,13 +22,13 @@ unsigned long user, nice, system, idle, iowait, irq, softirq, steal;
 
 static int show_cpu_stat(struct seq_file *f, void *v){
     seq_printf(f,"{\n");
-    seq_printf(f,"\"Current_user\": %u,\n", current_uid().val);
+    seq_printf(f,"\"Usuario_actual\": %u,\n", current_uid().val);
 
     for_each_process(task) {
         cred = get_task_cred(task);
         state = task_state_to_char(task);
 
-        seq_printf(f,"\"Process\": \"%s\", \"PID\": %d, \"UID\": %u, \"State\": \"%c\",\n",
+        seq_printf(f,"\"Proceso\": \"%s\", \"PID\": %d, \"UID\": %u, \"Estado\": \"%c\",\n",
                task->comm, task->pid, cred->uid.val, state);
 
         put_cred(cred);
@@ -47,7 +47,7 @@ static int show_cpu_stat(struct seq_file *f, void *v){
         usage = 100 * (total_time - idle_time) / total_time;
     }
 
-    seq_printf(f,"\"CPU_usage\": %lu,\n", usage);
+    seq_printf(f,"\"Uso_de_CPU\": %lu,\n", usage);
     seq_printf(f,"}\n");
     return 0;
 }
@@ -65,15 +65,15 @@ static const struct proc_ops Cpuinfo_fops = {
 
 static int __init cpu_module_init(void)
 {
-    printk(KERN_INFO "CPU module loaded.\n");
+    printk(KERN_INFO "Módulo del kernel cargado.\n");
     proc_create (FileProc, 0777, NULL, &Cpuinfo_fops);
-	printk(KERN_INFO "Archivo Creado: /proc/%s\n",FileProc);
+	printk(KERN_INFO "Archivo creado: /proc/%s\n",FileProc);
 	return 0;
 }
 
 static void __exit cpu_module_exit(void)
 {
-    printk(KERN_INFO "CPU module unloaded.\n");
+    printk(KERN_INFO "Módulo del kernel descargado.\n");
 	remove_proc_entry(FileProc, NULL);
 }
 
