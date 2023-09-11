@@ -16,6 +16,7 @@
 #include <asm/page.h>
 #include <asm/pgtable.h>
 #include <asm/uaccess.h>
+#include <linux/utsname.h>
 
 #define FileProc "ram_201906051"
 
@@ -33,15 +34,20 @@ int lru;
 
 static int show_memory_stat(struct seq_file *f, void *v){
     si_meminfo(&i);
+    struct new_utsname *utsname;
+    utsname = init_utsname();
 	
     // seq_printf(f,"%lu\n",((i.freeram*100)/i.totalram));
     seq_printf(f,"{\n");
-    seq_printf(f,"\"total_ram\":" "%lu,\n", ((i.totalram) << (PAGE_SHIFT -10))/1024 );
-    seq_printf(f,"\"Ram_en_uso\":" "%lu,\n",(  ( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )) /1024 ) );
-    seq_printf(f,"\"Ram_libre\":""%lu,\n",( (i.freeram) << (PAGE_SHIFT -10) ) /1024);
-    seq_printf(f,"\"Porcentaje_en_uso\":" "%lu\n",(  (( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )) /1024 )/100 ));
-    
-    seq_printf(f,"}\n");
+    seq_printf(f, "\t\"Nombre_equipo\": \"%s\",\n", utsname->nodename);
+    seq_printf(f, "\t\"Uso_ram\":[\n");
+    seq_printf(f, "\t\t{\n");
+    seq_printf(f,"\t\t\t\"total_ram\":" "%lu,\n", ((i.totalram) << (PAGE_SHIFT -10))/1024 );
+    seq_printf(f,"\t\t\t\"Ram_en_uso\":" "%lu,\n",(  ( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )) /1024 ) );
+    seq_printf(f,"\t\t\t\"Ram_libre\":""%lu,\n",( (i.freeram) << (PAGE_SHIFT -10) ) /1024);
+    seq_printf(f,"\t\t\t\"Porcentaje_en_uso\":" "%lu\n",(  (( ( ( (i.totalram) << (PAGE_SHIFT -10) )  -  ( (i.freeram) << (PAGE_SHIFT -10) ) )) /1024 )/100 ));
+    seq_printf(f, "\t\t}\n");
+    seq_printf(f,"\t]\n}\n");
     return 0;
 }
 

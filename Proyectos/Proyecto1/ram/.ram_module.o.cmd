@@ -1208,6 +1208,10 @@ deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto
     $(wildcard include/config/HAVE_ARCH_HUGE_VMALLOC) \
   arch/x86/include/asm/vmalloc.h \
   arch/x86/include/asm/pgtable_areas.h \
+  include/linux/utsname.h \
+    $(wildcard include/config/UTS_NS) \
+    $(wildcard include/config/PROC_SYSCTL) \
+  include/uapi/linux/utsname.h \
 
 /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/ram/ram_module.o: $(deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/ram/ram_module.o)
 

@@ -28,16 +28,17 @@ static int show_cpu_stat(struct seq_file *f, void *v){
     utsname = init_utsname();
 
     seq_printf(f, "{\n");
-    seq_printf(f, "\"Nombre_equipo\": \"%s\",\n", utsname->nodename);
-    seq_printf(f, "\"Usuario_actual\": %u,\n", current_uid().val);
-
+    seq_printf(f, "\t\"Nombre_equipo\": \"%s\",\n", utsname->nodename);
+    seq_printf(f, "\t\"Usuario_actual\": %u,\n", current_uid().val);
+    seq_printf(f, "\t\"Procesos\": [\n");
+    
     for_each_process(task) {
         cred = get_task_cred(task);
         state = task_state_to_char(task);
         vsize = task->mm ? task->mm->total_vm << (PAGE_SHIFT - 10) : 0;
         rss = task->mm ? get_mm_rss(task->mm) << (PAGE_SHIFT - 10) : 0;
 
-        seq_printf(f, "\"Proceso\": \"%s\", \"PID\": %d, \"UID\": %u, \"Estado\": \"%c\", \"Memoria_virtual\": %lu kB, \"Memoria_fisica\": %lu kB,\n",
+        seq_printf(f, "\t\t{\"Proceso\": \"%s\", \"PID\": %d, \"UID\": %u, \"Estado\": \"%c\", \"Memoria_virtual\": %lu kB, \"Memoria_fisica\": %lu kB},\n",
                task->comm, task->pid, cred->uid.val, state, vsize, rss);
 
         put_cred(cred);
@@ -56,7 +57,9 @@ static int show_cpu_stat(struct seq_file *f, void *v){
         usage = 100 * (total_time - idle_time) / total_time;
     }
 
-    seq_printf(f, "\"Uso_de_CPU\": %lu,\n", usage);
+    seq_printf(f, "\t],\n");
+
+    seq_printf(f, "\t\"Uso_de_CPU\": %lu\n", usage);
     seq_printf(f, "}\n");
     return 0;
 }
