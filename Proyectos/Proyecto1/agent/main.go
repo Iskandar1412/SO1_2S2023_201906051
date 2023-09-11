@@ -22,6 +22,18 @@ type InfoCPU struct {
 	UsoCPU        int        `json:"Uso_de_CPU"`
 }
 
+type Ram struct {
+	total_ram         int `json:"total_ram"`
+	Ram_en_uso        int `json:"Ram_en_uso"`
+	Ram_libre         int `json:"Ram_libre"`
+	Porcentaje_en_uso int `json:"Porcentaje_en_uso"`
+}
+
+type InfoRam struct {
+	Nombre_equipo string `json:"Nombre_equipo"`
+	Uso_ram       []Ram  `json:"Uso_ram"`
+}
+
 func main() {
 	http.HandleFunc("/kill", func(w http.ResponseWriter, r *http.Request) {
 		pid := r.FormValue("pid")
