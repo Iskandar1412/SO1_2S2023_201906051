@@ -34,6 +34,7 @@ __used __section("__versions") = {
 	{ 0xce4f6bb6, "single_open" },
 	{ 0x40c7247c, "si_meminfo" },
 	{ 0xd65b4e21, "seq_printf" },
+	{ 0xf06a487c, "init_uts_ns" },
 	{ 0xac0dde12, "remove_proc_entry" },
 	{ 0xd8e57183, "seq_read" },
 	{ 0x6e7fd3b8, "seq_lseek" },
@@ -46,4 +47,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "F96E3FCDA9C85E9B99E6A3F");
+MODULE_INFO(srcversion, "C520F58A3DC4E8B976698E7");

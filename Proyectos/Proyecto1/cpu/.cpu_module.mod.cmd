@@ -1,0 +1,1 @@
+cmd_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.mod := printf '%s\n'   cpu_module.o | awk '!x[$$0]++ { print("/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/"$$0) }' > /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.mod

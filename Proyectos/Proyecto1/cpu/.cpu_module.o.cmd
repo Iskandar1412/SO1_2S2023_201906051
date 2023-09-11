@@ -1,8 +1,8 @@
-cmd_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o := gcc-11 -Wp,-MMD,/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/.ram_module.o.d -nostdinc -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -I./ubuntu/include -include ./include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=./= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -funsigned-char -std=gnu11 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=none -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -mindirect-branch-cs-prefix -mfunction-return=thunk-extern -fno-jump-tables -mharden-sls=all -fpatchable-function-entry=16,16 -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-larger-than=1024 -fstack-protector-strong -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-stack-clash-protection -fzero-call-used-regs=used-gpr -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -falign-functions=16 -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-truncation -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -Wno-array-bounds -Wno-alloc-size-larger-than -Wimplicit-fallthrough=5 -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -g -gdwarf-5  -fsanitize=bounds -fsanitize=shift -fsanitize=bool -fsanitize=enum  -DMODULE  -DKBUILD_BASENAME='"ram_module"' -DKBUILD_MODNAME='"ram_module"' -D__KBUILD_MODNAME=kmod_ram_module -c -o /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.c   ; ./tools/objtool/objtool --hacks=jump_label --hacks=noinstr --hacks=skylake --retpoline --rethunk --sls --stackval --static-call --uaccess --prefix=16   --module /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o
+cmd_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o := gcc-11 -Wp,-MMD,/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/.cpu_module.o.d -nostdinc -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -I./ubuntu/include -include ./include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=./= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -funsigned-char -std=gnu11 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=none -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -mindirect-branch-cs-prefix -mfunction-return=thunk-extern -fno-jump-tables -mharden-sls=all -fpatchable-function-entry=16,16 -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-larger-than=1024 -fstack-protector-strong -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-stack-clash-protection -fzero-call-used-regs=used-gpr -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -falign-functions=16 -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-truncation -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -Wno-array-bounds -Wno-alloc-size-larger-than -Wimplicit-fallthrough=5 -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -g -gdwarf-5  -fsanitize=bounds -fsanitize=shift -fsanitize=bool -fsanitize=enum  -DMODULE  -DKBUILD_BASENAME='"cpu_module"' -DKBUILD_MODNAME='"cpu_module"' -D__KBUILD_MODNAME=kmod_cpu_module -c -o /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.c   ; ./tools/objtool/objtool --hacks=jump_label --hacks=noinstr --hacks=skylake --retpoline --rethunk --sls --stackval --static-call --uaccess --prefix=16   --module /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o
 
-source_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o := /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.c
+source_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o := /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.c
 
-deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o := \
+deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o := \
   include/linux/compiler-version.h \
     $(wildcard include/config/CC_VERSION_TEXT) \
   include/linux/kconfig.h \
@@ -913,6 +913,61 @@ deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Mo
   include/linux/projid.h \
   include/uapi/linux/quota.h \
   include/linux/nfs_fs_i.h \
+  include/linux/module.h \
+    $(wildcard include/config/MODULES_TREE_LOOKUP) \
+    $(wildcard include/config/STACKTRACE_BUILD_ID) \
+    $(wildcard include/config/ARCH_USES_CFI_TRAPS) \
+    $(wildcard include/config/MODULE_SIG) \
+    $(wildcard include/config/ARCH_WANTS_MODULES_DATA_IN_VMALLOC) \
+    $(wildcard include/config/KALLSYMS) \
+    $(wildcard include/config/BPF_EVENTS) \
+    $(wildcard include/config/DEBUG_INFO_BTF_MODULES) \
+    $(wildcard include/config/EVENT_TRACING) \
+    $(wildcard include/config/MODULE_UNLOAD) \
+    $(wildcard include/config/CONSTRUCTORS) \
+    $(wildcard include/config/FUNCTION_ERROR_INJECTION) \
+  include/linux/buildid.h \
+    $(wildcard include/config/CRASH_CORE) \
+  include/linux/kmod.h \
+  include/linux/umh.h \
+  include/linux/elf.h \
+    $(wildcard include/config/ARCH_USE_GNU_PROPERTY) \
+    $(wildcard include/config/ARCH_HAVE_ELF_PROT) \
+  arch/x86/include/asm/elf.h \
+    $(wildcard include/config/X86_X32_ABI) \
+  arch/x86/include/asm/user.h \
+  arch/x86/include/asm/user_64.h \
+  arch/x86/include/asm/fsgsbase.h \
+  arch/x86/include/asm/vdso.h \
+  include/uapi/linux/elf.h \
+  include/uapi/linux/elf-em.h \
+  include/linux/kobject.h \
+    $(wildcard include/config/UEVENT_HELPER) \
+    $(wildcard include/config/DEBUG_KOBJECT_RELEASE) \
+  include/linux/sysfs.h \
+  include/linux/kernfs.h \
+    $(wildcard include/config/KERNFS) \
+  include/linux/idr.h \
+  include/linux/kobject_ns.h \
+  include/linux/moduleparam.h \
+    $(wildcard include/config/ALPHA) \
+    $(wildcard include/config/IA64) \
+    $(wildcard include/config/PPC64) \
+  include/linux/rbtree_latch.h \
+  include/linux/error-injection.h \
+  include/asm-generic/error-injection.h \
+  arch/x86/include/asm/module.h \
+    $(wildcard include/config/UNWINDER_ORC) \
+  include/asm-generic/module.h \
+    $(wildcard include/config/HAVE_MOD_ARCH_SPECIFIC) \
+    $(wildcard include/config/MODULES_USE_ELF_REL) \
+    $(wildcard include/config/MODULES_USE_ELF_RELA) \
+  arch/x86/include/asm/orc_types.h \
+  include/linux/proc_fs.h \
+    $(wildcard include/config/PROC_PID_ARCH_STATUS) \
+  include/linux/seq_file.h \
+  include/linux/string_helpers.h \
+  include/linux/ctype.h \
   include/linux/mm.h \
     $(wildcard include/config/HAVE_ARCH_MMAP_RND_BITS) \
     $(wildcard include/config/HAVE_ARCH_MMAP_RND_COMPAT_BITS) \
@@ -920,7 +975,6 @@ deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Mo
     $(wildcard include/config/ARCH_HAS_PKEYS) \
     $(wildcard include/config/PPC) \
     $(wildcard include/config/PARISC) \
-    $(wildcard include/config/IA64) \
     $(wildcard include/config/SPARC64) \
     $(wildcard include/config/ARM64) \
     $(wildcard include/config/ARM64_MTE) \
@@ -991,226 +1045,15 @@ deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Mo
     $(wildcard include/config/MEMORY_BALLOON) \
     $(wildcard include/config/BALLOON_COMPACTION) \
     $(wildcard include/config/ZSWAP) \
-  include/linux/hugetlb.h \
-    $(wildcard include/config/ARCH_HAS_HUGEPD) \
-    $(wildcard include/config/CGROUP_HUGETLB) \
-    $(wildcard include/config/ARCH_ENABLE_HUGEPAGE_MIGRATION) \
-    $(wildcard include/config/ARCH_WANT_HUGE_PMD_SHARE) \
-  include/linux/hugetlb_inline.h \
-  include/linux/cgroup.h \
-    $(wildcard include/config/DEBUG_CGROUP_REF) \
-    $(wildcard include/config/CGROUP_CPUACCT) \
-    $(wildcard include/config/SOCK_CGROUP_DATA) \
-    $(wildcard include/config/CGROUP_DATA) \
-    $(wildcard include/config/CGROUP_BPF) \
-  include/uapi/linux/cgroupstats.h \
-  include/uapi/linux/taskstats.h \
-  include/linux/seq_file.h \
-  include/linux/string_helpers.h \
-  include/linux/ctype.h \
-  include/linux/kernfs.h \
-    $(wildcard include/config/KERNFS) \
-  include/linux/idr.h \
-  include/linux/ns_common.h \
+  include/linux/utsname.h \
+    $(wildcard include/config/UTS_NS) \
+    $(wildcard include/config/PROC_SYSCTL) \
   include/linux/nsproxy.h \
-  include/linux/user_namespace.h \
-    $(wildcard include/config/INOTIFY_USER) \
-    $(wildcard include/config/FANOTIFY) \
-    $(wildcard include/config/PERSISTENT_KEYRINGS) \
-  include/linux/kernel_stat.h \
-  include/linux/interrupt.h \
-    $(wildcard include/config/IRQ_FORCED_THREADING) \
-    $(wildcard include/config/GENERIC_IRQ_PROBE) \
-    $(wildcard include/config/IRQ_TIMINGS) \
-  include/linux/irqreturn.h \
-  include/linux/hardirq.h \
-  include/linux/context_tracking_state.h \
-    $(wildcard include/config/CONTEXT_TRACKING_USER) \
-    $(wildcard include/config/CONTEXT_TRACKING) \
-  include/linux/ftrace_irq.h \
-    $(wildcard include/config/HWLAT_TRACER) \
-    $(wildcard include/config/OSNOISE_TRACER) \
-  include/linux/vtime.h \
-    $(wildcard include/config/VIRT_CPU_ACCOUNTING) \
-    $(wildcard include/config/IRQ_TIME_ACCOUNTING) \
-  arch/x86/include/asm/hardirq.h \
-    $(wildcard include/config/KVM_INTEL) \
-    $(wildcard include/config/HAVE_KVM) \
-    $(wildcard include/config/X86_THERMAL_VECTOR) \
-    $(wildcard include/config/X86_MCE_THRESHOLD) \
-    $(wildcard include/config/X86_MCE_AMD) \
-    $(wildcard include/config/X86_HV_CALLBACK_VECTOR) \
-    $(wildcard include/config/HYPERV) \
-  arch/x86/include/asm/irq.h \
-  arch/x86/include/asm/irq_vectors.h \
-    $(wildcard include/config/PCI_MSI) \
-  arch/x86/include/asm/sections.h \
-  include/asm-generic/sections.h \
-    $(wildcard include/config/HAVE_FUNCTION_DESCRIPTORS) \
-  include/linux/cgroup-defs.h \
-    $(wildcard include/config/CGROUP_NET_CLASSID) \
-    $(wildcard include/config/CGROUP_NET_PRIO) \
-  include/linux/u64_stats_sync.h \
-  arch/x86/include/generated/asm/local64.h \
-  include/asm-generic/local64.h \
-  arch/x86/include/asm/local.h \
-  include/linux/bpf-cgroup-defs.h \
-    $(wildcard include/config/BPF_LSM) \
-  include/linux/psi_types.h \
-  include/linux/kthread.h \
-  include/linux/cgroup_subsys.h \
-    $(wildcard include/config/CGROUP_DEVICE) \
-    $(wildcard include/config/CGROUP_FREEZER) \
-    $(wildcard include/config/CGROUP_PERF) \
-    $(wildcard include/config/CGROUP_PIDS) \
-    $(wildcard include/config/CGROUP_RDMA) \
-    $(wildcard include/config/CGROUP_MISC) \
-    $(wildcard include/config/CGROUP_DEBUG) \
-  include/linux/cgroup_refcnt.h \
-  include/linux/userfaultfd_k.h \
-    $(wildcard include/config/PTE_MARKER_UFFD_WP) \
-  include/uapi/linux/userfaultfd.h \
-  include/linux/swap.h \
-    $(wildcard include/config/FRONTSWAP) \
-    $(wildcard include/config/THP_SWAP) \
-  include/linux/memcontrol.h \
-  include/linux/page_counter.h \
-  include/linux/vmpressure.h \
-  include/linux/eventfd.h \
-  include/linux/writeback.h \
-  include/linux/flex_proportions.h \
-  include/linux/backing-dev-defs.h \
-    $(wildcard include/config/DEBUG_FS) \
-  include/linux/blk_types.h \
-    $(wildcard include/config/FAIL_MAKE_REQUEST) \
-    $(wildcard include/config/ALPHA) \
-    $(wildcard include/config/BLK_CGROUP_IOCOST) \
-    $(wildcard include/config/BLK_INLINE_ENCRYPTION) \
-    $(wildcard include/config/BLK_DEV_INTEGRITY) \
-  include/linux/bvec.h \
-  include/linux/highmem.h \
-  include/linux/cacheflush.h \
-  arch/x86/include/asm/cacheflush.h \
-  include/asm-generic/cacheflush.h \
-  include/linux/kmsan.h \
-  include/linux/dma-direction.h \
-  include/linux/highmem-internal.h \
-  include/linux/device.h \
-    $(wildcard include/config/GENERIC_MSI_IRQ) \
-    $(wildcard include/config/ENERGY_MODEL) \
-    $(wildcard include/config/PINCTRL) \
-    $(wildcard include/config/DMA_OPS) \
-    $(wildcard include/config/DMA_DECLARE_COHERENT) \
-    $(wildcard include/config/DMA_CMA) \
-    $(wildcard include/config/SWIOTLB) \
-    $(wildcard include/config/ARCH_HAS_SYNC_DMA_FOR_DEVICE) \
-    $(wildcard include/config/ARCH_HAS_SYNC_DMA_FOR_CPU) \
-    $(wildcard include/config/ARCH_HAS_SYNC_DMA_FOR_CPU_ALL) \
-    $(wildcard include/config/DMA_OPS_BYPASS) \
-    $(wildcard include/config/OF) \
-    $(wildcard include/config/DEVTMPFS) \
-    $(wildcard include/config/SYSFS_DEPRECATED) \
-  include/linux/dev_printk.h \
-  include/linux/energy_model.h \
-  include/linux/kobject.h \
-    $(wildcard include/config/UEVENT_HELPER) \
-    $(wildcard include/config/DEBUG_KOBJECT_RELEASE) \
-  include/linux/sysfs.h \
-  include/linux/kobject_ns.h \
-  include/linux/sched/cpufreq.h \
-    $(wildcard include/config/CPU_FREQ) \
-  include/linux/sched/topology.h \
-    $(wildcard include/config/SCHED_DEBUG) \
-    $(wildcard include/config/SCHED_CLUSTER) \
-    $(wildcard include/config/SCHED_MC) \
-    $(wildcard include/config/CPU_FREQ_GOV_SCHEDUTIL) \
-  include/linux/sched/idle.h \
-  include/linux/sched/sd_flags.h \
-  include/linux/klist.h \
-  include/linux/pm.h \
-    $(wildcard include/config/VT_CONSOLE_SLEEP) \
-    $(wildcard include/config/CXL_SUSPEND) \
-    $(wildcard include/config/PM) \
-    $(wildcard include/config/PM_CLK) \
-    $(wildcard include/config/PM_GENERIC_DOMAINS) \
-  include/linux/device/bus.h \
-    $(wildcard include/config/ACPI) \
-  include/linux/device/class.h \
-  include/linux/device/driver.h \
-  include/linux/module.h \
-    $(wildcard include/config/MODULES_TREE_LOOKUP) \
-    $(wildcard include/config/STACKTRACE_BUILD_ID) \
-    $(wildcard include/config/ARCH_USES_CFI_TRAPS) \
-    $(wildcard include/config/MODULE_SIG) \
-    $(wildcard include/config/ARCH_WANTS_MODULES_DATA_IN_VMALLOC) \
-    $(wildcard include/config/KALLSYMS) \
-    $(wildcard include/config/BPF_EVENTS) \
-    $(wildcard include/config/DEBUG_INFO_BTF_MODULES) \
-    $(wildcard include/config/EVENT_TRACING) \
-    $(wildcard include/config/MODULE_UNLOAD) \
-    $(wildcard include/config/CONSTRUCTORS) \
-    $(wildcard include/config/FUNCTION_ERROR_INJECTION) \
-  include/linux/buildid.h \
-    $(wildcard include/config/CRASH_CORE) \
-  include/linux/kmod.h \
-  include/linux/umh.h \
-  include/linux/elf.h \
-    $(wildcard include/config/ARCH_USE_GNU_PROPERTY) \
-    $(wildcard include/config/ARCH_HAVE_ELF_PROT) \
-  arch/x86/include/asm/elf.h \
-    $(wildcard include/config/X86_X32_ABI) \
-  arch/x86/include/asm/user.h \
-  arch/x86/include/asm/user_64.h \
-  arch/x86/include/asm/fsgsbase.h \
-  arch/x86/include/asm/vdso.h \
-  include/uapi/linux/elf.h \
-  include/uapi/linux/elf-em.h \
-  include/linux/moduleparam.h \
-    $(wildcard include/config/PPC64) \
-  include/linux/rbtree_latch.h \
-  include/linux/error-injection.h \
-  include/asm-generic/error-injection.h \
-  arch/x86/include/asm/module.h \
-    $(wildcard include/config/UNWINDER_ORC) \
-  include/asm-generic/module.h \
-    $(wildcard include/config/HAVE_MOD_ARCH_SPECIFIC) \
-    $(wildcard include/config/MODULES_USE_ELF_REL) \
-    $(wildcard include/config/MODULES_USE_ELF_RELA) \
-  arch/x86/include/asm/orc_types.h \
-  arch/x86/include/asm/device.h \
-  include/linux/pm_wakeup.h \
-  include/linux/bio.h \
-  include/linux/mempool.h \
-  include/linux/uio.h \
-  include/uapi/linux/uio.h \
-  include/linux/node.h \
-    $(wildcard include/config/HMEM_REPORTING) \
-  include/linux/pagemap.h \
-  include/uapi/linux/mempolicy.h \
-  include/linux/swapops.h \
-  include/linux/swapfile.h \
-  include/linux/mempolicy.h \
-    $(wildcard include/config/TMPFS) \
-  arch/x86/include/asm/tlbflush.h \
-  arch/x86/include/asm/invpcid.h \
-  arch/x86/include/asm/pti.h \
-  arch/x86/include/asm/hugetlb.h \
-  include/asm-generic/hugetlb.h \
-    $(wildcard include/config/ARCH_HAS_GIGANTIC_PAGE) \
-  include/linux/mman.h \
-  include/uapi/linux/mman.h \
-  arch/x86/include/uapi/asm/mman.h \
-  include/uapi/asm-generic/mman.h \
-  include/uapi/asm-generic/mman-common.h \
-  include/linux/proc_fs.h \
-    $(wildcard include/config/PROC_PID_ARCH_STATUS) \
-  include/linux/vmalloc.h \
-    $(wildcard include/config/HAVE_ARCH_HUGE_VMALLOC) \
-  arch/x86/include/asm/vmalloc.h \
-  arch/x86/include/asm/pgtable_areas.h \
+  include/linux/ns_common.h \
+  include/uapi/linux/utsname.h \
 
-/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o: $(deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o)
+/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o: $(deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o)
 
-$(deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o):
+$(deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o):
 
-/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Tareas/Tarea_04/Modulo/ram_module.o: $(wildcard ./tools/objtool/objtool)
+/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o: $(wildcard ./tools/objtool/objtool)

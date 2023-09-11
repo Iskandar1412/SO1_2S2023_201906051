@@ -19,7 +19,7 @@
 
 |CARPETA|PDF|MD|Fecha Entrega|
 |:-:|:-:|:-:|:-:|
-|[P1](./Proyectos/Proyecto%201/)|-|-|21/Septiembre/2023|
+|[P1](./Proyectos/Proyecto1/)|-|-|21/Septiembre/2023|
 
 ### Enunciados
 
