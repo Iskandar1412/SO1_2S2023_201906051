@@ -1045,6 +1045,12 @@ deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto
     $(wildcard include/config/MEMORY_BALLOON) \
     $(wildcard include/config/BALLOON_COMPACTION) \
     $(wildcard include/config/ZSWAP) \
+  include/linux/utsname.h \
+    $(wildcard include/config/UTS_NS) \
+    $(wildcard include/config/PROC_SYSCTL) \
+  include/linux/nsproxy.h \
+  include/linux/ns_common.h \
+  include/uapi/linux/utsname.h \
 
 /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o: $(deps_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/cpu_module.o)
 
