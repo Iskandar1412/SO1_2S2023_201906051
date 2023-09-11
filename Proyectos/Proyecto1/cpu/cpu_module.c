@@ -8,7 +8,7 @@
 #include <linux/seq_file.h>
 #include <linux/cred.h>
 #include <linux/mm.h> 
-#include <linux/utsname.h>  // Para obtener el nombre del equipo
+#include <linux/utsname.h>
 
 #define FileProc "cpu_201906051"
 
@@ -28,7 +28,7 @@ static int show_cpu_stat(struct seq_file *f, void *v){
     utsname = init_utsname();
 
     seq_printf(f, "{\n");
-    seq_printf(f, "\"Nombre_equipo\": \"%s\",\n", utsname->nodename);  // Agregar el nombre del equipo al JSON
+    seq_printf(f, "\"Nombre_equipo\": \"%s\",\n", utsname->nodename);
     seq_printf(f, "\"Usuario_actual\": %u,\n", current_uid().val);
 
     for_each_process(task) {
