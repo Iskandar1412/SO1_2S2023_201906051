@@ -34,7 +34,6 @@ __used __section("__versions") = {
 	{ 0xce4f6bb6, "single_open" },
 	{ 0xd65b4e21, "seq_printf" },
 	{ 0xf06a487c, "init_uts_ns" },
-	{ 0xf72e8c06, "pcpu_hot" },
 	{ 0xcbeac83e, "init_task" },
 	{ 0x98f584d4, "get_task_cred" },
 	{ 0x86e1b259, "__put_cred" },
@@ -56,4 +55,4 @@ __used __section("__versions") = {
 MODULE_INFO(depends, "");
 
 
-MODULE_INFO(srcversion, "CD5C0674154D00BE8335071");
+MODULE_INFO(srcversion, "F272E2EA0D7E68692B59217");
