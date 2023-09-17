@@ -27,7 +27,7 @@ function Navbar() {
                 </div>
                 <div className='sb-sidenav-footer'>
                     <div className="small">Created by:</div>
-                    Iskandar1412
+                    Iskandar
                 </div>
             </nav>
         </div>
