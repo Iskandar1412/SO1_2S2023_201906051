@@ -11338,8 +11338,124 @@ table {
   width: 100%;
 }
 
+.container-pies {
+  margin: 20px auto;
+  display: flex;
+  background:#212529;
+  border-radius: 5px;
+  width: 80%;
+  height: 70vh;
+}
+
 .pie-chart-container {
-  width: 400px;
-  height: 400px;
+  width: 30vw;
+  height: 30vw;
+  margin: 5px auto;
+}
+
+.multi-chart-container {
+  width: 600px;
+  height: 600px;
   margin: 0 auto;
+}
+
+/*Buscador*/
+span.msg,
+span.choose {
+  color: #555;
+  padding: 5px 0 10px;
+  display: inherit;
+}
+
+.Buscador {
+  width: 500px;
+  height: auto;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.droppdown {
+  width: 300px;
+  display: inline-block;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgb(204, 204, 204);
+  transition: all .5s ease;
+  position: relative;
+  font-size: 14px;
+  color: #474747;
+  height: 100%;
+  text-align: left;
+}
+
+.droppdown .sellect {
+  cursor: pointer;
+  display: block;
+  padding: 10px;
+}
+
+.droppdown .sellect > svg {
+  font-size: 13px;
+  color: #888;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+  float: right;
+  line-height: 20px;
+}
+
+.droppdown:hover {
+  box-shadow: 0 0 4px rgb(204, 204, 204);
+}
+
+.droppdown:active {
+  background-color: #f8f8f8;
+}
+
+.droppdown.active:hover,
+.droppdown.active {
+  box-shadow: 0 0 4px rgb(204, 204, 204);
+  border-radius: 2px 2px 0 0;
+  background-color: #f8f8f8;
+}
+
+.droppdown.active .sellect > svg {
+  transform: rotate(-90deg);
+}
+
+.droppdown .droppdown-menu {
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  left: 0;
+  margin-top: 1px;
+  box-shadow: 0 1px 2px rgb(204, 204, 204);
+  border-radius: 0 1px 2px 2px;
+  overflow: hidden;
+  display: none;
+  max-height: 144px;
+  overflow-y: auto;
+  z-index: 9;
+}
+
+.droppdown-menu.show {
+  display: block;
+}
+
+.droppdown .droppdown-menu li {
+  padding: 10px;
+  transition: all .2s ease-in-out;
+  cursor: pointer;
+}
+
+.droppdown .droppdown-menu {
+  padding: 0;
+  list-style: none;
+}
+
+.droppdown .droppdown-menu li:hover {
+  background-color: #f2f2f2;
+}
+
+.droppdown .droppdown-menu li:active {
+  background-color: #e2e2e2;
 }

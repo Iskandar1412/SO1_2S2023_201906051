@@ -1,28 +1,49 @@
 import React, { useState } from 'react';
-//import React from 'react';
 import axios from 'axios';
 import PieChartCPU from '../graphs/PieChartCPU'
-
+import PieChartRAM from '../graphs/PieChartRAM';
 
 function RealTime() {
+    //const [dataram, setdataram] = useRef([]);
+    //const [datacpu, setdatacpu] = useRef([]);
+
     const charDataCPU = {
-        labels: ['C', 'D'],
+        labels: ['Usada', 'Libre'],
         datasets: [
             {
                 label: 'Grafica CPU',
                 data: [150, 30],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(185, 35, 23, 0.5)',
+                    'rgba(23, 185, 153, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
+                    'rgba(185, 35, 23, 1)',
+                    'rgba(23, 185, 153, 1)',
                 ],
                 borderWidth: 1,
             }
         ]
     };
+
+    const charDataRAM = {
+        labels: ['Usada', 'Libre'],
+        datasets: [
+            {
+                label: 'Grafica RAM',
+                data: [70, 30],
+                backgroundColor: [
+                    'rgba(160, 115, 29, 0.7)',
+                    'rgba(29, 160, 96, 0.7)',
+                ],
+                borderColor: [
+                    'rgba(160, 115, 29, 1)',
+                    'rgba(29, 160, 96, 1)',
+                ],
+                borderWidth: 1,
+            }
+        ]
+    }
 
     //console.log("CHart data:" , charDataCPU);
     
@@ -42,19 +63,25 @@ function RealTime() {
         } catch (err) { console.log('Error en la solicitud al backend (NodeJS):', err) }
     };
 
-    const [options, setOptions] = useState([]);
+    //Par barra de seleción
+    const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
 
-    const handleChange = (e) => {
-        setSelectedOption(e.target.value);
+    const options = [
+        { id: 'maquina1', label: 'maquina 1' },
+        { id: 'maquina2', label: 'maquina2' },
+        { id: 'maquina3', label: 'maquina3'}
+    ];
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
     };
 
-    const handleConnect = () => {
-        const newOption = prompt('Ingrese nuevo valor');
-        if (newOption) {
-            setOptions([...options, newOption]);
-        }
+    const handleOptionClick = (option) => {
+        setSelectedOption(option.label);
+        setIsOpen(false);
     };
+
 
     return (
         <div id='layoutSidenav_content'>
@@ -62,34 +89,35 @@ function RealTime() {
                 <main className="container-w">
                     <input id="tab1" type="radio" name="tabs" defaultChecked />
                     <label htmlFor="tab1" className="label-type">Tiempo Real</label>
-
-                    
-
                     <section id="content1" className="tabs-contentype">
-                        <select
-                            value={selectedOption}
-                            onChange={handleChange}
-                        >
-                            <option
-                                value=""
-                            >Seleccione una opción</option>
-                            {
-                                options.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))
-                            }
-                        </select>
-                        <button onClick={handleConnect}>Conectar</button>
-
-
-                        <div className='App'>
-                            <div className='charcpu'>
-                                <h2>Memoria CPU</h2>
-                                
-                                <PieChartCPU dato={charDataCPU} />
+                        
+                        <div className="Buscador">
+                            <span className="choose">Seleccionar Maquina</span>
+                            <div className={`droppdown ${isOpen ? 'active' : ''}`}>
+                                <div className="sellect" onClick={toggleDropdown}>
+                                    <span>{selectedOption || 'Nombre Maquina'}</span>
+                                    <i className={`fa fa-chevron-left ${isOpen ? 'open' : ''}`}></i>
+                                </div>
+                                <ul className={`droppdown-menu ${isOpen ? 'show' : ''}`}>
+                                {options.map((option) => (
+                                    <li
+                                    key={option.id}
+                                    onClick={() => handleOptionClick(option)}
+                                    className={selectedOption === option.label ? 'selected' : ''}
+                                    >
+                                    {option.label}
+                                    </li>
+                                ))}
+                                </ul>
                             </div>
+                            <span className="msg">
+                                Changed Macchine: <strong>{selectedOption}</strong>
+                            </span>
+                        </div>
+
+                        <div className='container-pies'>
+                            <PieChartCPU dato={charDataCPU} />
+                            <PieChartRAM dato={charDataRAM} />
                         </div>
 
 
