@@ -5,25 +5,17 @@ const port = 3200
 
 app.use(express.json())
 
-app.get('/node-go/info-ram', async(req, res) => {
+app.get('/node-go/info-machine', async(req, res) => {
     try {
-        const response = await axios.get('http://localhost:8080/info-ram')
-        res.json(response.data)
+        const response1 = await axios.get('http://localhost:8080/info-ram')
+        const response2 = await axios.get('http://localhost:8080/info-cpu')
+        res.json(response1.data, response2.data)
     } catch(error) {
         console.error(error)
         res.status(500).json({ error: 'Error en la comunicación con el Backend de go' })
     }
 });
 
-app.get('/node-go/info-cpu', async(req, res) => {
-    try {
-        const response = await axios.get('http://localhost:8080/info-cpu')
-        res.json(response.data)
-    } catch(error) {
-        console.log(error)
-        res.status(500).json({ error: 'Error en la comunicación con el Backend de go' })
-    }
-});
 
 app.post('/node-go/post-go', async(req, res) => {
     try {

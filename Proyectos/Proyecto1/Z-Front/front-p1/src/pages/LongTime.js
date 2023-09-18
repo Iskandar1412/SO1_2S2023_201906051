@@ -1,11 +1,26 @@
-//import React, { useState, useRef, useEffect } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
+//import React from 'react';
 import axios from 'axios';
 
 
 
-function Inicio() {
-    
+function LongTime() {
+
+    const [contentPost, setcontentPost] = useState([]);
+    const handleText = (e) => {
+        setcontentPost(e.target.value);
+    };
+
+    const handlePost = async () => {
+        const valor = contentPost;
+        try {
+            const response = await axios.post('http://localhost:3000/node-go/post-go', { value: valor}, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = response.data;
+            console.log(data)
+        } catch (err) { console.log('Error en la solicitud al backend (NodeJS):', err) }
+    } 
 
 
     return (
@@ -25,17 +40,20 @@ function Inicio() {
                     <label htmlFor="tab4" className="label-type">Tabla de Símbolos</label>
 
                     <section id="content1" className="tabs-contentype">
-
-                        <div className="tabs-section">
-                            <div className="tabs-container">
-                            <button className="add-tab">
-                                +
-                            </button>
+                       <div className='tabs-section'>
+                            <div className='tab-content'>
+                                <div className='content-text'>
+                                    <div className='editor'>
+                                        <textarea
+                                            className='text-area'
+                                            value={contentPost}
+                                            onChange={handleText}
+                                        ></textarea>
+                                        <button onClick={handlePost}>Print</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="tab-content">
-                            </div>
-                        </div>
-                        
+                       </div>
                     </section>
 
                     <section id="content2" className="tabs-contentype">
@@ -59,4 +77,4 @@ function Inicio() {
     );        
 }
 
-export default Inicio;
+export default LongTime;
