@@ -79,9 +79,19 @@ function RealTime() {
 
     const handleOptionClick = (option) => {
         setSelectedOption(option.label);
+        //console.log(option)
+        handleSuccess()
         setIsOpen(false);
     };
 
+    //mensaje
+    const [isSuccess, setIsSuccess] = useState(false);
+    const handleSuccess = () => {
+        setIsSuccess(true);
+        setTimeout(() => {
+            setIsSuccess(false);
+        }, 3000)
+    }
 
     return (
         <div id='layoutSidenav_content'>
@@ -110,9 +120,7 @@ function RealTime() {
                                 ))}
                                 </ul>
                             </div>
-                            <span className="msg">
-                                Changed Macchine: <strong>{selectedOption}</strong>
-                            </span>
+                            {isSuccess && <span className="msg">Changed Macchine: <strong>{selectedOption}</strong></span>}
                         </div>
 
                         <div className='container-pies'>
@@ -121,20 +129,25 @@ function RealTime() {
                         </div>
 
 
-                       <div className='tabs-section'>
+                       <div className='tab-section-2'>
                             <div className='tab-content'>
                                 <div className='content-text'>
-                                    <div className='editor'>
-                                        <textarea
-                                            className='text-area'
+                                    <div className='editor-pid'>
+                                        <h3 className='pid-tit'>PID</h3>
+                                        <input
+                                            type='text'
+                                            className='text-pid'
                                             value={contentPost}
                                             onChange={handleText}
-                                        ></textarea>
-                                        <button onClick={handlePost}>Print</button>
+                                        />
+                                        <button className='kill-pid' onClick={handlePost}>Kill</button>
                                     </div>
                                 </div>
                             </div>
                        </div>
+                        
+                        
+
                     </section>
 
                     

@@ -11031,7 +11031,7 @@ body {
 }
 
 .tab-content {
-  height: 75vh;
+  height: 100%;
 }
 
 .content-button {
@@ -11186,7 +11186,7 @@ p {
   border-top: 1px solid #ddd;
 }
 
-input {
+#tab1 {
   display: none;
 }
 
@@ -11360,11 +11360,20 @@ table {
 }
 
 /*Buscador*/
-span.msg,
 span.choose {
   color: #555;
   padding: 5px 0 10px;
   display: inherit;
+}
+
+span.msg {
+  color: #D17019;
+  padding: 5px 0 10px;
+  display: inherit;
+}
+
+span.msg strong {
+  color: #19D157;
 }
 
 .Buscador {
@@ -11458,4 +11467,56 @@ span.choose {
 
 .droppdown .droppdown-menu li:active {
   background-color: #e2e2e2;
+}
+
+.tab-section-2 {
+  flex-direction: column;
+  height: 100%;
+  margin: 10px auto;
+  width: 80%;
+  background-color: #212529;
+  border-radius: 5px;
+}
+
+.editor-pid {
+  width: 100%;
+  gap: 10px;
+  justify-content: center;
+  line-height: 2vh;
+  display: flex;
+}
+
+/*top right bottom left*/
+.pid-tit {
+  font-family: "Times New Roman", Times, serif;
+  margin:  10px 5px 10px auto; 
+  color: #fff;
+}
+
+.text-pid {
+  width: 20vw;
+  text-align: center;
+  margin: 10px 5px;
+  border-radius: 5px;
+  color: #212529;
+  padding: 5px;
+}
+
+/*top right bottom left*/
+.kill-pid {
+  width: 7%;
+  margin: 10px auto 10px 5px; 
+  display: block;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 100%;
+  background-color: #212529;
+  border: 1px solid;
+}
+
+.kill-pid:hover {
+  background-color: var(--bs-gray-700);
+  color: #E33E00;
+  cursor: crosshair;
 }
