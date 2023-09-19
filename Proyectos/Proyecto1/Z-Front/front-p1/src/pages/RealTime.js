@@ -53,6 +53,7 @@ function RealTime() {
     };
 
     const handlePost = async () => {
+        console.log(contentPost);
         const valor = contentPost;
         try {
             const response = await axios.post('http://localhost:3000/node-go/post-go', { value: valor}, {
@@ -78,6 +79,7 @@ function RealTime() {
     };
 
     const handleOptionClick = (option) => {
+        handleProcesos()
         setSelectedOption(option.label);
         //console.log(option)
         handleSuccess()
@@ -93,19 +95,44 @@ function RealTime() {
         }, 3000)
     }
 
+    //items para procesos
+    const [items, setItems] = useState(null);
+    const [procesos, setProcesos] = useState([]);
+    const itmp = [
+        { id: 1, proceso:'asdf', pid: 12465, uid: 1212, estado: "U", memoriav: 1250, memoriaf: 12546 },
+        { id: 2, proceso:'asdff', pid: 1364, uid: 12512, estado: "S", memoriav: 1450, memoriaf: 122 },
+        { id: 3, proceso:'python', pid: 4879, uid: 412, estado: "T", memoriav: 250, memoriaf: 1254 },
+        { id: 4, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+        { id: 5, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+        { id: 6, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+        { id: 7, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+        { id: 8, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+        { id: 9, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+        { id: 10, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+        { id: 11, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    ];
+    const handleProcesos = () => {
+        setProcesos(itmp)
+        console.log(itmp)
+    };
+
+    const toggleItemExpansion = (itemID) => {
+        setItems(prevId => (prevId === itemID ? null : itemID));
+    };
+
     return (
         <div id='layoutSidenav_content'>
             <main>
                 <main className="container-w">
                     <input id="tab1" type="radio" name="tabs" defaultChecked />
-                    <label htmlFor="tab1" className="label-type">Tiempo Real</label>
+                    <label htmlFor="tab1" className="label-type">Real Time</label>
                     <section id="content1" className="tabs-contentype">
                         
                         <div className="Buscador">
                             <span className="choose">Seleccionar Maquina</span>
                             <div className={`droppdown ${isOpen ? 'active' : ''}`}>
                                 <div className="sellect" onClick={toggleDropdown}>
-                                    <span>{selectedOption || 'Nombre Maquina'}</span>
+                                    <span className='name-tipo'><b>{selectedOption || 'Nombre Maquina'}</b></span>
                                     <i className={`fa fa-chevron-left ${isOpen ? 'open' : ''}`}></i>
                                 </div>
                                 <ul className={`droppdown-menu ${isOpen ? 'show' : ''}`}>
@@ -127,8 +154,7 @@ function RealTime() {
                             <PieChartCPU dato={charDataCPU} />
                             <PieChartRAM dato={charDataRAM} />
                         </div>
-
-
+                        
                        <div className='tab-section-2'>
                             <div className='tab-content'>
                                 <div className='content-text'>
@@ -146,7 +172,38 @@ function RealTime() {
                             </div>
                        </div>
                         
-                        
+                        <div className='tab-section-2'>
+                            <div className='tab-content'>
+                                <div className='content-text'>
+                                    <div className='lista-procesos'>
+                                        <div className='list-item header'>
+                                            <span>No.</span>
+                                            <span>Proceso</span>
+                                            <span>PID</span>
+                                            <span>UID</span>
+                                            <span>Estado</span>
+                                            <span>M.Virtual</span>
+                                            <span>M.Física</span>
+                                        </div>
+                                        {procesos.map(proceso =>
+                                            <div
+                                                key={proceso.id}
+                                                className={`list-item ${items === proceso.id ? 'expanded' : ''}`}
+                                                onClick={() => toggleItemExpansion(proceso.id)}
+                                            >
+                                                <span>{ proceso.id }</span>
+                                                <span>{ proceso.proceso }</span>
+                                                <span>{ proceso.pid }</span>
+                                                <span>{ proceso.uid }</span>
+                                                <span>{ proceso.estado }</span>
+                                                <span>{ proceso.memoriav }</span>
+                                                <span>{ proceso.memoriaf }</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </section>
 

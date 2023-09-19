@@ -11186,7 +11186,7 @@ p {
   border-top: 1px solid #ddd;
 }
 
-#tab1 {
+#tab1,#tab2,#tab3,#tab4 {
   display: none;
 }
 
@@ -11354,8 +11354,8 @@ table {
 }
 
 .multi-chart-container {
-  width: 600px;
-  height: 600px;
+  width: 60vw;
+  height: 30vw;
   margin: 0 auto;
 }
 
@@ -11519,4 +11519,95 @@ span.msg strong {
   background-color: var(--bs-gray-700);
   color: #E33E00;
   cursor: crosshair;
+}
+
+.lista-procesos {
+  width: 90%;
+  margin: 10px auto;
+  max-height: 50vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #2167AD #888;
+  padding: 2px;
+}
+
+.lista-procesos::-webkit-scrollbar {
+  width: 10px;
+}
+
+.lista-procesos::-webkit-scrollbar-track {
+  background: #343a40;
+}
+
+.lista-procesos::-webkit-scrollbar-thumb {
+  background-color: #323539;
+  border-radius: 4px;
+}
+
+.name-tipo {
+  color: #A0731D;
+}
+
+
+
+.list-item {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px auto;
+}
+
+.list-item.expanded {
+  background-color: #f0f0f0;
+}
+
+.list-item.header {
+  background-color: #333;
+  color: #000;
+}
+
+.list-item span {
+  display: inline-block;
+  text-align: center;
+  padding: 5px auto;
+}
+
+.list-item span:nth-child(1) {
+  background-color: #f0f0f0;
+  width: 5%;
+}
+
+.list-item span:nth-child(2) {
+  background-color: #f9f9f9;
+  width: 45%;
+}
+
+.list-item span:nth-child(3) {
+  background-color: #e6e6e6;
+  width: 8%;
+}
+
+.list-item span:nth-child(4) {
+  background-color: #f9f9f9;
+  width: 8%;
+}
+
+.list-item span:nth-child(5) {
+  background-color: #e6e6e6;
+  width: 10%;
+}
+
+.list-item span:nth-child(6) {
+  background-color: #f9f9f9;
+  width: 12%;
+}
+
+.list-item span:nth-child(7) {
+  background-color: #e6e6e6;
+  width: 12%;
+}
+
+.list-item.expanded span {
+  background-color: #f0f0f0;
+  color: #333;
 }

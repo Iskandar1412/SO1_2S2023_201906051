@@ -1,76 +1,72 @@
 import React, { useState } from 'react';
 //import React from 'react';
 import axios from 'axios';
+import MultiaxisChartCPU from '../graphs/MultiaxisChartCPU';
+import MultiaxisChartRAM from '../graphs/MultiaxisChartRAM';
 
 
 
 function LongTime() {
-
-    const [contentPost, setcontentPost] = useState([]);
-    const handleText = (e) => {
-        setcontentPost(e.target.value);
+    const longRAM  = {
+        labels: ['en', 'feb', 'mar', 'abr', 'may', 'jun'],
+        datasets: [
+            {
+                label: 'G1',
+                data: [100, 20, 30, 50, 700, 20],
+                borderColor: 'rgb(82, 12, 139)',
+                backgroundColor: 'rgba(82, 12, 139, 0.2)',
+                yAxisID: 'y',
+            },
+            {
+                label: 'G2',
+                data: [5, 70, 10, 500, 40, 90],
+                borderColor: 'rgb(160, 115, 29)',
+                backgroundColor: 'rgba(160, 115, 29, 0.2)',
+                yAxisID: 'y',
+            },
+        ],
     };
-
-    const handlePost = async () => {
-        const valor = contentPost;
-        try {
-            const response = await axios.post('http://localhost:3000/node-go/post-go', { value: valor}, {
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = response.data;
-            console.log(data)
-        } catch (err) { console.log('Error en la solicitud al backend (NodeJS):', err) }
-    } 
+    
+    const longCPU  = {
+        labels: ['en', 'feb', 'mar', 'abr', 'may', 'jun'],
+        datasets: [
+            {
+                label: 'G1',
+                data: [100, 20, 30, 50, 700, 20],
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                yAxisID: 'y',
+            },
+            {
+                label: 'G2',
+                data: [5, 70, 10, 500, 40, 90],
+                borderColor: 'rgb(53, 162, 235)',
+                backgroundColor: 'rgba(53, 162, 235, 0.2)',
+                yAxisID: 'y',
+            },
+        ],
+    };
 
 
     return (
         <div id='layoutSidenav_content'>
             <main>
                 <main className="container-w">
-                    <input id="tab1" type="radio" name="tabs" defaultChecked />
-                    <label htmlFor="tab1" className="label-type">Analyzer</label>
 
-                    <input id="tab2" type="radio" name="tabs" />
-                    <label htmlFor="tab2" className="label-type">Errores</label>
 
-                    <input id="tab3" type="radio" name="tabs" />
-                    <label htmlFor="tab3" className="label-type">Árbol AST</label>
+                    <input id="tab4" type="radio" name="tabs" defaultChecked />
+                    <label htmlFor="tab4" className="label-type">Long Time</label>
 
-                    <input id="tab4" type="radio" name="tabs" />
-                    <label htmlFor="tab4" className="label-type">Tabla de Símbolos</label>
-
-                    <section id="content1" className="tabs-contentype">
-                       <div className='tabs-section'>
-                            <div className='tab-content'>
-                                <div className='content-text'>
-                                    <div className='editor'>
-                                        <textarea
-                                            className='text-area'
-                                            value={contentPost}
-                                            onChange={handleText}
-                                        ></textarea>
-                                        <button onClick={handlePost}>Print</button>
-                                    </div>
-                                </div>
-                            </div>
-                       </div>
-                    </section>
-
-                    <section id="content2" className="tabs-contentype">
-                        <div id="seccion-errores" >
-
+                    <section id="content4" className="tabs-contentype">
+                        <div className='container-pies'>
+                            <MultiaxisChartCPU dato={longCPU} />
+                        </div>
+                        <div className='container-pies'>
+                            <MultiaxisChartRAM dato={longRAM} />
                         </div>
                         
                     </section>
 
-                    <section id="content3" className="tabs-contentype">
-                        <div id="seccion-ast"></div>
-                    </section>
-
-                    <section id="content4" className="tabs-contentype">
-                        <div id="seccion-tabla" ></div>
-                    
-                    </section>
                 </main>
             </main>
         </div>

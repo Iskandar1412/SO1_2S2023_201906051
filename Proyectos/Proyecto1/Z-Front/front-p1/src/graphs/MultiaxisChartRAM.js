@@ -49,6 +49,7 @@ export const options = {
     },
 };
 
+/*
 var data  = {
     labels: ['en', 'feb', 'mar', 'abr', 'may', 'jun'],
     datasets: [
@@ -68,11 +69,12 @@ var data  = {
         },
     ],
 };
+*/
 
-export default function MultiaxisChartRAM() {
+export default function MultiaxisChartRAM({ dato }) {
     return (
         <div className="multi-chart-container">
-            <Line data={data} options={options} />
+            <Line data={dato} options={options} />
         </div>
     );
 }
