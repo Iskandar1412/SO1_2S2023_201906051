@@ -13,8 +13,8 @@
 >sudo docker volume ls<br/>
 >sudo docker ps<br/>
 >sudo docker run --name <nombre_contenedor (cualquiera)> -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=<contraseña> <nombre_imagen (mysql)><br/>
->sudo docker exec -it <nombre_contenedor> mysql -uroot -p<contraseña>
->SHOW DATABASES;
+>sudo docker exec -it <nombre_contenedor> mysql -uroot -p<contraseña><br/>
+>SHOW DATABASES;<br/>
 >CREATE DATABASE <nombre de la db> //nombre que en dbeaver se usara para abrir la db
 
 ## Iniciar contenedor (cuando se reinicia ordenador)
