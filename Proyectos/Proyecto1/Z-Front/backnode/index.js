@@ -68,7 +68,7 @@ app.get('/envivo', async (req, res) => {
 
         res.json(responseData);
     } catch (error) {
-        console.error('Error en /envivo:', error);
+        console.error('Error al obtener la información:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     } finally {
         if (connection) {
@@ -149,7 +149,7 @@ async function insertarRegistroRAM(connection, ramData) {
             ramData.Uso_ram[0].Ram_libre,
             ramData.Uso_ram[0].Porcentaje_en_uso
         ]);
-        console.log('Registro de RAM insertado correctamente.');
+        console.log('Datos de la RAM insertados exitosamente');
     } catch (error) {
         console.error('Error al insertar el registro de RAM:', error);
     }
@@ -168,7 +168,7 @@ async function insertarRegistrosProceso(connection, cpuData) {
                 Memoria_virtual,
                 Memoria_fisica
             ]);
-            console.log(`Registro de proceso "${Proceso}" insertado correctamente.`);
+            //console.log(`Proceso "${Proceso}" insertado correctamente.`);
         }
     } catch (error) {
         console.error('Error al insertar los registros de proceso:', error);
@@ -184,7 +184,7 @@ async function obtenerUltimoIdProceso(connection) {
             return null;
         }
     } catch (error) {
-        console.error('Error al obtener el último ID de proceso:', error);
+        console.error('No se pudo obtener el ID del preoceso:', error);
         return null;
     }
 }
@@ -198,7 +198,7 @@ async function obtenerUltimoRegistroRAM(connection) {
             return null;
         }
     } catch (error) {
-        console.error('Error al obtener el último registro de RAM:', error);
+        console.error('No se pudo obtener el registro RAM:', error);
         return null;
     }
 }
@@ -214,10 +214,11 @@ async function insertarRegistroInfo(connection, ultimoIdProceso, ultimoRegistroR
             cpuData.Nombre_equipo,
             cpuData.Uso_de_CPU,
             fechaHoraFormateada
-        ]);
-        console.log('Registro de información insertado correctamente.');
+          ]);
+        //console.log(cpuData.Uso_de_CPU);
+        console.log('Información del equipo insertada correctamente.');
     } catch (error) {
-        console.error('Error al insertar el registro de información:', error);
+        console.error('No se pudo insertar la información del equipo:', error);
     }
 }
 
