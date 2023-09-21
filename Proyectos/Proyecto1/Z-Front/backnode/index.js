@@ -7,7 +7,7 @@ app.use(express.json())
 
 app.get('/node-go/info-machine', async(req, res) => {
     try {
-        const response1 = await axios.get('http://localhost:8080/info-ram')
+        const response1 = await axios.get('http:///info-ram')
         const response2 = await axios.get('http://localhost:8080/info-cpu')
         res.json(response1.data, response2.data)
     } catch(error) {

@@ -32,7 +32,10 @@ export const options = {
     plugins: {
         title: {
             display: true,
-            text: 'Grafica RAM a lo Largo del Tiempo'
+            text: 'Grafica RAM a lo Largo del Tiempo',
+            font: {
+                size: 24,
+            },
         },
     },
     scales: {
