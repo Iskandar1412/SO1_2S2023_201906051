@@ -1,234 +1,226 @@
 //en caso de que la db sea en docker
 //sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' proyect_db
+//nahhh sirve en localhost
+//correr imagen sql docker
+//sudo docker start proyect_db
+
+//mv1: proyecto1-c2n1  ::  34.67.121.223
+//mv2: Proyecto1-t16q  ::  34.42.36.164
 const express = require('express');
-const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-
+const mysql = require('mysql2/promise');
 const app = express();
 const port = process.env.PORT || 3200;
 
 app.use(bodyParser.json());
 
-// Configuración de la conexión a la base de datos MySQL
-const db = mysql.createConnection({
-  host: 'http://172.17.0.2:3306',
-  user: 'root',
-  password: 'secret',
-  database: 'proyect_db',
-});
+const dbConfig = {
+    host: 'localhost',
+    user: 'root',
+    password: 'secret',
+    database: 'proyect_db',
+};
 
-db.connect((err) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos: ', err);
-  } else {
-    console.log('Conexión a la base de datos exitosa');
-  }
-});
+async function connectToDatabase() {
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+        // Consulta para obtener la lista de tablas en la base de datos
+        const [rows] = await connection.query('SHOW TABLES');
+        
+        // Mostrar las tablas disponibles
+        console.log('Tablas en la base de datos:');
+        for (const row of rows) {
+            console.log('Tabla: [', row[`Tables_in_${dbConfig.database}`], ']');
+        }
+        
+        console.log('Conexión a la base de datos exitosa');
+        return connection;
+    } catch (error) {
+        console.error('Error al conectar a la base de datos: ', error);
+        throw error;
+    }
+}
 
-// Microservicio /envivo
+connectToDatabase();
+
 app.get('/envivo', async (req, res) => {
-  try {
-    //ESTO ES PARA LA VM 1
-    // Consumir un servicio externo para recuperación de información de RAM
-    const externalServiceResponseRAM1 = await axios.get('http://34.71.99.119:8080/ram-info');
-    
-    // Consumir un servicio externo para recuperación de información de CPU
-    const externalServiceResponseCPU1 = await axios.get('http://34.71.99.119:8080/cpu-info');
-    
-    // Extraer los datos necesarios de las respuestas
-    const ramData1 = externalServiceResponseRAM1.data;
-    const cpuData1 = externalServiceResponseCPU1.data;
-    
-    // Llamar a las consultas SQL directamente en lugar de los SP
-    await insertarRegistroRAM(ramData1);
-    await insertarRegistrosProceso(cpuData1);
-    const ultimoIdProceso = await obtenerUltimoIdProceso();
-    const ultimoRegistroRAM = await obtenerUltimoRegistroRAM();
-    await insertarRegistroInfo(ultimoIdProceso, ultimoRegistroRAM, cpuData1);
+    let connection;
+    try {
+        connection = await connectToDatabase();
 
-    // Crear un objeto de respuesta con los datos extraídos
-    const responseData = {
-      CPU1: ramData1,
-      RAM1: cpuData1,
-    };
+        const externalServiceResponseRAM1 = await axios.get('http://34.67.121.223:8080/ram-info');
+        const externalServiceResponseCPU1 = await axios.get('http://34.67.121.223:8080/cpu-info');
 
-    res.json(responseData);
-  } catch (error) {
-    console.error('Error en /envivo:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
+        const ramData1 = externalServiceResponseRAM1.data;
+        const cpuData1 = externalServiceResponseCPU1.data;
+
+        await insertarRegistroRAM(connection, ramData1);
+        await insertarRegistrosProceso(connection, cpuData1);
+        const ultimoIdProceso = await obtenerUltimoIdProceso(connection);
+        const ultimoRegistroRAM = await obtenerUltimoRegistroRAM(connection);
+        await insertarRegistroInfo(connection, ultimoIdProceso, ultimoRegistroRAM, cpuData1);
+
+        const responseData = {
+            CPU1: cpuData1,
+            RAM1: ramData1,
+        };
+
+        res.json(responseData);
+    } catch (error) {
+        console.error('Error en /envivo:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    } finally {
+        if (connection) {
+            connection.end();
+        }
+    }
 });
 
-// Microservicio /eliminarproceso
 app.delete('/eliminarproceso', async (req, res) => {
-  try {
-    const pid = req.body.pid;
-    // Objeto con los datos a enviar en la solicitud POST
-    
-    // URL del endpoint de tu backend Go
-    const backendGoUrl = 'http://34.42.36.164:8080/kill'; 
+    try {
+        const pid = req.body.pid;
+        const backendGoUrl = 'http://34.42.36.164:8080/kill';
 
-    const data = {
-      pid: pid,
-    };
+        const data = {
+            pid: pid,
+        };
 
-    // Realizar la solicitud POST al endpoint de tu backend Go
-    axios.post(backendGoUrl, data)
-      .then((response) => {
-        console.log(response.data); // Mensaje de éxito del backend Go
-      })
-      .catch((error) => {
-        console.error('Error al realizar la solicitud POST:', error);
-      });
-    
-    res.json({ message: 'Operación exitosa' });
-  } catch (error) {
-    console.error('Error en /eliminarproceso:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
+        axios
+            .post(backendGoUrl, data)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.error('Error al realizar la solicitud POST:', error);
+            });
+
+        res.json({ message: 'Operación exitosa' });
+    } catch (error) {
+        console.error('Error en /eliminarproceso:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 
-// Endpoint para obtener información por mes y año
 app.post('/obtenerinformacionmes', async (req, res) => {
-  try {
-    // Obtener el mes y el año del cuerpo de la solicitud
-    const { mes, anio } = req.body;
+    try {
+        const { mes, anio } = req.body;
 
-    // Validar que se proporcionen mes y año
-    if (!mes || !anio) {
-      return res.status(400).json({ error: 'Debe proporcionar mes y año en el cuerpo de la solicitud.' });
+        if (!mes || !anio) {
+            return res.status(400).json({ error: 'Debe proporcionar mes y año en el cuerpo de la solicitud.' });
+        }
+
+        const connection = await connectToDatabase();
+        const resultados = await obtenerInformacionMes(connection, mes, anio);
+        connection.end();
+
+        if (resultados.length > 0) {
+            res.json({ datos: resultados });
+        } else {
+            res.json({ mensaje: 'No se encontraron datos en el intervalo especificado.' });
+        }
+    } catch (error) {
+        console.error('Error al obtener información por mes y año:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
-
-    // Llamar a las consultas SQL directamente en lugar de los SP
-    const resultados = await obtenerInformacionMes(mes, anio);
-
-    // Comprobar si se encontraron datos
-    if (resultados.length > 0) {
-      res.json({ datos: resultados });
-    } else {
-      res.json({ mensaje: 'No se encontraron datos en el intervalo especificado.' });
-    }
-  } catch (error) {
-    console.error('Error al obtener información por mes y año:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
 });
 
-// Microservicio /obtenerprocesos
 app.get('/obtenerprocesos', async (req, res) => {
-  try {    
-    // ESTO ES PARA LA VM 1
-    // Consumir un servicio externo para recuperación de información de CPU
-    const externalServiceResponseCPU1 = await axios.get('http://34.16.77.112:8080/cpu-info');
-    
-    // Extraer los datos necesarios de las respuestas
-    const cpuData1 = externalServiceResponseCPU1.data;
+    try {
+        const externalServiceResponseCPU1 = await axios.get('http://34.16.77.112:8080/cpu-info');
+        const cpuData1 = externalServiceResponseCPU1.data;
 
-    // Crear un objeto de respuesta con los datos extraídos
-    const responseData = {
-      ProcesosVM1: cpuData1.Procesos,
-    };
+        const responseData = {
+            ProcesosVM1: cpuData1.Procesos,
+        };
 
-    res.json(responseData);
-  } catch (error) {
-    console.error('Error en /obtenerprocesos:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
+        res.json(responseData);
+    } catch (error) {
+        console.error('Error en /obtenerprocesos:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 
-// Función para insertar un registro de RAM
-async function insertarRegistroRAM(ramData) {
-  try {
-    // Utiliza la instancia de conexión `db` para ejecutar la consulta
-    await db.query('INSERT INTO ram (total_ram, ram_en_uso, ram_libre, porcentaje_en_uso) VALUES (?, ?, ?, ?)', [
-      ramData.Uso_ram[0].total_ram,
-      ramData.Uso_ram[0].Ram_en_uso,
-      ramData.Uso_ram[0].Ram_libre,
-      ramData.Uso_ram[0].Porcentaje_en_uso
-    ]);
-    console.log('Registro de RAM insertado correctamente.');
-  } catch (error) {
-    console.error('Error al insertar el registro de RAM:', error);
-  }
-}
-
-// Función para insertar registros de proceso
-async function insertarRegistrosProceso(cpuData) {
-  try {
-    for (const proceso of cpuData.Procesos) {
-      const { Proceso, PID, UID, Estado, Memoria_virtual, Memoria_fisica } = proceso;
-
-      // Insertar un registro de proceso
-      await db.query('INSERT INTO procesos (Proceso, PID, UID, Estado, Memoria_virtual, Memoria_fisica) VALUES (?, ?, ?, ?, ?, ?)', [
-        Proceso,
-        PID,
-        UID,
-        Estado,
-        Memoria_virtual,
-        Memoria_fisica
-      ]);
-      console.log(`Registro de proceso "${Proceso}" insertado correctamente.`);
+async function insertarRegistroRAM(connection, ramData) {
+    try {
+        await connection.query('INSERT INTO ram_info (total_ram, ram_en_uso, ram_libre, porcentaje_en_uso) VALUES (?, ?, ?, ?)', [
+            ramData.Uso_ram[0].total_ram,
+            ramData.Uso_ram[0].Ram_en_uso,
+            ramData.Uso_ram[0].Ram_libre,
+            ramData.Uso_ram[0].Porcentaje_en_uso
+        ]);
+        console.log('Registro de RAM insertado correctamente.');
+    } catch (error) {
+        console.error('Error al insertar el registro de RAM:', error);
     }
-  } catch (error) {
-    console.error('Error al insertar los registros de proceso:', error);
-  }
 }
 
-// Función para obtener el último ID de proceso insertado
-async function obtenerUltimoIdProceso() {
-  try {
-    const queryResult = await db.query('SELECT MAX(id) AS ultimoId FROM procesos');
-    if (queryResult && queryResult[0] && queryResult[0].ultimoId) {
-      return queryResult[0].ultimoId;
-    } else {
-      return null;
+async function insertarRegistrosProceso(connection, cpuData) {
+    try {
+        for (const proceso of cpuData.Procesos) {
+            const { Proceso, PID, UID, Estado, Memoria_virtual, Memoria_fisica } = proceso;
+
+            await connection.query('INSERT INTO cpu_process (Proceso, PID, UID, Estado, Memoria_virtual, Memoria_fisica) VALUES (?, ?, ?, ?, ?, ?)', [
+                Proceso,
+                PID,
+                UID,
+                Estado,
+                Memoria_virtual,
+                Memoria_fisica
+            ]);
+            console.log(`Registro de proceso "${Proceso}" insertado correctamente.`);
+        }
+    } catch (error) {
+        console.error('Error al insertar los registros de proceso:', error);
     }
-  } catch (error) {
-    console.error('Error al obtener el último ID de proceso:', error);
-    return null;
-  }
 }
 
-// Función para obtener el último registro de RAM insertado
-async function obtenerUltimoRegistroRAM() {
-  try {
-    const queryResult = await db.query('SELECT * FROM ram ORDER BY id DESC LIMIT 1');
-    if (queryResult && queryResult[0] && queryResult[0][0]) {
-      return queryResult[0][0];
-    } else {
-      return null;
+async function obtenerUltimoIdProceso(connection) {
+    try {
+        const [rows] = await connection.query('SELECT MAX(id) AS ultimoId FROM cpu_process');
+        if (rows && rows.length > 0) {
+            return rows[0].ultimoId;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error al obtener el último ID de proceso:', error);
+        return null;
     }
-  } catch (error) {
-    console.error('Error al obtener el último registro de RAM:', error);
-    return null;
-  }
 }
 
-// Función para insertar un registro de información de CPU
-async function insertarRegistroInfo(ultimoIdProceso, ultimoRegistroRAM, cpuData) {
-  try {
-    // Obtén la fecha y hora actual en JavaScript
-    const fechaHoraActual = new Date();
-
-    // Formatea la fecha y hora en el formato que MySQL acepta (YYYY-MM-DD HH:MM:SS)
-    const fechaHoraFormateada = fechaHoraActual.toISOString().slice(0, 19).replace('T', ' ');
-
-    // Insertar un registro de información de CPU
-    await db.query('INSERT INTO informacion (id_proceso, id_ram, nombre_equipo, uso_de_cpu, fecha_hora) VALUES (?, ?, ?, ?, ?)', [
-      ultimoIdProceso,
-      ultimoRegistroRAM.id,
-      cpuData.Nombre_equipo,
-      cpuData.Uso_de_CPU,
-      fechaHoraFormateada
-    ]);
-    console.log('Registro de información insertado correctamente.');
-  } catch (error) {
-    console.error('Error al insertar el registro de información:', error);
-  }
+async function obtenerUltimoRegistroRAM(connection) {
+    try {
+        const [rows] = await connection.query('SELECT * FROM ram_info ORDER BY id DESC LIMIT 1');
+        if (rows && rows.length > 0) {
+            return rows[0];
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error al obtener el último registro de RAM:', error);
+        return null;
+    }
 }
 
-// Iniciar el servidor
+async function insertarRegistroInfo(connection, ultimoIdProceso, ultimoRegistroRAM, cpuData) {
+    try {
+        const fechaHoraActual = new Date();
+        const fechaHoraFormateada = fechaHoraActual.toISOString().slice(0, 19).replace('T', ' ');
+
+        await connection.query('INSERT INTO computer (Proceso_id, Ram_id, Nombre_equipo, Uso_de_CPU, fecha_registro) VALUES (?, ?, ?, ?, ?)', [
+            ultimoIdProceso,
+            ultimoRegistroRAM.id,
+            cpuData.Nombre_equipo,
+            cpuData.Uso_de_CPU,
+            fechaHoraFormateada
+        ]);
+        console.log('Registro de información insertado correctamente.');
+    } catch (error) {
+        console.error('Error al insertar el registro de información:', error);
+    }
+}
+
 app.listen(port, () => {
-  console.log(`Servidor API REST en ejecución en el puerto ${port}`);
+    console.log(`Servidor API REST en ejecución en el puerto ${port}`);
 });

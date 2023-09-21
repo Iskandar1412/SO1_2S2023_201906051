@@ -47,6 +47,7 @@ static int show_cpu_stat(struct seq_file *f, void *v){
     char buf[256];
     struct file *file;
     file = filp_open("/proc/stat", O_RDONLY, 0);
+    usage = 0;
     if (file) {
         kernel_read(file, buf, sizeof(buf), &file->f_pos);
         filp_close(file, NULL);
