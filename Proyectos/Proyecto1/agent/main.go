@@ -52,10 +52,11 @@ func main() {
 
 		// Extraer el PID del cuerpo de la solicitud
 		pid := string(body)
-
+		fmt.Println("Borrar proceso", pid)
 		cmd := exec.Command("kill", "-9", pid)
 		err = cmd.Run()
 		if err != nil {
+			fmt.Println("Error en la ejecución")
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

@@ -6,6 +6,7 @@ import PieChartRAM from '../graphs/PieChartRAM';
 function RealTime() {
     //const [dataram, setdataram] = useRef([]);
     //const [datacpu, setdatacpu] = useRef([]);
+    
 
     const charDataCPU = {
         labels: ['Usada', 'Libre'],
@@ -68,10 +69,10 @@ function RealTime() {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
 
+    //opciones máquinas virtuales
     const options = [
-        { id: 'maquina1', label: 'maquina 1' },
-        { id: 'maquina2', label: 'maquina2' },
-        { id: 'maquina3', label: 'maquina3'}
+        { id: 'proyecto1-c2n1', label: 'proyecto1-c2n1', ip: '34.67.121.223' },
+        { id: 'proyecto1-t16q', label: 'proyecto1-t16q', ip: '34.42.36.164' },
     ];
 
     const toggleDropdown = () => {

@@ -32,7 +32,10 @@ export const options = {
     plugins: {
         title: {
             display: true,
-            text: 'Grafica CPU a lo Largo del tiempo'
+            text: 'Grafica CPU a lo Largo del tiempo',
+            font: {
+                size: 24,
+            },
         },
     },
     scales: {
