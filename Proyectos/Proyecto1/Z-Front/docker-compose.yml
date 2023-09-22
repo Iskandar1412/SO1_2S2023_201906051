@@ -11,8 +11,14 @@ services:
     ports:
       - "3306:3306"
   backend:
-    image: "node_p1_1"
-    container_name: 'BackendP1_Node'
+    image: "node_p1_2"
+    container_name: 'BackendP1_NodeJS'
+    environment:
+      DB_USER: root
+      DB_PASSWORD: secret
+      DB_HOST: Base_Proyect1
+      DB_PORT: 3306
+      DB_NAME: Base_Proyect1
     ports:
       - "3200:3200"
   fronted:

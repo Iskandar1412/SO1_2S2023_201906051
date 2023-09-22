@@ -6,13 +6,14 @@
 
 //mv1: proyecto1-c2n1  ::  34.42.36.164
 //mv2: proyecto1-t16q  ::  34.135.153.28
+require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const mysql = require('mysql2/promise');
 const app = express();
-const port = process.env.PORT || 3200;
+const port = 3200;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -23,10 +24,11 @@ const maquinas_virtuales = [
 ];
 
 const dbConfig = {
-    host: 'localhost',
-    user: 'root',
-    password: 'secret',
-    database: 'Base_Proyect1',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    port: process.env.DB_PORT,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 };
 
 async function connectToDatabase() {

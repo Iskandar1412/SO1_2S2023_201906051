@@ -10,5 +10,5 @@ RUN npm install
 
 CMD ["node", "index.js"]
 
-#sudo docker build --tag node_p1 .
-#sudo docker run -p 3200:3200 node_p1
+#sudo docker build --tag node_p1_1 .
+#sudo docker run -p 3200:3200 node_p1_1
