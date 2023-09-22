@@ -148,7 +148,7 @@ function RealTime() {
 
     useEffect(() => {
         fetchData();
-        const intervalId = setInterval(fetchData, 20000);
+        const intervalId = setInterval(fetchData, 5000);
         return () => clearInterval(intervalId);
     }, [selectedOption, fetchData]);
 

@@ -1,0 +1,24 @@
+# sudo docker compose up
+version: '3'
+services:
+  base:
+    image: "mysql"
+    container_name: "Base_Proyect1"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - base_mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  backend:
+    image: "node_p1"
+    container_name: 'BackendP1_Node'
+    ports:
+      - "3200:3200"
+  fronted:
+    image: "prueba_p1"
+    container_name: 'FrontP1_React'
+    ports:
+      - "3000:3000"
+volumes:
+  base_mysql:
