@@ -26,7 +26,7 @@ const dbConfig = {
     host: 'localhost',
     user: 'root',
     password: 'secret',
-    database: 'proyect_db',
+    database: 'Base_Proyect1',
 };
 
 async function connectToDatabase() {
