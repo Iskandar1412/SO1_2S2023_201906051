@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import PieChartCPU from '../graphs/PieChartCPU'
 import PieChartRAM from '../graphs/PieChartRAM';
@@ -6,14 +6,15 @@ import PieChartRAM from '../graphs/PieChartRAM';
 function RealTime() {
     //const [dataram, setdataram] = useRef([]);
     //const [datacpu, setdatacpu] = useRef([]);
+    const [ramUsada, setRamUsada] = useState(0);
+    const [cpuUsado, setCPUUsado] = useState(0);
     
-
     const charDataCPU = {
         labels: ['Usada', 'Libre'],
         datasets: [
             {
                 label: 'Grafica CPU',
-                data: [150, 30],
+                data: [cpuUsado, 100 - cpuUsado],
                 backgroundColor: [
                     'rgba(185, 35, 23, 0.5)',
                     'rgba(23, 185, 153, 0.5)',
@@ -32,7 +33,7 @@ function RealTime() {
         datasets: [
             {
                 label: 'Grafica RAM',
-                data: [70, 30],
+                data: [ramUsada, 100 - ramUsada],
                 backgroundColor: [
                     'rgba(160, 115, 29, 0.7)',
                     'rgba(29, 160, 96, 0.7)',
@@ -54,25 +55,38 @@ function RealTime() {
     };
 
     const handlePost = async () => {
-        console.log(contentPost);
-        const valor = contentPost;
+        //console.log(contentPost);
+        //e.preventDefault();
+        const data = {
+            pid: contentPost
+        }
+        //const valor = contentPost; //valor del input
         try {
-            const response = await axios.post('http://localhost:3000/node-go/post-go', { value: valor}, {
-                headers: { 'Content-Type': 'application/json' }
+            const response = await fetch(`http://localhost:3200/kill-proccess?equipo=${selectedOption}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }, body: JSON.stringify(data),
             });
-            const data = response.data;
-            console.log(data)
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result);
+            } else {
+                console.log('Error en la solicitud', response.statusText);
+            }
         } catch (err) { console.log('Error en la solicitud al backend (NodeJS):', err) }
     };
 
     //Par barra de seleción
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
-
+    //const [httpOption, setHttpOption] = useState('');
     //opciones máquinas virtuales
+    //mv1: proyecto1-c2n1  ::  34.42.36.164
+    //mv2: proyecto1-t16q  ::  34.135.153.28
     const options = [
-        { id: 'proyecto1-c2n1', label: 'proyecto1-c2n1', ip: '34.67.121.223' },
-        { id: 'proyecto1-t16q', label: 'proyecto1-t16q', ip: '34.42.36.164' },
+        { id: 'proyecto1-c2n1', label: 'proyecto1-c2n1', ip: 'http://34.42.36.164' },
+        { id: 'proyecto1-t16q', label: 'proyecto1-t16q', ip: 'http://34.135.153.28' },
     ];
 
     const toggleDropdown = () => {
@@ -80,11 +94,12 @@ function RealTime() {
     };
 
     const handleOptionClick = (option) => {
-        handleProcesos()
         setSelectedOption(option.label);
+        
         //console.log(option)
         handleSuccess()
         setIsOpen(false);
+        handleProcesos()
     };
 
     //mensaje
@@ -99,22 +114,46 @@ function RealTime() {
     //items para procesos
     const [items, setItems] = useState(null);
     const [procesos, setProcesos] = useState([]);
-    const itmp = [
-        { id: 1, proceso:'asdf', pid: 12465, uid: 1212, estado: "U", memoriav: 1250, memoriaf: 12546 },
-        { id: 2, proceso:'asdff', pid: 1364, uid: 12512, estado: "S", memoriav: 1450, memoriaf: 122 },
-        { id: 3, proceso:'python', pid: 4879, uid: 412, estado: "T", memoriav: 250, memoriaf: 1254 },
-        { id: 4, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-        { id: 5, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-        { id: 6, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-        { id: 7, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-        { id: 8, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-        { id: 9, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-        { id: 10, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-        { id: 11, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    ];
-    const handleProcesos = () => {
-        setProcesos(itmp)
-        console.log(itmp)
+    //const itmp = [
+    //    { id: 1, proceso:'asdf', pid: 12465, uid: 1212, estado: "U", memoriav: 1250, memoriaf: 12546 },
+    //    { id: 2, proceso:'asdff', pid: 1364, uid: 12512, estado: "S", memoriav: 1450, memoriaf: 122 },
+    //    { id: 3, proceso:'python', pid: 4879, uid: 412, estado: "T", memoriav: 250, memoriaf: 1254 },
+    //    { id: 4, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //    { id: 5, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //    { id: 6, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //    { id: 7, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //    { id: 8, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //    { id: 9, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //    { id: 10, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //    { id: 11, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
+    //];
+    const fetchData = useCallback(async () => {
+        if (!selectedOption) {
+            //console.log('vacio')
+            return;
+        }
+        try {
+            const response = await axios.get(`http://localhost:3200/live?eQuipo=${selectedOption}`);
+            const data = response.data;
+            const proceso_val = data.CPU.Procesos;
+            setCPUUsado(data.CPU.Uso_de_CPU);
+            setRamUsada(data.RAM.Uso_ram[0].Porcentaje_en_uso);
+            console.log(data.RAM);
+            setProcesos(proceso_val)
+            //console.log(data.CPU.Uso_de_CPU, data.RAM.Porcentaje_en_uso)
+        } catch (e) {
+            console.log('Error en la obtención de datos en tiempo real', e);
+        }
+    }, [selectedOption]);
+
+    useEffect(() => {
+        fetchData();
+        const intervalId = setInterval(fetchData, 20000);
+        return () => clearInterval(intervalId);
+    }, [selectedOption, fetchData]);
+
+    const handleProcesos = async () => {
+        fetchData();
     };
 
     const toggleItemExpansion = (itemID) => {
@@ -178,7 +217,7 @@ function RealTime() {
                                 <div className='content-text'>
                                     <div className='lista-procesos'>
                                         <div className='list-item header'>
-                                            <span>No.</span>
+                                            
                                             <span>Proceso</span>
                                             <span>PID</span>
                                             <span>UID</span>
@@ -188,17 +227,16 @@ function RealTime() {
                                         </div>
                                         {procesos.map(proceso =>
                                             <div
-                                                key={proceso.id}
-                                                className={`list-item ${items === proceso.id ? 'expanded' : ''}`}
-                                                onClick={() => toggleItemExpansion(proceso.id)}
+                                                key={proceso.Proceso}
+                                                className={`list-item ${items === proceso.Proceso ? 'expanded' : ''}`}
+                                                onClick={() => toggleItemExpansion(proceso.Proceso)}
                                             >
-                                                <span>{ proceso.id }</span>
-                                                <span>{ proceso.proceso }</span>
-                                                <span>{ proceso.pid }</span>
-                                                <span>{ proceso.uid }</span>
-                                                <span>{ proceso.estado }</span>
-                                                <span>{ proceso.memoriav }</span>
-                                                <span>{ proceso.memoriaf }</span>
+                                                <span>{ proceso.Proceso }</span>
+                                                <span>{ proceso.PID }</span>
+                                                <span>{ proceso.UID }</span>
+                                                <span>{ proceso.Estado }</span>
+                                                <span>{ proceso.Memoria_virtual }</span>
+                                                <span>{ proceso.Memoria_fisica }</span>
                                             </div>
                                         )}
                                     </div>

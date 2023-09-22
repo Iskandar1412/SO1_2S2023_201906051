@@ -7,12 +7,14 @@
 //mv1: proyecto1-c2n1  ::  34.42.36.164
 //mv2: proyecto1-t16q  ::  34.135.153.28
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const mysql = require('mysql2/promise');
 const app = express();
 const port = process.env.PORT || 3200;
 
+app.use(cors());
 app.use(bodyParser.json());
 
 const maquinas_virtuales = [
@@ -60,29 +62,33 @@ app.get('/live', async (req, res) => {
     let connection;
     try {
         connection = await connectToDatabase();
-        //maquina1
-        const externalServiceResponseRAM1 = await axios.get('http://34.42.36.164:8080/ram-info');
-        const externalServiceResponseCPU1 = await axios.get('http://34.42.36.164:8080/cpu-info');
-
-        const ramData1 = externalServiceResponseRAM1.data;
-        const cpuData1 = externalServiceResponseCPU1.data;
-        await insertarNuevaMaquina(connection, ramData1, cpuData1);
         
-        //maquina2
-        const externalServiceResponseRAM2 = await axios.get('http://34.135.153.28:8080/ram-info');
-        const externalServiceResponseCPU2 = await axios.get('http://34.135.153.28:8080/cpu-info');
-        
-        const ramData2 = externalServiceResponseRAM2.data;
-        const cpuData2 = externalServiceResponseCPU2.data;
-        await insertarNuevaMaquina(connection, ramData2, cpuData2);
-        console.log('Datos ingresados correctamente');
         if (eQuipo.toString() === maquinas_virtuales[0].id){
+            //maquina1
+            const externalServiceResponseRAM1 = await axios.get('http://34.42.36.164:8080/ram-info');
+            const externalServiceResponseCPU1 = await axios.get('http://34.42.36.164:8080/cpu-info');
+
+            const ramData1 = externalServiceResponseRAM1.data;
+            const cpuData1 = externalServiceResponseCPU1.data;
+            
+            await insertarNuevaMaquina(connection, ramData1, cpuData1);
+            
+            console.log('Datos ingresados correctamente en', eQuipo.toString());
             const responseData = {
                 CPU: cpuData1,
                 RAM: ramData1,
             };    
             res.json(responseData);
         }else if (eQuipo.toString() === maquinas_virtuales[1].id){
+            //maquina2
+            const externalServiceResponseRAM2 = await axios.get('http://34.135.153.28:8080/ram-info');
+            const externalServiceResponseCPU2 = await axios.get('http://34.135.153.28:8080/cpu-info');
+            
+            const ramData2 = externalServiceResponseRAM2.data;
+            const cpuData2 = externalServiceResponseCPU2.data;
+            await insertarNuevaMaquina(connection, ramData2, cpuData2);
+            
+            console.log('Datos ingresados correctamente en', eQuipo.toString());
             const  responseData = {
                 CPU: cpuData2,
                 RAM: ramData2
