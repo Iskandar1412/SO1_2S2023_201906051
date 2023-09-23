@@ -632,10 +632,21 @@ El cambio que se da en máquinas virtuales para crear más (máximo de máquinas
 >- sudo docker images
 >- sudo docker run -it --rm -p 8080:8080 <nombre_imagen>
 
-### Comandos utilizados para ordenador (levanar imagenes de backend de NodeJs, Frontend y db)
+#### Comandos utilizados para ordenador (levanar imagenes de backend de NodeJs, Frontend y db)
 
 >- sudo docker compose up
 
-### Instalación Go (Versión)
+#### Instalación Go (Versión)
 
 >- sudo snap install go --channel=1.21/stable --classic
+
+#### Estres
+
+##### Instalación
+
+>- sudo apt-get install -y stress
+
+##### Correr
+
+>- sudo stress --cpu 2 --timeout 60s
+
