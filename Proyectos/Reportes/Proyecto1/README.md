@@ -635,3 +635,7 @@ El cambio que se da en máquinas virtuales para crear más (máximo de máquinas
 ### Comandos utilizados para ordenador (levanar imagenes de backend de NodeJs, Frontend y db)
 
 >- sudo docker compose up
+
+### Instalación Go (Versión)
+
+>- sudo snap install go --channel=1.21/stable --classic
