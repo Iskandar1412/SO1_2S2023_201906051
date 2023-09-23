@@ -21,7 +21,7 @@ Se pudo determinar que la implementación de los módulos y el almacenamiento de
 >- **_Contenedores:_** Docker
 >- **_IDE:_** Visual Studio Code
 >- **_USO de Framework (Backend):_** NodeJS
->- **_USO de Framework (Fronted):_** React
+>- **_USO de Framework (Frontend):_** React
 
 ## Requisitos del Proyecto:
 
@@ -531,7 +531,7 @@ app.get('/registros-por-equipo', async (req, res) => {
 });
 ```
 
-### Fronted (React):
+### Frontend (React):
 
 Tenemos la página inicial en donde va a enrutar primero la api
 
@@ -586,3 +586,52 @@ El cambio que se da en máquinas virtuales para crear más (máximo de máquinas
 ![](IMG/GCloud-01.png)
 
 ![](IMG/GCloud-02.png)
+
+### Comandos utilizados en VM:
+
+#### Instalación Docker
+
+>- sudo apt-get update
+>- sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+>- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+>- echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+>- sudo apt-get update
+>- sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+>- sudo usermod -aG docker $USER
+>- sudo docker --version
+
+
+#### Obtener Repositorio de imagen para backend de Go
+
+>- sudo docker pull iskandar1412/proyecto1_201906051:v2
+
+#### Instalación & configuración de paquetes para Makefile y C++
+
+>- sudo apt-get install gcc && sudo apt-get install make && sudo apt-get install git
+>- sudo apt install build-essential
+>- sudo apt-get install manpages-dev
+>- sudo apt update
+>- sudo apt install gcc-12
+>- sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100
+
+#### Correr archivos de C++
+
+>- make
+>- sudo insmod <nombre_modulo>.ko
+
+#### Desmontar módulos
+
+>- sudo insmod <nombre_modulo>
+
+#### Ver módulo
+
+>- cat /proc/<modulo>
+
+#### Correr imagen docker (Go)
+
+>- sudo docker images
+>- sudo docker run -it --rm -p 8080:8080 <nombre_imagen>
+
+### Comandos utilizados para ordenador (levanar imagenes de backend de NodeJs, Frontend y db)
+
+>- sudo docker compose up
