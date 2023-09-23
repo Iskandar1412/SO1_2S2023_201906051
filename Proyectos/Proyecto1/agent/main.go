@@ -1,5 +1,9 @@
 package main
 
+//para docker hub
+//sudo docker build -t iskandar1412/proyecto1_201906051:<tag> .
+//sudo docker tag iskandar1412/proyecto1_201906051:<tag> iskandar1412/proyecto1_201906051:<tag>
+//sudo docker push iskandar1412/proyecto1_201906051:<tag>
 import (
 	"encoding/json"
 	"fmt"
@@ -44,14 +48,18 @@ func main() {
 		}
 
 		// Leer el cuerpo de la solicitud POST
-		body, err := ioutil.ReadAll(r.Body)
+		var requestBody struct {
+			PID string `json:"pid"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&requestBody)
 		if err != nil {
 			http.Error(w, "Error al leer el cuerpo de la solicitud", http.StatusBadRequest)
 			return
 		}
 
 		// Extraer el PID del cuerpo de la solicitud
-		pid := string(body)
+		pid := requestBody.PID
 		fmt.Println("Borrar proceso", pid)
 		cmd := exec.Command("kill", "-9", pid)
 		err = cmd.Run()
