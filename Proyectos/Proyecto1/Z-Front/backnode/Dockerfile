@@ -7,6 +7,7 @@ COPY package.json /backnode/
 COPY package-lock.json /backnode/
 
 RUN npm install
+EXPOSE 3200
 
 CMD ["node", "index.js"]
 

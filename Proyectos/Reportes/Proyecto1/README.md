@@ -600,6 +600,11 @@ El cambio que se da en máquinas virtuales para crear más (máximo de máquinas
 >- sudo usermod -aG docker $USER
 >- sudo docker --version
 
+#### Instalación Versión de go
+
+>- sudo snap install go --classic
+>- sudo snap install go --classic --channel=<version>/stable
+>- go version
 
 #### Obtener Repositorio de imagen para backend de Go
 

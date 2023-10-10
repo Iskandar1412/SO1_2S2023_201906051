@@ -8,6 +8,7 @@ COPY package.json /front-p1/
 COPY package-lock.json /front-p1/
 
 RUN npm install
+EXPOSE 3000
 
 CMD ["npm", "start"]
 
