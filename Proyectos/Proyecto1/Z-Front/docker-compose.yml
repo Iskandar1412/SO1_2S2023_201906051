@@ -6,6 +6,8 @@ services:
     container_name: "Base_Proyect1"
     environment:
       MYSQL_ROOT_PASSWORD: secret
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: Base_Proyect1
     volumes:
       - base_mysql:/var/lib/mysql
     ports:
@@ -13,6 +15,8 @@ services:
   backend:
     image: "node_p1_2"
     container_name: 'BackendP1_NodeJS'
+    depends_on:
+      - base
     environment:
       DB_USER: root
       DB_PASSWORD: secret
