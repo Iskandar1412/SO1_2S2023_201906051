@@ -17,6 +17,7 @@
     "react-fusioncharts": "^4.0.0",
     "react-graphviz": "^0.7.0",
     "react-scripts": "5.0.1",
+    "redis": "^4.6.10",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
