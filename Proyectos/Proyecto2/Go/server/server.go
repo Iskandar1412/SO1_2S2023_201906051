@@ -16,12 +16,14 @@ import (
 	"log"
 	"net"
 
+	pb "servicioproto/proto" //agregado
+
 	"google.golang.org/grpc"
 )
 
 type server struct{}
 
-func (s *server) SubmitGrade(ctx context.Context, grade *definitions.Grade) (*definitions.Grade, error) {
+func (s *server) SubmitGrade(ctx context.Context, grade *pb.Grade) (*pb.Grade, error) {
 	fmt.Printf("Solicitud para guardar calificación: %+v\n", grade)
 
 	return grade, nil
@@ -34,7 +36,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	definitions.RegisterGradeServiceServer(s, &server{})
+	pb.RegisterGradeServiceServer(s, &server{})
 
 	fmt.Println("Servidor gRPC iniciado en puerto 50051")
 	if err := s.Serve(lis); err != nil {

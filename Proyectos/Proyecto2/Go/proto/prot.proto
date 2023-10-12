@@ -1,7 +1,7 @@
 syntax = "proto3";
 package servicioproto;
 
-option go_package = "Proyecto2/Go/proto";
+option go_package = "github.com/Iskandar1412/proto";
 
 message CalificacionRequest {
     int64 carnet = 1;
@@ -12,8 +12,14 @@ message CalificacionRequest {
     int64 year = 6;
 }
 
+service GradeService {
+    rpc SubmitGrade (CalificacionRequest) returns (CalificacionRequest);
+}
+
 //protoc \
 //--go-grpc_out=./Go/proto \
 //--go-grpc_opt=module=Proyecto2/Go/proto \
 //./Go/proto/prot.proto
 
+//go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
+//go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1

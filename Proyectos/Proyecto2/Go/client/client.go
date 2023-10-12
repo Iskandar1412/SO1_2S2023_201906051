@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"log"
 
+	pb "github.com/Iskandar1412/proto" //agregado
 	"google.golang.org/grpc"
 )
 
@@ -24,8 +25,8 @@ func main() {
 		log.Fatalf("No se pudo conectar a: %v", err)
 	}
 	defer conn.Close()
-	c := definitions.NewGradeServiceClient(conn)
-	grade := &definitions.Grade{
+	c := pb.NewGradeServiceClient(conn)
+	grade := &pb.Grade{
 		Carnet:   22222,
 		Nombre:   "Alumno 1",
 		Curso:    "SO1",
