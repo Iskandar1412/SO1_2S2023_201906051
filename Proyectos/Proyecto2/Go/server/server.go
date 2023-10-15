@@ -12,25 +12,74 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net"
+	pb "proyecto/proto" //agregado
 
-	pb "servicioproto/proto" //agregado
-
+	_ "github.com/go-sql-driver/mysql"
 	"google.golang.org/grpc"
 )
 
-type server struct{}
+var ctx = context.Background()
+var db *sql.DB
 
-func (s *server) SubmitGrade(ctx context.Context, grade *pb.Grade) (*pb.Grade, error) {
+type server struct {
+	pb.UnimplementedGradeServiceServer
+}
+
+const (
+	port = ":50051"
+)
+
+type Data struct {
+	Carnet   int64
+	Nombre   string
+	Curso    string
+	Nota     int64
+	Semestre string
+	Year     int64
+}
+
+func mysqlConnect() {
+	dsn := "<usuario>:<password>@tcp(host:port)"
+	var err error
+	db, err = sql.Open("mysql", dsn)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	err = db.Ping()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println("Conexión a MySQL exitosa")
+}
+
+func (s *server) SubmitGrade(ctx context.Context, grade *pb.CalificacionRequest) (*pb.ReplyInfo, error) {
 	fmt.Printf("Solicitud para guardar calificación: %+v\n", grade)
+	data := Data{
+		Carnet:   grade.GetCarnet(),
+		Nombre:   grade.GetNombre(),
+		Curso:    grade.GetCurso(),
+		Nota:     grade.GetNota(),
+		Semestre: grade.GetSemestre(),
+		Year:     grade.GetYear(),
+	}
+	insertMySQL(data)
+	return &pb.ReplyInfo{Info: "Información recibida exitosamente"}, nil
+}
 
-	return grade, nil
+func insertMySQL(rank Data) {
+	quey := "INSERT INTO alumno (carnet, nombre, curso, nota, semestre, year) VALUES (?, ?, ?, ?, ?, ?)"
+	_, err := db.ExecContext(ctx, quey, rank.Carnet, rank.Nombre, rank.Curso, rank.Nota, rank.Semestre, rank.Year)
+	if err != nil {
+		log.Println("Error en la inserción de información del alumno:", err)
+	}
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("No se pudo escuchar el puerto %v", err)
 	}
@@ -38,7 +87,10 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterGradeServiceServer(s, &server{})
 
-	fmt.Println("Servidor gRPC iniciado en puerto 50051")
+	mysqlConnect()
+
+	fmt.Println("Servidor gRPC iniciado en puerto", port)
+
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Error en : %v", err)
 	}

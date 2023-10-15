@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	GradeService_SubmitGrade_FullMethodName = "/servicioproto.GradeService/SubmitGrade"
+	GradeService_SubmitGrade_FullMethodName = "/proto.GradeService/SubmitGrade"
 )
 
 // GradeServiceClient is the client API for GradeService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GradeServiceClient interface {
-	SubmitGrade(ctx context.Context, in *CalificacionRequest, opts ...grpc.CallOption) (*CalificacionRequest, error)
+	SubmitGrade(ctx context.Context, in *CalificacionRequest, opts ...grpc.CallOption) (*ReplyInfo, error)
 }
 
 type gradeServiceClient struct {
@@ -37,8 +37,8 @@ func NewGradeServiceClient(cc grpc.ClientConnInterface) GradeServiceClient {
 	return &gradeServiceClient{cc}
 }
 
-func (c *gradeServiceClient) SubmitGrade(ctx context.Context, in *CalificacionRequest, opts ...grpc.CallOption) (*CalificacionRequest, error) {
-	out := new(CalificacionRequest)
+func (c *gradeServiceClient) SubmitGrade(ctx context.Context, in *CalificacionRequest, opts ...grpc.CallOption) (*ReplyInfo, error) {
+	out := new(ReplyInfo)
 	err := c.cc.Invoke(ctx, GradeService_SubmitGrade_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (c *gradeServiceClient) SubmitGrade(ctx context.Context, in *CalificacionRe
 // All implementations must embed UnimplementedGradeServiceServer
 // for forward compatibility
 type GradeServiceServer interface {
-	SubmitGrade(context.Context, *CalificacionRequest) (*CalificacionRequest, error)
+	SubmitGrade(context.Context, *CalificacionRequest) (*ReplyInfo, error)
 	mustEmbedUnimplementedGradeServiceServer()
 }
 
@@ -58,7 +58,7 @@ type GradeServiceServer interface {
 type UnimplementedGradeServiceServer struct {
 }
 
-func (UnimplementedGradeServiceServer) SubmitGrade(context.Context, *CalificacionRequest) (*CalificacionRequest, error) {
+func (UnimplementedGradeServiceServer) SubmitGrade(context.Context, *CalificacionRequest) (*ReplyInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitGrade not implemented")
 }
 func (UnimplementedGradeServiceServer) mustEmbedUnimplementedGradeServiceServer() {}
@@ -96,7 +96,7 @@ func _GradeService_SubmitGrade_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var GradeService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "servicioproto.GradeService",
+	ServiceName: "proto.GradeService",
 	HandlerType: (*GradeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

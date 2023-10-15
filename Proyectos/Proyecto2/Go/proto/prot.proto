@@ -1,7 +1,7 @@
 syntax = "proto3";
-package servicioproto;
 
-option go_package = "github.com/Iskandar1412/proto";
+option go_package = "./proto";
+package proto;
 
 message CalificacionRequest {
     int64 carnet = 1;
@@ -12,8 +12,12 @@ message CalificacionRequest {
     int64 year = 6;
 }
 
+message replyInfo {
+    string info = 1;
+}
+
 service GradeService {
-    rpc SubmitGrade (CalificacionRequest) returns (CalificacionRequest);
+    rpc SubmitGrade (CalificacionRequest) returns (replyInfo) {};
 }
 
 //protoc \
