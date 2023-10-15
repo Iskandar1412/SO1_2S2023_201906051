@@ -1,0 +1,7 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: TrafficSplit
+metadata:
+  name: traffic-p2
+  namepspace: so1p2
+spec:
+  service: 

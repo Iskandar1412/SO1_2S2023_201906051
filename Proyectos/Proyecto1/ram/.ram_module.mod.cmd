@@ -1,0 +1,1 @@
+cmd_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/ram/ram_module.mod := printf '%s\n'   ram_module.o | awk '!x[$$0]++ { print("/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/ram/"$$0) }' > /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/ram/ram_module.mod

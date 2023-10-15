@@ -1,0 +1,1 @@
+cmd_/home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/Module.symvers :=  scripts/mod/modpost -m -a     -o /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/Module.symvers -T /home/iskandar/Escritorio/Proyectos/SO1_2S2023_201906051/Proyectos/Proyecto1/cpu/modules.order -i Module.symvers -e 
