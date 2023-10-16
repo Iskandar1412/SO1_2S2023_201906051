@@ -6,50 +6,61 @@ class Other extends Component {
     constructor() {
         super();
         this.state = {
-            datosRedis: null
+            redisData: [],
         };
-        this.socket = socketIOClient('ip:port');
+        this.socket = socketIOClient('http://localhost:9800'); // Cambia la URL si es diferente
     }
 
     componentDidMount() {
-        this.socket.on('datos_redis', (data) => {
-            this.setState({ datosRedis: data });
+        this.socket.on('redis-data', (data) => {
+            this.setState((prevState) => {
+                const newData = [...prevState.redisData, data];
+                const uniqueData = [...new Set(newData)]; // Utiliza un Set para eliminar duplicados
+                return {
+                    redisData: uniqueData,
+                };
+            });
         });
     }
-
-    sendMessage = () => {
-        this.socket.emit('mensaje', this.state.message);
-    };
+        //console.log(this.redisData);
+    
 
     render() {
         return (
             <div id='layoutSidenav_content'>
                 <main>
-                    <main className='container-w'>
-                        <section id='content1' className='tabs-contentype'>
+                    <main className="container-w">
+                        <input id="tab1" type="radio" name="tabs" defaultChecked />
+                        <label htmlFor="tab1" className="label-type">Real Time</label>
+                        <section id="content1" className="tabs-contentype">
+                                                 
                             <div className='tab-section-2'>
                                 <div className='tab-content'>
                                     <div className='content-text'>
                                         <div className='lista-procesos'>
-                                            <div className='list-item header'>
+                                            <div className='list-item-2 header'>
+                                                
                                                 <span>Album</span>
-                                                <span>artist</span>
-                                                <span>year</span>
+                                                <span>Artista</span>
+                                                <span>Year</span>
                                             </div>
-                                            {this.state.datosRedis ? (
-                                                <div className='list-item'>
-                                                    <span>{ this.state.datosRedis.album }</span>
-                                                    <span>{ this.state.datosRedis.artist }</span>
-                                                    <span>{ this.state.datosRedis.year }</span>
-                                                </div>
-                                            ): (
-                                                <p>Esperando de la db...</p>
-                                            )}
+                                            {
+                                                this.state.redisData.map((data, index) => (
+                                                    <div className='list-item-2' key={index}>
+                                                        <span> { data.album } </span>
+                                                        <span> { data.artista } </span>
+                                                        <span> { data.year } </span>
+                                                    </div>
+                                                ))
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </section>
+
+                        
                     </main>
                 </main>
             </div>

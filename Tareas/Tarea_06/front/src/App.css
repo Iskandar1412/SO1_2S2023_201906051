@@ -11524,7 +11524,7 @@ span.msg strong {
 .lista-procesos {
   width: 90%;
   margin: 10px auto;
-  max-height: 50vh;
+  max-height: 70vh;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #2167AD #888;
@@ -11562,6 +11562,10 @@ span.msg strong {
 }
 
 .list-item.header {
+  background-color: #333;
+  color: #000;
+}
+.list-item-2.header {
   background-color: #333;
   color: #000;
 }
@@ -11616,6 +11620,12 @@ span.msg strong {
 }
 
 .list-item span {
+  display: inline-block;
+  text-align: center;
+  padding: 5px auto;
+}
+
+.list-item-2 span {
   display: inline-block;
   text-align: center;
   padding: 5px auto;
