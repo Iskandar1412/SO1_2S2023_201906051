@@ -1,0 +1,19 @@
+//protoc --go_out=. --go-grpc_out=. grpc.proto
+//sudo docker pull redis:latest
+syntax = "proto3";
+option go_package = "../proto";
+package proto;
+
+message CalificacionRequest {
+    string album = 1;
+    string artista = 2;
+    string year = 3;
+}
+
+message replyInfo {
+    string info = 1;
+}
+
+service GradeService {
+    rpc SubmitGrade (CalificacionRequest) returns (replyInfo) {};
+}

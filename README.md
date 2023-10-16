@@ -12,6 +12,7 @@
 |[T_03](./Tareas/Tarea_03/)|[Video](https://drive.google.com/file/d/1mnV9PEcGuNS6zN7jOB6BCr_SWJcBWDHB/view?usp=drive_link)|20/Agosto/2023|
 |[T_04](./Tareas/Tarea_04/)|[Video](https://drive.google.com/file/d/1VeqgU8UFpJvqbP32iZCPp42nTT87oADD/view?usp=sharing)|27/Agosto/2023|
 |[T_05](./Tareas//Tarea_05/)|[Video](https://drive.google.com/file/d/1kw1QMrLJW599E-76PYhEImhxe_60Gz3K/view?usp=sharing)|01/Septiembre/2023|
+|[T_06](./Tareas//Tarea_06/)|[Video](https://drive.google.com/drive/folders/1hi9zHzUzjONw2hAB-VjLatAmCWj_-ljz?usp=sharing)|15/Octubre/2023|
 
 
 
@@ -33,7 +34,7 @@
     </thead>
     <tbody>
         <tr>
-            <td rowspan=5 align="center">Tarea</td>
+            <td rowspan=6 align="center">Tarea</td>
             <td rowspan=1 align="center"><a href="./Enunciados/Tareas/SO1_T1_2S2023.pdf">T_01</a></td>
             <td align="center">04/Agosto</td>
         </tr>
@@ -52,6 +53,10 @@
         <tr>
             <td rowspan=1 align="center"><a href="./Enunciados/Tareas/SO1_T5_2S2023.pdf">T_05</a></td>
             <td align="center">01/Septiembre</td>
+        </tr>
+        <tr>
+            <td rowspan=1 align="center"><a href="./Enunciados/Tareas/SO1_T6_2S2023.pdf">T_06</a></td>
+            <td align="center">15/Octubre</td>
         </tr>
         <tr>
             <td rowspan=2 align="center">Proyecto</td>

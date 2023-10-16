@@ -1,0 +1,29 @@
+#sudo docker-compose -f redis-docker-compose.yml up
+#sudo docker ps
+#sudo docker stop <servicio>
+#sudo docker pull redis:latest
+#sudo docker pull redislabs/redisinsight:latest
+#sudo apt  install docker-compose
+#sudo netstat -tuln | grep 6379
+#sudo lsof -i :6379
+version: "3.3"
+services:
+  redis:
+    image: redis:latest
+    container_name: redis_t6
+    restart: always
+    volumes:
+      - redis_volume_data:/data
+    ports:
+      - 6380:6380
+  redis_insight:
+    image: redislabs/redisinsight:latest
+    container_name: redis_insight
+    restart: always
+    ports:
+      - 8001:8001
+    volumes:
+      - redis_insight_volume_data:/db
+volumes:
+  redis_volume_data:
+  redis_insight_volume_data:
