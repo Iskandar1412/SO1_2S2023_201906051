@@ -11565,6 +11565,10 @@ span.msg strong {
   background-color: #333;
   color: #000;
 }
+.list-item-2.header {
+  background-color: #333;
+  color: #000;
+}
 
 .list-item span {
   display: inline-block;
@@ -11616,6 +11620,12 @@ span.msg strong {
 }
 
 .list-item span {
+  display: inline-block;
+  text-align: center;
+  padding: 5px auto;
+}
+
+.list-item-2 span {
   display: inline-block;
   text-align: center;
   padding: 5px auto;

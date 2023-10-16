@@ -113,6 +113,11 @@ func insertRedis(rank Data) {
 		log.Fatalln(err)
 	}
 
+	err = rdb.Publish(ctx, "redis-local", jsonData).Err()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	log.Printf("Datos insertados en Redis con clave única %s\n", key)
 }
 
