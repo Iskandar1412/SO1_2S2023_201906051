@@ -13,26 +13,25 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-
 const redis = new Redis({
-    host: 'redis', //en caso que sea local sería 'redis' en otro caso se pone la dirección ip
+    host: 'redis', // en caso que sea local sería 'redis' en otro caso se pone la dirección ip
     port: 6379
 });
 
-redis.on('connection', () => {
-    console.log('Conexión a Redis exitosa');
+io.on('connection', (socket) => {
+    console.log('Conexión a WebSocket exitosa');
 
-    redis.get('clave_redis', (err, data) => {
+    redis.get('redis-local', (err, data) => {
         if (err) {
-            console.log('Error en la obtención de datos de la db Redis:', err)
+            console.log('Error en la obtención de datos de la db Redis:', err);
         } else {
             const jsonData = JSON.parse(data);
-            socketIo.emit('datos_redis', jsonData);
+            socket.emit('datos_redis', jsonData); // Cambia socketIo.emit a socket.emit
         }
     });
 
-    socketIo.on('disconnect', () => {
-        console.log('Desconectar a db Redis');
+    socket.on('disconnect', () => {
+        console.log('Desconectar WebSocket');
     });
 });
 

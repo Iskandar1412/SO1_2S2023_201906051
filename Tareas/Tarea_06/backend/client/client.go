@@ -36,7 +36,7 @@ func insertData(c *fiber.Ctx) error {
 }
 
 func sendRedis(rank Data) {
-	conn, err := grpc.Dial("localhost:", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	conn, err := grpc.Dial("localhost:3256", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		log.Fatalf("No se pudo conectar a: %v", err)
 	}
