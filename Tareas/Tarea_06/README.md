@@ -28,5 +28,5 @@
 
 ## Redis
 
-> sudo docker pull redis:latest
+> sudo docker pull redis:latest <br/>
 > sudo docker pull redislabs/redisinsight:latest
