@@ -11339,24 +11339,62 @@ table {
 }
 
 .container-pies {
-  margin: 20px auto;
   display: flex;
-  background:#212529;
+  flex-direction: row;
+  margin: 20px auto;
+  background: #212529;
   border-radius: 5px;
-  width: 80%;
-  height: 70vh;
+  width: 95%;
+  height: 100vh;
+}
+
+.container-1 {
+  margin: 1%;
+  width: 42%;
+  height: 96%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-2 {
+  margin: 0;
+  width: 55%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-3 {
+  margin: 1% auto;
+  width: 100%;
+  height: 48%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-4 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: auto;
 }
 
 .pie-chart-container {
-  width: 30vw;
-  height: 30vw;
-  margin: 5px auto;
+  width: 80%;
+  height: 80%;
+  margin: auto;
 }
 
 .multi-chart-container {
   width: 60vw;
   height: 30vw;
   margin: 0 auto;
+}
+
+.bar-char-alumno-container {
+  width: 80%;
+  height: 90%;
+  margin: auto;
 }
 
 /*Buscador*/
@@ -11377,24 +11415,23 @@ span.msg strong {
 }
 
 .Buscador {
-  width: 500px;
   height: auto;
   margin: 10px auto;
   text-align: center;
 }
 
 .droppdown {
-  width: 300px;
+  width: 200px;
   display: inline-block;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 0 2px rgb(204, 204, 204);
   transition: all .5s ease;
   position: relative;
-  font-size: 14px;
+  font-size: 12px;
   color: #474747;
   height: 100%;
-  text-align: left;
+  text-align: center;
 }
 
 .droppdown .sellect {
@@ -11470,10 +11507,10 @@ span.msg strong {
 }
 
 .tab-section-2 {
-  flex-direction: column;
-  height: 100%;
+  flex-direction: auto;
+  height: auto;
   margin: 10px auto;
-  width: 80%;
+  width: 95%;
   background-color: #212529;
   border-radius: 5px;
 }
@@ -11522,7 +11559,7 @@ span.msg strong {
 }
 
 .lista-procesos {
-  width: 90%;
+  width: 95%;
   margin: 10px auto;
   max-height: 50vh;
   overflow-y: auto;
@@ -11574,22 +11611,22 @@ span.msg strong {
 
 .list-item span:nth-child(1) {
   background-color: #f0f0f0;
-  width: 44%;
+  width: 20%;
 }
 
 .list-item span:nth-child(2) {
   background-color: #f9f9f9;
-  width: 8%;
+  width: 28%;
 }
 
 .list-item span:nth-child(3) {
   background-color: #e6e6e6;
-  width: 10%;
+  width: 13%;
 }
 
 .list-item span:nth-child(4) {
   background-color: #f9f9f9;
-  width: 10%;
+  width: 13%;
 }
 
 .list-item span:nth-child(5) {

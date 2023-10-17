@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 //import React from 'react';
 import axios from 'axios';
-import MultiaxisChartCPU from '../graphs/MultiaxisChartCPU';
-import MultiaxisChartRAM from '../graphs/MultiaxisChartRAM';
 
 
 
@@ -131,40 +129,18 @@ function LongTime() {
 
 
                     <input id="tab4" type="radio" name="tabs" defaultChecked />
-                    <label htmlFor="tab4" className="label-type">Long Time</label>
+                    <label htmlFor="tab4" className="label-type">Redis</label>
 
                     <section id="content4" className="tabs-contentype">
 
-                    <div className="Buscador">
-                        <span className="choose">Seleccionar Maquina</span>
-                        <div className={`droppdown ${isOpen ? 'active' : ''}`}>
-                            <div className="sellect" onClick={toggleDropdown}>
-                                <span className='name-tipo'><b>{selectedOption || 'Nombre Maquina'}</b></span>
-                                <i className={`fa fa-chevron-left ${isOpen ? 'open' : ''}`}></i>
-                            </div>
-                            <ul className={`droppdown-menu ${isOpen ? 'show' : ''}`}>
-                            {options.map((option) => (
-                                <li
-                                key={option.id}
-                                onClick={() => handleOptionClick(option)}
-                                className={selectedOption === option.label ? 'selected' : ''}
-                                >
-                                {option.label}
-                                </li>
-                            ))}
-                            </ul>
-                        </div>
-                        {isSuccess && <span className="msg">Changed Macchine: <strong>{selectedOption}</strong></span>}
-                    </div>
+                    
 
 
 
                         <div className='container-pies'>
-                            <MultiaxisChartCPU dato={longCPU} />
+                            
                         </div>
-                        <div className='container-pies'>
-                            <MultiaxisChartRAM dato={longRAM} />
-                        </div>
+                        
                         
                     </section>
 

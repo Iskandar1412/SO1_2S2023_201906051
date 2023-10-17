@@ -1,51 +1,103 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import PieChartCPU from '../graphs/PieChartCPU'
-import PieChartRAM from '../graphs/PieChartRAM';
+import BarCharAlumnos from '../graphs/BarCharAlumnos';
+import BarCharCursos from '../graphs/BarCharCursos';
+//import PieChartRAM from '../graphs/PieChartRAM';
+
 
 function RealTime() {
     //const [dataram, setdataram] = useRef([]);
     //const [datacpu, setdatacpu] = useRef([]);
-    const [ramUsada, setRamUsada] = useState(0);
-    const [cpuUsado, setCPUUsado] = useState(0);
+    //const [ramUsada, setRamUsada] = useState(0);
+    //const [cpuUsado, setCPUUsado] = useState(0);
     
     const charDataCPU = {
-        labels: ['Usada', 'Libre'],
+        labels: ['Aprobados', 'Reprobados'],
         datasets: [
             {
-                label: 'Grafica CPU',
-                data: [cpuUsado, 100 - cpuUsado],
+                label: 'Grafica Alumnos',
+                data: [10, 20],
                 backgroundColor: [
-                    'rgba(185, 35, 23, 0.5)',
                     'rgba(23, 185, 153, 0.5)',
+                    'rgba(185, 35, 23, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(185, 35, 23, 1)',
                     'rgba(23, 185, 153, 1)',
+                    'rgba(185, 35, 23, 1)',
                 ],
                 borderWidth: 1,
             }
         ]
+    }; 
+
+    const charAlumnos = {
+        labels: ['3°', '2°', '1°'],
+        datasets: [
+            {
+                label: "Quimica",
+                data: [25, 0, 0],
+                backgroundColor: [ 'rgba(160, 115, 29, 0.7)', ],
+                borderColor: [ 'rgba(160, 115, 29, 1)', ],
+                borderWidth: 1,
+            },
+            {
+                label: "Fisica",
+                data: [0, 50, 0],
+                backgroundColor: [ 'rgba(29, 160, 96, 0.7)', ],
+                borderColor: [ 'rgba(29, 160, 96, 1)', ],
+                borderWidth: 1,
+            },
+            {
+                label: "Matemáticas",
+                data: [0, 0, 75],
+                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
+                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                borderWidth: 1,
+            },
+        ],
     };
 
-    const charDataRAM = {
-        labels: ['Usada', 'Libre'],
+    const charCursos = {
+        labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                label: 'Grafica RAM',
-                data: [ramUsada, 100 - ramUsada],
-                backgroundColor: [
-                    'rgba(160, 115, 29, 0.7)',
-                    'rgba(29, 160, 96, 0.7)',
-                ],
-                borderColor: [
-                    'rgba(160, 115, 29, 1)',
-                    'rgba(29, 160, 96, 1)',
-                ],
+                label: "Quimica",
+                data: [25, 0, 0, 0, 0],
+                backgroundColor: [ 'rgba(160, 115, 29, 0.7)', ],
+                borderColor: [ 'rgba(160, 115, 29, 1)', ],
                 borderWidth: 1,
-            }
-        ]
-    }
+            },
+            {
+                label: "Fisica",
+                data: [0, 50, 0, 0, 0],
+                backgroundColor: [ 'rgba(29, 160, 96, 0.7)', ],
+                borderColor: [ 'rgba(29, 160, 96, 1)', ],
+                borderWidth: 1,
+            },
+            {
+                label: "Matemáticas",
+                data: [0, 0, 75, 0, 0],
+                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
+                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                borderWidth: 1,
+            },
+            {
+                label: "Sociales",
+                data: [0, 0, 0, 45, 0],
+                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
+                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                borderWidth: 1,
+            },
+            {
+                label: "Naturales",
+                data: [0, 0, 0, 0, 90],
+                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
+                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                borderWidth: 1,
+            },
+        ],
+    };
 
     //console.log("CHart data:" , charDataCPU);
     
@@ -62,7 +114,7 @@ function RealTime() {
         }
         //const valor = contentPost; //valor del input
         try {
-            const response = await fetch(`http://localhost:3200/kill-proccess?equipo=${selectedOption}`, {
+            const response = await fetch(`http://localhost:3200/kill-proccess?equipo=${selectedOptionCursos}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,28 +130,76 @@ function RealTime() {
     };
 
     //Par barra de seleción
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('');
-    //const [httpOption, setHttpOption] = useState('');
-    //opciones máquinas virtuales
-    //mv1: proyecto1-c2n1  ::  34.42.36.164
-    //mv2: proyecto1-t16q  ::  34.135.153.28
-    const options = [
-        { id: 'proyecto1-c2n1', label: 'proyecto1-c2n1', ip: 'http://34.42.36.164' },
-        { id: 'proyecto1-t16q', label: 'proyecto1-t16q', ip: 'http://34.135.153.28' },
+    const [isOpenCursos, setIsOpenCursos] = useState(false);
+    const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
+    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
+    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
+    
+    const [selectedOptionCursos, setSelectedOptionCursos] = useState('');
+    const [selectedOptionAlumno, setSelectedOptionAlumno] = useState('');
+    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
+    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
+    
+    const optionsSemester = [
+        { id: '1S', label: '1S' },
+        { id: '2S', label: '2S' },
     ];
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
+    const optionsCursos = [
+        { id: 'SO1', label: 'SO1' },
+        { id: 'BD1', label: 'BD1' },
+        { id: 'LFP', label: 'LFP' },
+        { id: 'SA', label: 'SA' },
+        { id: 'AYD1', label: 'AYD1' },
+    ];
+   
+    const toggleDropdownAlumnos = () => {
+        setIsOpenAlumnos(!isOpenAlumnos);
     };
 
-    const handleOptionClick = (option) => {
-        setSelectedOption(option.label);
-        
+    const toggleDropdownCursos = () => {
+        setIsOpenCursos(!isOpenCursos);
+    };
+
+    const toggleDropdownAprobC = () => {
+        setIsOpenAprobC(!isOpenAprobC);
+    };
+
+    const toggleDropdownAprobS = () => {
+        setIsOpenAprobS(!isOpenAprobS);
+    };
+
+
+    const handleOptionClickCursos = (option) => {
+        setSelectedOptionCursos(option.label);
         //console.log(option)
-        handleSuccess()
-        setIsOpen(false);
-        handleProcesos()
+        //handleSuccess()
+        setIsOpenCursos(false);
+        //handleProcesos()
+    };
+
+    const handleOptionClickAlumnos = (option) => {
+        setSelectedOptionAlumno(option.label);
+        //console.log(option)
+        //handleSuccess()
+        setIsOpenAlumnos(false);
+        //handleProcesos()
+    };
+
+    const handleOptionClickAprobC = (option) => {
+        setSelectedOptionAprobC(option.label);
+        //console.log(option)
+        //handleSuccess()
+        setIsOpenAprobC(false);
+        //handleProcesos()
+    };
+
+    const handleOptionClickAprobS = (option) => {
+        setSelectedOptionAprobS(option.label);
+        //console.log(option)
+        //handleSuccess()
+        setIsOpenAprobS(false);
+        //handleProcesos()
     };
 
     //mensaje
@@ -114,43 +214,31 @@ function RealTime() {
     //items para procesos
     const [items, setItems] = useState(null);
     const [procesos, setProcesos] = useState([]);
-    //const itmp = [
-    //    { id: 1, proceso:'asdf', pid: 12465, uid: 1212, estado: "U", memoriav: 1250, memoriaf: 12546 },
-    //    { id: 2, proceso:'asdff', pid: 1364, uid: 12512, estado: "S", memoriav: 1450, memoriaf: 122 },
-    //    { id: 3, proceso:'python', pid: 4879, uid: 412, estado: "T", memoriav: 250, memoriaf: 1254 },
-    //    { id: 4, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //    { id: 5, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //    { id: 6, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //    { id: 7, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //    { id: 8, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //    { id: 9, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //    { id: 10, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //    { id: 11, proceso:'hola', pid: 1364, uid: 469, estado: "S", memoriav: 550, memoriaf: 1468 },
-    //];
+    
     const fetchData = useCallback(async () => {
-        if (!selectedOption) {
+        if (!selectedOptionCursos) {
             //console.log('vacio')
             return;
         }
         try {
-            const response = await axios.get(`http://localhost:3200/live?eQuipo=${selectedOption}`);
+            const response = await axios.get(`http://localhost:3200/live?eQuipo=${selectedOptionCursos}`);
             const data = response.data;
             const proceso_val = data.CPU.Procesos;
-            setCPUUsado(data.CPU.Uso_de_CPU);
-            setRamUsada(data.RAM.Uso_ram[0].Porcentaje_en_uso);
+            //setCPUUsado(data.CPU.Uso_de_CPU);
+            //setRamUsada(data.RAM.Uso_ram[0].Porcentaje_en_uso);
             console.log(data.RAM);
             setProcesos(proceso_val)
             //console.log(data.CPU.Uso_de_CPU, data.RAM.Porcentaje_en_uso)
         } catch (e) {
             console.log('Error en la obtención de datos en tiempo real', e);
         }
-    }, [selectedOption]);
+    }, [selectedOptionCursos]);
 
     useEffect(() => {
         fetchData();
         const intervalId = setInterval(fetchData, 5000);
         return () => clearInterval(intervalId);
-    }, [selectedOption, fetchData]);
+    }, [selectedOptionCursos, fetchData]);
 
     const handleProcesos = async () => {
         fetchData();
@@ -165,52 +253,8 @@ function RealTime() {
             <main>
                 <main className="container-w">
                     <input id="tab1" type="radio" name="tabs" defaultChecked />
-                    <label htmlFor="tab1" className="label-type">Real Time</label>
+                    <label htmlFor="tab1" className="label-type">MySQL</label>
                     <section id="content1" className="tabs-contentype">
-                        
-                        <div className="Buscador">
-                            <span className="choose">Seleccionar Maquina</span>
-                            <div className={`droppdown ${isOpen ? 'active' : ''}`}>
-                                <div className="sellect" onClick={toggleDropdown}>
-                                    <span className='name-tipo'><b>{selectedOption || 'Nombre Maquina'}</b></span>
-                                    <i className={`fa fa-chevron-left ${isOpen ? 'open' : ''}`}></i>
-                                </div>
-                                <ul className={`droppdown-menu ${isOpen ? 'show' : ''}`}>
-                                {options.map((option) => (
-                                    <li
-                                    key={option.id}
-                                    onClick={() => handleOptionClick(option)}
-                                    className={selectedOption === option.label ? 'selected' : ''}
-                                    >
-                                    {option.label}
-                                    </li>
-                                ))}
-                                </ul>
-                            </div>
-                            {isSuccess && <span className="msg">Changed Macchine: <strong>{selectedOption}</strong></span>}
-                        </div>
-
-                        <div className='container-pies'>
-                            <PieChartCPU dato={charDataCPU} />
-                            <PieChartRAM dato={charDataRAM} />
-                        </div>
-                        
-                       <div className='tab-section-2'>
-                            <div className='tab-content'>
-                                <div className='content-text'>
-                                    <div className='editor-pid'>
-                                        <h3 className='pid-tit'>PID</h3>
-                                        <input
-                                            type='text'
-                                            className='text-pid'
-                                            value={contentPost}
-                                            onChange={handleText}
-                                        />
-                                        <button className='kill-pid' onClick={handlePost}>Kill</button>
-                                    </div>
-                                </div>
-                            </div>
-                       </div>
                         
                         <div className='tab-section-2'>
                             <div className='tab-content'>
@@ -218,12 +262,12 @@ function RealTime() {
                                     <div className='lista-procesos'>
                                         <div className='list-item header'>
                                             
-                                            <span>Proceso</span>
-                                            <span>PID</span>
-                                            <span>UID</span>
-                                            <span>Estado</span>
-                                            <span>M.Virtual</span>
-                                            <span>M.Física</span>
+                                            <span>Carnet</span>
+                                            <span>Nombre</span>
+                                            <span>Curso</span>
+                                            <span>Nota</span>
+                                            <span>Semestre</span>
+                                            <span>Year</span>
                                         </div>
                                         {procesos.map(proceso =>
                                             <div
@@ -244,6 +288,101 @@ function RealTime() {
                             </div>
                         </div>
 
+                        <div className='container-pies'>
+                            <div className='container-1'>
+                                <div className='container-4'>
+                                    <div className="Buscador">
+                                        <div className={`droppdown ${isOpenCursos ? 'active' : ''}`}>
+                                            <div className="sellect" onClick={toggleDropdownAprobC}>
+                                                <span className='name-tipo'><b>{selectedOptionAprobC || 'Cursos'}</b></span>
+                                                <i className={`fa fa-chevron-left ${isOpenAprobC ? 'open' : ''}`}></i>
+                                            </div>
+                                            <ul className={`droppdown-menu ${isOpenAprobC ? 'show' : ''}`}>
+                                                {optionsCursos.map((option) => (
+                                                    <li
+                                                    key={option.id}
+                                                    onClick={() => handleOptionClickAprobC(option)}
+                                                    className={selectedOptionAprobC === option.label ? 'selected' : ''}
+                                                    >
+                                                    {option.label}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="Buscador">
+                                        <div className={`droppdown ${isOpenAprobS ? 'active' : ''}`}>
+                                            <div className="sellect" onClick={toggleDropdownAprobS}>
+                                                <span className='name-tipo'><b>{selectedOptionAprobS || 'Semestre'}</b></span>
+                                                <i className={`fa fa-chevron-left ${isOpenAprobS ? 'open' : ''}`}></i>
+                                            </div>
+                                            <ul className={`droppdown-menu ${isOpenAprobS ? 'show' : ''}`}>
+                                                {optionsSemester.map((option) => (
+                                                    <li
+                                                    key={option.id}
+                                                    onClick={() => handleOptionClickAprobS(option)}
+                                                    className={selectedOptionAprobS === option.label ? 'selected' : ''}
+                                                    >
+                                                    {option.label}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <PieChartCPU dato={charDataCPU} />
+                            </div>
+                            <div className='container-2'>
+                                <div className='container-3'>
+                                <div className="Buscador">
+                                    <div className={`droppdown ${isOpenAlumnos ? 'active' : ''}`}>
+                                        <div className="sellect" onClick={toggleDropdownAlumnos}>
+                                            <span className='name-tipo'><b>{selectedOptionAlumno || 'Semestre'}</b></span>
+                                            <i className={`fa fa-chevron-left ${isOpenAlumnos ? 'open' : ''}`}></i>
+                                        </div>
+                                        <ul className={`droppdown-menu ${isOpenAlumnos ? 'show' : ''}`}>
+                                            {optionsSemester.map((option) => (
+                                                <li
+                                                key={option.id}
+                                                onClick={() => handleOptionClickAlumnos(option)}
+                                                className={selectedOptionAlumno === option.label ? 'selected' : ''}
+                                                >
+                                                {option.label}
+                                                </li>
+                                            ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <BarCharAlumnos dato={charAlumnos} />
+                                </div>
+                                <div className='container-3'>
+                                    <div className="Buscador">
+                                        <div className={`droppdown ${isOpenCursos ? 'active' : ''}`}>
+                                            <div className="sellect" onClick={toggleDropdownCursos}>
+                                                <span className='name-tipo'><b>{selectedOptionCursos || 'Semestre'}</b></span>
+                                                <i className={`fa fa-chevron-left ${isOpenCursos ? 'open' : ''}`}></i>
+                                            </div>
+                                            <ul className={`droppdown-menu ${isOpenCursos ? 'show' : ''}`}>
+                                            {optionsSemester.map((option) => (
+                                                <li
+                                                key={option.id}
+                                                onClick={() => handleOptionClickCursos(option)}
+                                                className={selectedOptionCursos === option.label ? 'selected' : ''}
+                                                >
+                                                {option.label}
+                                                </li>
+                                            ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <BarCharCursos dato={charCursos} />
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        
+                        
                     </section>
 
                     
