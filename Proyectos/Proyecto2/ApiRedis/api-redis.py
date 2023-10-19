@@ -43,6 +43,7 @@ def agregarAlumno():
         key = f'alumno{counter}'
         json_alumno_str = json.dumps(json_alumno)
         redis_client.set(key, json_alumno_str)
+        redis_client.publish(key, json_alumno_str)
         print('Alumno registrado:', json_alumno)
         return f'Alumnos registrados: {counter}'
     except Exception as e:

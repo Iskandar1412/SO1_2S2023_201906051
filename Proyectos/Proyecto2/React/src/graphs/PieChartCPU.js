@@ -20,9 +20,9 @@ const options = {
     plugins: {
         title: {
             display: true,
-            text: 'Grafica CPU (Tiempo Real)',
+            text: 'Porcentaje de Aprobación (Curso)',
             font: {
-                size: 24,
+                size: 20,
             }
         },
     },
