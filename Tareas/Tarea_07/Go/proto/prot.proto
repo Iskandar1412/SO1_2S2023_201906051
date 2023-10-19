@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package = "./proto";
+package proto;
+
+message CalificacionRequest {
+    int64 carnet = 1;
+    string nombre = 2;
+    string curso = 3;
+    int64 nota = 4;
+    string semestre = 5;
+    int64 year = 6;
+}
+
+message replyInfo {
+    string info = 1;
+}
+
+service GradeService {
+    rpc SubmitGrade (CalificacionRequest) returns (replyInfo) {};
+}
+
+//protoc \
+//--go-grpc_out=./Go/proto \
+//--go-grpc_opt=module=Proyecto2/Go/proto \
+//./Go/proto/prot.proto
+
+//go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
+//go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1

@@ -11348,6 +11348,23 @@ table {
   height: 100vh;
 }
 
+.container-pies-2 {
+  display: flex;
+  flex-direction: row;
+  margin: 20px auto;
+  background: #212529;
+  border-radius: 5px;
+  width: 95%;
+  height: 70vh;
+}
+
+.conteo-datos {
+  float: right;
+  margin: 3vh 0 0 0;
+  width: 250px;
+  height: 24px;
+}
+
 .container-1 {
   margin: 1%;
   width: 42%;
@@ -11377,6 +11394,23 @@ table {
   flex-direction: row;
   width: 100%;
   height: auto;
+}
+
+.container-5 {
+  margin: 1%;
+  width: 98%;
+  height: 96%;
+  display: flex;
+  flex-direction: column;
+}
+
+.spooses {
+  width: 72%;
+  height: 82%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
 }
 
 .pie-chart-container {

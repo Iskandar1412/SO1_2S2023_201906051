@@ -19,11 +19,11 @@ function RealTime() {
                 label: 'Grafica Alumnos',
                 data: [10, 20],
                 backgroundColor: [
-                    'rgba(23, 185, 153, 0.5)',
+                    'rgba(23, 165, 137, 0.5)',
                     'rgba(185, 35, 23, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(23, 185, 153, 1)',
+                    'rgba(23, 165, 137, 1)',
                     'rgba(185, 35, 23, 1)',
                 ],
                 borderWidth: 1,
@@ -37,22 +37,22 @@ function RealTime() {
             {
                 label: "Quimica",
                 data: [25, 0, 0],
-                backgroundColor: [ 'rgba(160, 115, 29, 0.7)', ],
-                borderColor: [ 'rgba(160, 115, 29, 1)', ],
+                backgroundColor: [ 'rgba(230, 126, 34, 0.7)', ],
+                borderColor: [ 'rgba(230, 126, 34, 1)', ],
                 borderWidth: 1,
             },
             {
                 label: "Fisica",
                 data: [0, 50, 0],
-                backgroundColor: [ 'rgba(29, 160, 96, 0.7)', ],
-                borderColor: [ 'rgba(29, 160, 96, 1)', ],
+                backgroundColor: [ 'rgba(236, 240, 241, 0.7)', ],
+                borderColor: [ 'rgba(236, 240, 241, 1)', ],
                 borderWidth: 1,
             },
             {
                 label: "Matemáticas",
                 data: [0, 0, 75],
-                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
-                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                backgroundColor: [ 'rgba(52, 73, 94, 0.7)', ],
+                borderColor: [ 'rgba(52, 73, 94, 1)', ],
                 borderWidth: 1,
             },
         ],
@@ -64,36 +64,36 @@ function RealTime() {
             {
                 label: "Quimica",
                 data: [25, 0, 0, 0, 0],
-                backgroundColor: [ 'rgba(160, 115, 29, 0.7)', ],
-                borderColor: [ 'rgba(160, 115, 29, 1)', ],
+                backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
+                borderColor: [ 'rgba(169, 50, 38, 1)', ],
                 borderWidth: 1,
             },
             {
                 label: "Fisica",
                 data: [0, 50, 0, 0, 0],
-                backgroundColor: [ 'rgba(29, 160, 96, 0.7)', ],
-                borderColor: [ 'rgba(29, 160, 96, 1)', ],
+                backgroundColor: [ 'rgba(125, 60, 152, 0.7)', ],
+                borderColor: [ 'rgba(125, 60, 152, 1)', ],
                 borderWidth: 1,
             },
             {
                 label: "Matemáticas",
                 data: [0, 0, 75, 0, 0],
-                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
-                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                backgroundColor: [ 'rgba(46, 134, 193, 0.7)', ],
+                borderColor: [ 'rgba(46, 134, 193, 1)', ],
                 borderWidth: 1,
             },
             {
                 label: "Sociales",
                 data: [0, 0, 0, 45, 0],
-                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
-                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                backgroundColor: [ 'rgba(23, 165, 137, 0.7)', ],
+                borderColor: [ 'rgba(23, 165, 137, 1)', ],
                 borderWidth: 1,
             },
             {
                 label: "Naturales",
                 data: [0, 0, 0, 0, 90],
-                backgroundColor: [ 'rgba(78, 207, 29, 0.7)', ],
-                borderColor: [ 'rgba(78, 207, 29, 1)', ],
+                backgroundColor: [ 'rgba(241, 196, 15, 0.7)', ],
+                borderColor: [ 'rgba(241, 196, 15, 1)', ],
                 borderWidth: 1,
             },
         ],
@@ -292,7 +292,7 @@ function RealTime() {
                             <div className='container-1'>
                                 <div className='container-4'>
                                     <div className="Buscador">
-                                        <div className={`droppdown ${isOpenCursos ? 'active' : ''}`}>
+                                        <div className={`droppdown ${setIsOpenAprobC ? 'active' : ''}`}>
                                             <div className="sellect" onClick={toggleDropdownAprobC}>
                                                 <span className='name-tipo'><b>{selectedOptionAprobC || 'Cursos'}</b></span>
                                                 <i className={`fa fa-chevron-left ${isOpenAprobC ? 'open' : ''}`}></i>

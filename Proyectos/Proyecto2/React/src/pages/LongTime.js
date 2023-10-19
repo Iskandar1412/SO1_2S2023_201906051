@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 //import React from 'react';
 import axios from 'axios';
+import BarCharNotas from '../graphs/BarCharNotas';
 
 
 
@@ -12,75 +13,93 @@ function LongTime() {
     const [labelText, setLabelText] = useState([]);
 
 
-    const longRAM  = {
-        labels: labelText,
+    const charNotas = {
+        labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                label: 'Uso',
-                data: longerRAM,
-                borderColor: 'rgb(82, 12, 139)',
-                backgroundColor: 'rgba(82, 12, 139, 0.2)',
-                yAxisID: 'y',
+                label: "Quimica",
+                data: [25, 0, 0, 0, 0],
+                backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
+                borderColor: [ 'rgba(169, 50, 38, 1)', ],
+                borderWidth: 1,
             },
             {
-                label: 'Libre',
-                data: libreRAM,
-                borderColor: 'rgb(160, 115, 29)',
-                backgroundColor: 'rgba(160, 115, 29, 0.2)',
-                yAxisID: 'y',
-            },
-        ],
-    };
-    
-    const longCPU  = {
-        labels: labelText,
-        datasets: [
-            {
-                label: 'Uso',
-                data: longerCPU,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                yAxisID: 'y',
+                label: "Fisica",
+                data: [0, 50, 0, 0, 0],
+                backgroundColor: [ 'rgba(125, 60, 152, 0.7)', ],
+                borderColor: [ 'rgba(125, 60, 152, 1)', ],
+                borderWidth: 1,
             },
             {
-                label: 'Libre',
-                data: libreCPU,
-                borderColor: 'rgb(53, 162, 235)',
-                backgroundColor: 'rgba(53, 162, 235, 0.2)',
-                yAxisID: 'y',
+                label: "Matemáticas",
+                data: [0, 0, 75, 0, 0],
+                backgroundColor: [ 'rgba(46, 134, 193, 0.7)', ],
+                borderColor: [ 'rgba(46, 134, 193, 1)', ],
+                borderWidth: 1,
+            },
+            {
+                label: "Sociales",
+                data: [0, 0, 0, 45, 0],
+                backgroundColor: [ 'rgba(23, 165, 137, 0.7)', ],
+                borderColor: [ 'rgba(23, 165, 137, 1)', ],
+                borderWidth: 1,
+            },
+            {
+                label: "Naturales",
+                data: [0, 0, 0, 0, 90],
+                backgroundColor: [ 'rgba(241, 196, 15, 0.7)', ],
+                borderColor: [ 'rgba(241, 196, 15, 1)', ],
+                borderWidth: 1,
             },
         ],
     };
     //Par barra de seleción
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('');
+    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
+    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
 
-    //mv1: proyecto1-c2n1  ::  34.42.36.164
-    //mv2: proyecto1-t16q  ::  34.135.153.28
-    const options = [
-        { id: 'proyecto1-c2n1', label: 'proyecto1-c2n1', ip: '34.42.36.164' },
-        { id: 'proyecto1-t16q', label: 'proyecto1-t16q', ip: '34.135.153.28' },
+    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
+    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
+
+    const optionsSemester = [
+        { id: '1S', label: '1S' },
+        { id: '2S', label: '2S' },
     ];
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
+    const optionsCursos = [
+        { id: 'SO1', label: 'SO1' },
+        { id: 'BD1', label: 'BD1' },
+        { id: 'LFP', label: 'LFP' },
+        { id: 'SA', label: 'SA' },
+        { id: 'AYD1', label: 'AYD1' },
+    ];
+
+    const toggleDropdownAprobC = () => {
+        setIsOpenAprobC(!isOpenAprobC);
     };
 
-    const handleOptionClick = (option) => {
-        //handleProcesos()
-        setSelectedOption(option.label);
+    const toggleDropdownAprobS = () => {
+        setIsOpenAprobS(!isOpenAprobS);
+    };
+
+    const handleOptionClickAprobC = (option) => {
+        setSelectedOptionAprobC(option.label);
         //console.log(option)
-        handleSuccess()
-        setIsOpen(false);
-        const tiepoEspera = 1000;
-        setTimeout(() => {
-            handleGraphs();
-        }, tiepoEspera);
+        //handleSuccess()
+        setIsOpenAprobC(false);
+        //handleProcesos()
+    };
+
+    const handleOptionClickAprobS = (option) => {
+        setSelectedOptionAprobS(option.label);
+        //console.log(option)
+        //handleSuccess()
+        setIsOpenAprobS(false);
+        //handleProcesos()
     };
 
     const handleGraphs = async () => {
         try {
-            const response = await axios.get(`http://localhost:3200/registros-por-equipo?nombreEquipo=${selectedOption}`);
+            const response = await axios.get(`http://localhost:3200/registros-por-equipo?nombreEquipo=${selectedOptionAprobC}`);
             const valor = response.data;
             const valor1 = valor.registros;
 
@@ -130,15 +149,55 @@ function LongTime() {
 
                     <input id="tab4" type="radio" name="tabs" defaultChecked />
                     <label htmlFor="tab4" className="label-type">Redis</label>
-
+                    <div className='conteo-datos'><b>Cantidad de Datos:</b> 0</div>
                     <section id="content4" className="tabs-contentype">
 
-                    
-
-
-
-                        <div className='container-pies'>
-                            
+                        <div className='container-pies-2'>
+                            <div className='container-5'>
+                                <div className='container-4'>
+                                    <div className="Buscador">
+                                        <div className={`droppdown ${isOpenAprobC ? 'active' : ''}`}>
+                                            <div className="sellect" onClick={toggleDropdownAprobC}>
+                                                <span className='name-tipo'><b>{selectedOptionAprobC || 'Cursos'}</b></span>
+                                                <i className={`fa fa-chevron-left ${isOpenAprobC ? 'open' : ''}`}></i>
+                                            </div>
+                                            <ul className={`droppdown-menu ${isOpenAprobC ? 'show' : ''}`}>
+                                                {optionsCursos.map((option) => (
+                                                    <li
+                                                    key={option.id}
+                                                    onClick={() => handleOptionClickAprobC(option)}
+                                                    className={selectedOptionAprobC === option.label ? 'selected' : ''}
+                                                    >
+                                                    {option.label}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="Buscador">
+                                        <div className={`droppdown ${isOpenAprobS ? 'active' : ''}`}>
+                                            <div className="sellect" onClick={toggleDropdownAprobS}>
+                                                <span className='name-tipo'><b>{selectedOptionAprobS || 'Semestre'}</b></span>
+                                                <i className={`fa fa-chevron-left ${isOpenAprobS ? 'open' : ''}`}></i>
+                                            </div>
+                                            <ul className={`droppdown-menu ${isOpenAprobS ? 'show' : ''}`}>
+                                                {optionsSemester.map((option) => (
+                                                    <li
+                                                    key={option.id}
+                                                    onClick={() => handleOptionClickAprobS(option)}
+                                                    className={selectedOptionAprobS === option.label ? 'selected' : ''}
+                                                    >
+                                                    {option.label}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='spooses'>
+                                    <BarCharNotas dato={charNotas} />
+                                </div>
+                            </div>
                         </div>
                         
                         

@@ -1,5 +1,7 @@
-# sudo snap install redis
-# sudo apt install redis-tools
+# sudo snap install redis (no necesario)
+# sudo apt install redis-tools (no necesario)
+# sudo docker pull redis:latest
+# sudo docker pull redislabs/redisinsight:latest
 
 version: "3.3"
 services:
