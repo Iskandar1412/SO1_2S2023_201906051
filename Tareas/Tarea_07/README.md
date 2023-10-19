@@ -15,7 +15,7 @@
 
 #### Pide una dirección en la que se pone la dirección del cliente (En este caso es el gRPC Client)
 
-> http://<host_del_cliente>:<puerto> `http://localhost:3255`
+> http://<host_del_cliente>:<puerto_del_coso>         `http://localhost:3255`
 
 ## Base De Datos de MySQL Cloud
 
