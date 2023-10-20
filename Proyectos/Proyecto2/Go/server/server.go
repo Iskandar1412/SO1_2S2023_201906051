@@ -13,16 +13,19 @@ package main
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
 	pb "proyecto/proto" //agregado
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/redis/go-redis/v9"
 	"google.golang.org/grpc"
 )
 
 var ctx = context.Background()
+var rdb *redis.Client
 var db *sql.DB
 
 type server struct {
@@ -79,6 +82,26 @@ func insertMySQL(rank Data) {
 	if err != nil {
 		log.Println("Error en la inserción de información del alumno:", err)
 	}
+	data := map[string]interface{}{
+		"Carnet":   rank.Carnet,
+		"Nombre":   rank.Nombre,
+		"Curso":    rank.Curso,
+		"Nota":     rank.Nota,
+		"Semestre": rank.Semestre,
+		"Year":     rank.Year,
+	}
+
+	jsonData, err := json.Marshal(data)
+
+	if err != nil {
+		//fmt.Println()
+	}
+
+	err = rdb.Publish(ctx, "redis-local", jsonData).Err()
+
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 }
 
 func main() {
@@ -86,10 +109,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("No se pudo escuchar el puerto %v", err)
 	}
-
 	s := grpc.NewServer()
 	pb.RegisterGradeServiceServer(s, &server{})
 
+	fmt.Println("Conectando con DB de MySQL")
 	mysqlConnect()
 
 	fmt.Println("Servidor gRPC iniciado en puerto", port)
