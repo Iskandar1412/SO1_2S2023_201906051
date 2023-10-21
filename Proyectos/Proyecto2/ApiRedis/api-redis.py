@@ -8,7 +8,7 @@ import mysql.connector
 
 app = Flask(__name__)
 
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=1)
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 db_config = {
     'user': 'root',

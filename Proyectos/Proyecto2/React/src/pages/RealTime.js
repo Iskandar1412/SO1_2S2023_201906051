@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, Component } from 'react';
 import axios from 'axios';
 import PieChartCPU from '../graphs/PieChartCPU'
 import BarCharAlumnos from '../graphs/BarCharAlumnos';
 import BarCharCursos from '../graphs/BarCharCursos';
 //import PieChartRAM from '../graphs/PieChartRAM';
-
+import socketIOClient from 'socket.io-client';
 
 function RealTime() {
     //const [dataram, setdataram] = useRef([]);
@@ -234,11 +234,33 @@ function RealTime() {
         }
     }, [selectedOptionCursos]);
 
+    const [redisData, setRedisData] = useState([]);
+    const [mysqlData, setMysqlData] = useState([]);
     useEffect(() => {
-        fetchData();
-        const intervalId = setInterval(fetchData, 5000);
-        return () => clearInterval(intervalId);
-    }, [selectedOptionCursos, fetchData]);
+        const socket = socketIOClient('http://localhost:9800');
+        socket.on('mysql-data', (data) => {
+            console.log('datos',data);
+        });
+        socket.on('redis-data', (data) => {
+            requestMySQLData();
+            setRedisData((prevData) => {
+                const newData = [...prevData, data];
+                const uniqueData = [...new Set(newData)];
+                return uniqueData;
+            });
+        });
+        const requestMySQLData = () => {
+            socket.emit('request-mysql-data'); // Agregar un evento personalizado
+        };
+
+        requestMySQLData(); // Realizar la solicitud al cargar la página o cuando sea necesario
+
+        return () => {
+            socket.off('redis-data');
+            socket.off('mysql-data');
+            //socket.disconnect();
+        }
+    }, []);
 
     const handleProcesos = async () => {
         fetchData();
@@ -247,6 +269,8 @@ function RealTime() {
     const toggleItemExpansion = (itemID) => {
         setItems(prevId => (prevId === itemID ? null : itemID));
     };
+
+
 
     return (
         <div id='layoutSidenav_content'>

@@ -62,6 +62,21 @@ func mysqlConnect() {
 	fmt.Println("Conexión a MySQL exitosa")
 }
 
+func redisConnect() {
+	rdb = redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+	_, err := rdb.Ping(ctx).Result()
+	if err != nil {
+		fmt.Println("not Ok")
+		//error en conectar redis
+	} else {
+		fmt.Println("Ok")
+	}
+}
+
 func (s *server) SubmitGrade(ctx context.Context, grade *pb.CalificacionRequest) (*pb.ReplyInfo, error) {
 	fmt.Printf("Solicitud para guardar calificación: %+v\n", grade.GetNombre())
 	data := Data{
@@ -114,7 +129,7 @@ func main() {
 
 	fmt.Println("Conectando con DB de MySQL")
 	mysqlConnect()
-
+	redisConnect()
 	fmt.Println("Servidor gRPC iniciado en puerto", port)
 
 	if err := s.Serve(lis); err != nil {

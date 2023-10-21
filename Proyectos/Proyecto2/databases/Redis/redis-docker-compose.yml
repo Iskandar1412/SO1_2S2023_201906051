@@ -2,6 +2,13 @@
 # sudo apt install redis-tools (no necesario)
 # sudo docker pull redis:latest
 # sudo docker pull redislabs/redisinsight:latest
+# sudo apt install docker-compose
+# sudo netstat -tuln | grep 6379
+# sudo lsof -i :6379
+# sudo docker-compose -f redis-docker-compose.yml up
+# En el caso de que de error al abrir o correr el docker compose
+# sudo docker ps -a
+# sudo docker rm <ID o nombre>
 
 version: "3.3"
 services:

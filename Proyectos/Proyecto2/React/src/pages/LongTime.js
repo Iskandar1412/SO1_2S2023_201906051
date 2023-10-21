@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+// npm install socket.io-client
+
+import React, { useState, Component } from 'react';
 //import React from 'react';
 import axios from 'axios';
 import BarCharNotas from '../graphs/BarCharNotas';
-
+import socketIOClient from 'socket.io-client';
 
 
 function LongTime() {
