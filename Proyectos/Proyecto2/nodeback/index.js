@@ -12,6 +12,7 @@ const { Server } = require('socket.io');
 const Redis = require('ioredis');
 const cors = require('cors');
 const mysql = require('mysql2');
+const { channel } = require('diagnostics_channel');
 
 const app = express();
 
@@ -53,30 +54,20 @@ io.on('connection', async (socket) => {
     console.log('Conexión a WebSocket exitosa');
 
     // Obtener información de las claves en Redis y enviarla al cliente al conectarse
-    const keys = await redis.keys('album_*');
-    for (const key of keys) {
-        const data = await redis.get(key);
-        const jsonData = JSON.parse(data);
-        socket.emit('redis-data', jsonData);
-    }
+    // Escuchar el evento personalizado 'request-redis-data'
+    socket.on('request-redis-data', async () => {
+        const keys = await redis.keys('alumno_*');
+        const redisData = [];
 
-    //try {
-    //    const query = "SELECT * FROM Estudiante";
-    //    //console.log('probando')
-    //    db.query(query, (error, results) => {
-    //        //console.log('entrando')
-    //        if (error) {
-    //            console.error('Error al consultar MySQL:', error);
-    //            //res.status(500).json({ error: 'Error al consultar MySQL' });
-    //        } else {
-    //            socket.emit('mysql-data', results);
-    //            //res.status(200).json({ message: 'Datos de MySQL enviados por WebSocket' })
-    //        }
-    //    })
-    //} catch (e) {
-    //    console.error('Error al obtener datos de MySQL:', e);
-    //    //res.status(500).json({ error: 'Error al obtener datos de MySQL' })
-    //}
+        for (const key of keys) {
+            const data = await redis.get(key);
+            const jsonData = JSON.parse(data);
+            redisData.push(jsonData);
+        }
+
+        // Emitir los datos de Redis como 'redis-data' en respuesta a 'request-redis-data'
+        socket.emit('redis-dot', redisData);
+    });
 
     // Escuchar eventos en el canal 'redis-local' y enviarlos al cliente
     const redisSubscriber = new Redis();

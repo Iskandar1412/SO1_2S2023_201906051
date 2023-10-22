@@ -11595,7 +11595,7 @@ span.msg strong {
 .lista-procesos {
   width: 95%;
   margin: 10px auto;
-  max-height: 50vh;
+  max-height: 72vh;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #2167AD #888;

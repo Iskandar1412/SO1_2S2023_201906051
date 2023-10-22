@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState, Component } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+//import axios from 'axios';
 import PieChartCPU from '../graphs/PieChartCPU'
 import BarCharAlumnos from '../graphs/BarCharAlumnos';
 import BarCharCursos from '../graphs/BarCharCursos';
@@ -11,13 +11,28 @@ function RealTime() {
     //const [datacpu, setdatacpu] = useRef([]);
     //const [ramUsada, setRamUsada] = useState(0);
     //const [cpuUsado, setCPUUsado] = useState(0);
+    const [alumnosApr, setAlumnosApr] = useState(0);
+    const [alumnosRep, setAlumnosRep] = useState(0);
+    //const [filtroApr, setFiltroApr] = useState(0);
+    //const [filtroRep, setFiltroRep] = useState(0)
+
+    //Par barra de seleción
+    const [isOpenCursos, setIsOpenCursos] = useState(false);
+    const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
+    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
+    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
+    
+    const [selectedOptionCursos, setSelectedOptionCursos] = useState('');
+    const [selectedOptionAlumno, setSelectedOptionAlumno] = useState('');
+    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
+    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
     
     const charDataCPU = {
         labels: ['Aprobados', 'Reprobados'],
         datasets: [
             {
-                label: 'Grafica Alumnos',
-                data: [10, 20],
+                label: 'Grafica Alumnos [' + (selectedOptionAprobC !== '' ? selectedOptionAprobC : '') + ']',
+                data: [alumnosApr, alumnosRep],
                 backgroundColor: [
                     'rgba(23, 165, 137, 0.5)',
                     'rgba(185, 35, 23, 0.5)',
@@ -100,45 +115,7 @@ function RealTime() {
     };
 
     //console.log("CHart data:" , charDataCPU);
-    
-    const [contentPost, setcontentPost] = useState([]);
-    const handleText = (e) => {
-        setcontentPost(e.target.value);
-    };
-
-    const handlePost = async () => {
-        //console.log(contentPost);
-        //e.preventDefault();
-        const data = {
-            pid: contentPost
-        }
-        //const valor = contentPost; //valor del input
-        try {
-            const response = await fetch(`http://localhost:3200/kill-proccess?equipo=${selectedOptionCursos}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }, body: JSON.stringify(data),
-            });
-            if (response.ok) {
-                const result = await response.json();
-                console.log(result);
-            } else {
-                console.log('Error en la solicitud', response.statusText);
-            }
-        } catch (err) { console.log('Error en la solicitud al backend (NodeJS):', err) }
-    };
-
-    //Par barra de seleción
-    const [isOpenCursos, setIsOpenCursos] = useState(false);
-    const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
-    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
-    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
-    
-    const [selectedOptionCursos, setSelectedOptionCursos] = useState('');
-    const [selectedOptionAlumno, setSelectedOptionAlumno] = useState('');
-    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
-    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
+           
     
     const optionsSemester = [
         { id: '1S', label: '1S' },
@@ -169,92 +146,65 @@ function RealTime() {
         setIsOpenAprobS(!isOpenAprobS);
     };
 
-
     const handleOptionClickCursos = (option) => {
         setSelectedOptionCursos(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenCursos(false);
-        //handleProcesos()
     };
 
     const handleOptionClickAlumnos = (option) => {
         setSelectedOptionAlumno(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAlumnos(false);
-        //handleProcesos()
     };
 
     const handleOptionClickAprobC = (option) => {
         setSelectedOptionAprobC(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAprobC(false);
-        //handleProcesos()
     };
 
     const handleOptionClickAprobS = (option) => {
         setSelectedOptionAprobS(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAprobS(false);
-        //handleProcesos()
     };
-
-    //mensaje
-    const [isSuccess, setIsSuccess] = useState(false);
-    const handleSuccess = () => {
-        setIsSuccess(true);
-        setTimeout(() => {
-            setIsSuccess(false);
-        }, 3000)
-    }
 
     //items para procesos
     const [items, setItems] = useState(null);
-    const [procesos, setProcesos] = useState([]);
     
-    const fetchData = useCallback(async () => {
-        if (!selectedOptionCursos) {
-            //console.log('vacio')
-            return;
-        }
-        try {
-            const response = await axios.get(`http://localhost:3200/live?eQuipo=${selectedOptionCursos}`);
-            const data = response.data;
-            const proceso_val = data.CPU.Procesos;
-            //setCPUUsado(data.CPU.Uso_de_CPU);
-            //setRamUsada(data.RAM.Uso_ram[0].Porcentaje_en_uso);
-            console.log(data.RAM);
-            setProcesos(proceso_val)
-            //console.log(data.CPU.Uso_de_CPU, data.RAM.Porcentaje_en_uso)
-        } catch (e) {
-            console.log('Error en la obtención de datos en tiempo real', e);
-        }
-    }, [selectedOptionCursos]);
-
-    const [redisData, setRedisData] = useState([]);
+    //const [redisData, setRedisData] = useState([]);
     const [mysqlData, setMysqlData] = useState([]);
+    //const [redisData2, setRedisData2] = useState([]);
+    
+    
+    
     useEffect(() => {
         const socket = socketIOClient('http://localhost:9800');
-        socket.on('mysql-data', (data) => {
-            console.log('datos',data);
+        socket.on('mysql-data', (data) => {//data es array
+            setMysqlData(data);
         });
+        //console.log('mysql', mysqlData); //data[0].Carnet
+
+        socket.on('redis-dot', (data) => {
+            //console.log('redis', data); //data[0].Carnet
+        })
+        
         socket.on('redis-data', (data) => {
+            requestRedisData();
             requestMySQLData();
-            setRedisData((prevData) => {
-                const newData = [...prevData, data];
-                const uniqueData = [...new Set(newData)];
-                return uniqueData;
-            });
         });
+
         const requestMySQLData = () => {
             socket.emit('request-mysql-data'); // Agregar un evento personalizado
+            if (selectedOptionAprobC !== '' && selectedOptionAprobS !== '') {
+                //console.log(cantidad);
+            }
         };
 
-        requestMySQLData(); // Realizar la solicitud al cargar la página o cuando sea necesario
+        const requestRedisData = () => {
+            socket.emit('request-redis-data');
+        }
 
+        requestRedisData();
+        requestMySQLData(); // Realizar la solicitud al cargar la página o cuando sea necesario
+        
         return () => {
             socket.off('redis-data');
             socket.off('mysql-data');
@@ -262,14 +212,9 @@ function RealTime() {
         }
     }, []);
 
-    const handleProcesos = async () => {
-        fetchData();
-    };
-
     const toggleItemExpansion = (itemID) => {
         setItems(prevId => (prevId === itemID ? null : itemID));
     };
-
 
 
     return (
@@ -293,20 +238,20 @@ function RealTime() {
                                             <span>Semestre</span>
                                             <span>Year</span>
                                         </div>
-                                        {procesos.map(proceso =>
+                                        {mysqlData.map((item, index) => (
                                             <div
-                                                key={proceso.Proceso}
-                                                className={`list-item ${items === proceso.Proceso ? 'expanded' : ''}`}
-                                                onClick={() => toggleItemExpansion(proceso.Proceso)}
+                                                key={index}
+                                                className={`list-item ${items === item.Carnet ? 'expanded' : ''}`}
+                                                onClick={() => toggleItemExpansion(item.Carnet)}
                                             >
-                                                <span>{ proceso.Proceso }</span>
-                                                <span>{ proceso.PID }</span>
-                                                <span>{ proceso.UID }</span>
-                                                <span>{ proceso.Estado }</span>
-                                                <span>{ proceso.Memoria_virtual }</span>
-                                                <span>{ proceso.Memoria_fisica }</span>
+                                                <span>{ item.Carnet }</span>
+                                                <span>{ item.Nombre }</span>
+                                                <span>{ item.Curso }</span>
+                                                <span>{ item.Nota }</span>
+                                                <span>{ item.Semestre }</span>
+                                                <span>{ item.Year }</span>
                                             </div>
-                                        )}
+                                        ))}
                                     </div>
                                 </div>
                             </div>

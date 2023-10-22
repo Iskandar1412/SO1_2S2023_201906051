@@ -13,7 +13,7 @@ redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 db_config = {
     'user': 'root',
     'password': 'Gilgamesh@,14.12#=',
-    'host': '35.245.152.29:3306',
+    'host': '35.245.152.29',
     'database': 'proyect2',
 }
 
@@ -33,7 +33,8 @@ def getNumber():
     highest = 0
     for key in keys:
         try:
-            number = int(key.split('_')[1])
+            nokey = key.decode('utf-8')
+            number = int(nokey.split('_')[1])
         except ValueError:
             continue
         if number > highest:
@@ -63,20 +64,20 @@ def agregarAlumno():
             "Semestre": alumno.semestre,
             "Year": alumno.year
         }
-        
-        insert_query = """INSERT INTO Estudiante (Carnet, Nombre, Curso, Nota, Semestre, Year) VALUES (?, ?, ?, ?, ?, ?)"""
-        cursor.execute(insert_query)
+        #print('vamos a meter a sql')
+        insert_query = "INSERT INTO Estudiante (Carnet, Nombre, Curso, Nota, Semestre, Year) VALUES (%s, %s, %s, %s, %s, %s)"
+        data_insert = (alumno.carnet, alumno.nombre, alumno.curso, alumno.nota, alumno.semestre, alumno.year)
+        cursor.execute(insert_query, data_insert)
         conn.commit()
-        
-        
-        key = f'alumno_{getNumber()}'
-        json_alumno_str = json.dumps(json_alumno)
-        redis_client.set(key, json_alumno_str)
-        redis_client.publish(key, json_alumno_str)
-        print('Alumno registrado:', json_alumno)
-        return f'Alumnos registrados: {getNumber()}'
     except Exception as e:
         return str(e), 500
+    
+    key = f'alumno_{getNumber()}'
+    json_alumno_str = json.dumps(json_alumno)
+    redis_client.set(key, json_alumno_str)
+    redis_client.publish('redis-local', json_alumno_str)
+    print('Alumno registrado:', alumno.nombre)
+    return { 'msg': 'Alumnos registrados: {}'.format(getNumber() - 1)}
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7980, debug=True)
