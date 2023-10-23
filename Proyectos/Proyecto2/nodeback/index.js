@@ -30,9 +30,13 @@ const redis = new Redis({
     port: 6379,
 });
 
-redis.select(0, () => {
+//redis.select(0, () => {
+//    console.log('DB1 in Redis Connected');
+//});
+(async () => {
+    await redis.select(0);
     console.log('DB1 in Redis Connected');
-});
+})();
 
 const db = mysql.createConnection({
     host: '35.245.152.29',
@@ -103,8 +107,6 @@ io.on('connection', async (socket) => {
         redisSubscriber.quit();
     });
 });
-
-
 
 server.listen(9800, () => {
     console.log('Servidor en puerto: 9800');

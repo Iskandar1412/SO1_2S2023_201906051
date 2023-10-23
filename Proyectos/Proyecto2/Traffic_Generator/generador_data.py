@@ -9,8 +9,8 @@ def submit_grade():
         carnet = random.randint(195000000, 202399999)
         nombre = f'Alumno {i}'#.format(random.randint(1, 1000000))
         curso = random.choice(['SO1', 'BD1', 'LFP', 'SA', 'AYD1'])
-        nota = random.choice([50, 60, 70, 80, 90, 100])
-        semestre = random.choice(['1S', '2S'])
+        nota = random.randint(40, 100)
+        semestre = random.choice(['1s', '2s'])
         year = 2023
         
         data = {

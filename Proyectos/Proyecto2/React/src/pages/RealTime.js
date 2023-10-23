@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 //import axios from 'axios';
 import PieChartCPU from '../graphs/PieChartCPU'
 import BarCharAlumnos from '../graphs/BarCharAlumnos';
@@ -13,9 +13,6 @@ function RealTime() {
     //const [cpuUsado, setCPUUsado] = useState(0);
     const [alumnosApr, setAlumnosApr] = useState(0);
     const [alumnosRep, setAlumnosRep] = useState(0);
-    //const [filtroApr, setFiltroApr] = useState(0);
-    //const [filtroRep, setFiltroRep] = useState(0)
-
     //Par barra de seleción
     const [isOpenCursos, setIsOpenCursos] = useState(false);
     const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
@@ -27,12 +24,16 @@ function RealTime() {
     const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
     const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
     
+    //items para procesos
+    const [items, setItems] = useState(null);
+    const [mysqlData, setMysqlData] = useState([]);
+    
     const charDataCPU = {
         labels: ['Aprobados', 'Reprobados'],
         datasets: [
             {
-                label: 'Grafica Alumnos [' + (selectedOptionAprobC !== '' ? selectedOptionAprobC : '') + ']',
-                data: [alumnosApr, alumnosRep],
+                label: 'Grafica Alumnos [' + (selectedOptionAprobC !== '' ? selectedOptionAprobC : '') + ' - ' + (selectedOptionAprobS !== '' ? selectedOptionAprobS : '') + ']',
+                data: [(alumnosApr !== 0 ? alumnosApr : 0), (alumnosRep !== 0 ? alumnosRep : 0)],
                 backgroundColor: [
                     'rgba(23, 165, 137, 0.5)',
                     'rgba(185, 35, 23, 0.5)',
@@ -114,12 +115,9 @@ function RealTime() {
         ],
     };
 
-    //console.log("CHart data:" , charDataCPU);
-           
-    
     const optionsSemester = [
-        { id: '1S', label: '1S' },
-        { id: '2S', label: '2S' },
+        { id: '1s', label: '1s' },
+        { id: '2s', label: '2s' },
     ];
 
     const optionsCursos = [
@@ -165,37 +163,60 @@ function RealTime() {
         setSelectedOptionAprobS(option.label);
         setIsOpenAprobS(false);
     };
+    
+    const calculateCounts = useCallback(() => {
+        let pass = 0;
+        let fail = 0;
+        if (selectedOptionAprobC !== '' && selectedOptionAprobS !== '') {
+            mysqlData.forEach((student) => {
+                if (student.Curso === selectedOptionAprobC && student.Semestre === selectedOptionAprobS) {
+                    if (student.Nota >= 61) {
+                        pass ++;
+                    } else {
+                        fail ++;
+                    }
+                }
+            });
+        }
+        if (selectedOptionAlumno !== '') {
+            const list_estudiantes = [];
+            mysqlData.forEach((student) => {
+                if (student.Semestre === selectedOptionAlumno) {
+                    list_estudiantes.push(student);
+                }
+            });
+            console.log(list_estudiantes)
+        }
+        setAlumnosApr(pass);
+        setAlumnosRep(fail);
+    }, [selectedOptionAprobC, selectedOptionAprobS, selectedOptionAlumno, mysqlData]);
 
-    //items para procesos
-    const [items, setItems] = useState(null);
-    
-    //const [redisData, setRedisData] = useState([]);
-    const [mysqlData, setMysqlData] = useState([]);
-    //const [redisData2, setRedisData2] = useState([]);
-    
-    
-    
     useEffect(() => {
-        const socket = socketIOClient('http://localhost:9800');
+        calculateCounts();
+    });
+
+    useEffect(() => {
+        const socket = socketIOClient('http://localhost:9800', {
+            reconnection: true,
+            reconnectionAttempts: 3,
+            reconnectionDelay: 1000,
+        });
         socket.on('mysql-data', (data) => {//data es array
             setMysqlData(data);
         });
-        //console.log('mysql', mysqlData); //data[0].Carnet
-
+        
         socket.on('redis-dot', (data) => {
             //console.log('redis', data); //data[0].Carnet
         })
         
         socket.on('redis-data', (data) => {
-            requestRedisData();
+            //requestRedisData();
             requestMySQLData();
         });
 
         const requestMySQLData = () => {
             socket.emit('request-mysql-data'); // Agregar un evento personalizado
-            if (selectedOptionAprobC !== '' && selectedOptionAprobS !== '') {
-                //console.log(cantidad);
-            }
+            //calculateCounts();
         };
 
         const requestRedisData = () => {
@@ -205,17 +226,22 @@ function RealTime() {
         requestRedisData();
         requestMySQLData(); // Realizar la solicitud al cargar la página o cuando sea necesario
         
+        // Definir un temporizador para solicitar MySQL data a intervalos regulares (por ejemplo, cada 30 segundos)
+        const mysqlDataInterval = setInterval(requestMySQLData, 1000);
+
         return () => {
             socket.off('redis-data');
             socket.off('mysql-data');
-            //socket.disconnect();
+            // Limpiar el temporizador al desmontar el componente
+            clearInterval(mysqlDataInterval);
         }
     }, []);
 
+    
+    
     const toggleItemExpansion = (itemID) => {
         setItems(prevId => (prevId === itemID ? null : itemID));
     };
-
 
     return (
         <div id='layoutSidenav_content'>
@@ -224,13 +250,11 @@ function RealTime() {
                     <input id="tab1" type="radio" name="tabs" defaultChecked />
                     <label htmlFor="tab1" className="label-type">MySQL</label>
                     <section id="content1" className="tabs-contentype">
-                        
                         <div className='tab-section-2'>
                             <div className='tab-content'>
                                 <div className='content-text'>
                                     <div className='lista-procesos'>
                                         <div className='list-item header'>
-                                            
                                             <span>Carnet</span>
                                             <span>Nombre</span>
                                             <span>Curso</span>
@@ -348,13 +372,7 @@ function RealTime() {
                                 </div>
                             </div>
                         </div>
-                        
-
-                        
-                        
                     </section>
-
-                    
                 </main>
             </main>
         </div>
