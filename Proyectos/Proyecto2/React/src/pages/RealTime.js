@@ -13,13 +13,8 @@ function RealTime() {
     const [notasAlumnos, setNotasAlumnos] = useState([]);
     const [nombAlumnos, setNomAlumnos] = useState([]);
     //Cantidad de alumnos por curso
-    const [cantAlumnos, setCantAlumnos] = useState([
-        { c1: null, no1: null }, // Asegúrate de que los elementos estén inicializados
-        { c1: null, no1: null },
-        { c1: null, no1: null },
-        { c1: null, no1: null },
-        { c1: null, no1: null },
-    ]);
+    const [cantAl, setCantAl] = useState([]);
+    const [nomCur, setNomCur] = useState([]);
     //Par barra de seleción
     const [isOpenCursos, setIsOpenCursos] = useState(false);
     const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
@@ -54,26 +49,26 @@ function RealTime() {
         ]
     }; 
 
-    const charAlumnos = {
+    const charCursos = {
         labels: ['3°', '2°', '1°'],
         datasets: [
             {
-                label: nombAlumnos[2],
-                data: [notasAlumnos[2], 0, 0],
+                label: nomCur[2],
+                data: [cantAl[2], 0, 0],
                 backgroundColor: [ 'rgba(230, 126, 34, 0.7)', ],
                 borderColor: [ 'rgba(230, 126, 34, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: nombAlumnos[1],
-                data: [0, notasAlumnos[1], 0],
+                label: nomCur[1],
+                data: [0, cantAl[1], 0],
                 backgroundColor: [ 'rgba(236, 240, 241, 0.7)', ],
                 borderColor: [ 'rgba(236, 240, 241, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: nombAlumnos[0],
-                data: [0, 0, notasAlumnos[0]],
+                label: nomCur[0],
+                data: [0, 0, cantAl[0]],
                 backgroundColor: [ 'rgba(52, 73, 94, 0.7)', ],
                 borderColor: [ 'rgba(52, 73, 94, 1)', ],
                 borderWidth: 1,
@@ -81,40 +76,40 @@ function RealTime() {
         ],
     };
 
-    const charCursos = {
+    const charAlumnos = {
         labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                label: (cantAlumnos[4]?.c1 !== null ? cantAlumnos[4].c1 : 'unknown'), 
-                data: [(cantAlumnos[4]?.no1 !== null ? cantAlumnos[4].no1 : 0), 0, 0, 0, 0],
+                label: nombAlumnos[4], 
+                data: [notasAlumnos[4], 0, 0, 0, 0],
                 backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
                 borderColor: [ 'rgba(169, 50, 38, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: (cantAlumnos[3]?.c1 !== null ? cantAlumnos[3].c1 : 'unknown'),
-                data: [0, (cantAlumnos[3]?.no1 !== null ? cantAlumnos[3].no1 : 0), 0, 0, 0],
+                label: nombAlumnos[3],
+                data: [0, notasAlumnos[3], 0, 0, 0],
                 backgroundColor: [ 'rgba(125, 60, 152, 0.7)', ],
                 borderColor: [ 'rgba(125, 60, 152, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: (cantAlumnos[2]?.c1 !== null ? cantAlumnos[2].c1 : 'unknown'),
-                data: [0, 0, (cantAlumnos[2]?.no1 !== null ? cantAlumnos[2].no1 : 0), 0, 0],
+                label: nombAlumnos[2],
+                data: [0, 0, notasAlumnos[2], 0, 0],
                 backgroundColor: [ 'rgba(46, 134, 193, 0.7)', ],
                 borderColor: [ 'rgba(46, 134, 193, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: (cantAlumnos[1]?.c1 !== null ? cantAlumnos[1].c1 : 'unknown'),
-                data: [0, 0, 0, (cantAlumnos[1]?.no1 !== null ? cantAlumnos[1].no1 : 0), 0],
+                label: nombAlumnos[1],
+                data: [0, 0, 0, notasAlumnos[1], 0],
                 backgroundColor: [ 'rgba(23, 165, 137, 0.7)', ],
                 borderColor: [ 'rgba(23, 165, 137, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: (cantAlumnos[0]?.c1 !== null ? cantAlumnos[0].c1 : 'unknown'),
-                data: [0, 0, 0, 0, (cantAlumnos[0]?.no1 !== null ? cantAlumnos[0].no1 : 0)],
+                label: nombAlumnos[0],
+                data: [0, 0, 0, 0, notasAlumnos[0]],
                 backgroundColor: [ 'rgba(241, 196, 15, 0.7)', ],
                 borderColor: [ 'rgba(241, 196, 15, 1)', ],
                 borderWidth: 1,
@@ -193,6 +188,8 @@ function RealTime() {
         let c1 = 'SO1', c2 = 'BD1', c3 = 'LFP', c4 = 'SA', c5 = 'AYD1';
         let no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0
         const values = [];
+        const val2 = [];
+        const val3 = []
         if (selectedOptionCursos !== '') {
             mysqlData.forEach((student) => {
                 if (student.Semestre === selectedOptionCursos) {
@@ -213,18 +210,18 @@ function RealTime() {
             c1 = c5; no1 = no5;
             values.push({ c1, no1 });
             values.sort((a, b) => b.no1 - a.no1);
+            for(var i = 0; i < 5; i++) {
+                //console.log(values[i]);
+                val2.push(values[i].no1);
+                val3.push(values[i].c1);
+            }
+            setCantAl(val2);
+            setNomCur(val3);
         } else {
-            values.push({ c1, no1 });
-            c1 = c2; no1 = no2;
-            values.push({ c1, no1 });
-            c1 = c3; no1 = no3;
-            values.push({ c1, no1 });
-            c1 = c4; no1 = no4;
-            values.push({ c1, no1 });
-            c1 = c5; no1 = no5;
-            values.push({ c1, no1 });
+            setCantAl([0, 0, 0, 0, 0]);
+            setNomCur(['undefined', 'undefined', 'undefined', 'undefined', 'undefined']);
         }
-        setCantAlumnos(values);
+        //setCantAlumnos(values);
     }, [selectedOptionCursos, mysqlData]);
 
     const calculateNotes = useCallback(() => {
@@ -238,15 +235,15 @@ function RealTime() {
                 }
             });
             list_estudiantes.sort((a, b) => b.Nota - a.Nota); //ordenar lista
-            for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < 5; i++) {
                 list_2.push(list_estudiantes[i].Nota)
                 list_3.push(list_estudiantes[i].Nombre)
             }
             setNotasAlumnos(list_2);
             setNomAlumnos(list_3);
         } else {
-            setNotasAlumnos([0, 0, 0]);
-            setNomAlumnos(['undefined', 'undefined', 'undefined']);
+            setNotasAlumnos([0, 0, 0, 0, 0]);
+            setNomAlumnos(['undefined', 'undefined', 'undefined', 'undefined', 'undefined']);
         }
     }, [selectedOptionAlumno, mysqlData]);
 

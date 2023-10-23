@@ -24,6 +24,7 @@ chartJS.register (
 );
 
 const options = {
+    indexAxis:'y',
     responsive: true,
     plugins: {
         title: {
@@ -60,7 +61,7 @@ const options = {
 
 export default function BarCharNotas({ dato }) {
     return (
-        <div className="bar-char-alumno-container">
+        <div className="bar-char-alumno-container-2">
             <Bar data ={dato} options={options} />
         </div>
     );

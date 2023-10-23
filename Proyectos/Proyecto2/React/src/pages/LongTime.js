@@ -1,57 +1,60 @@
 // npm install socket.io-client
 
 import React, { useEffect, useState, useCallback } from 'react';
-//import React from 'react';
-//import axios from 'axios';
 import BarCharNotas from '../graphs/BarCharNotas';
 import socketIOClient from 'socket.io-client';
 
-
 function LongTime() {
-    
-    
     //Par barra de seleción
-    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
     const [isOpenAprobS, setIsOpenAprobS] = useState(false);
 
-    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
     const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
 
+    //db
+    const [redisData, setRedisData] = useState([]);
+    //conteo datos
+    const [conteo, setConteo] = useState([
+        { c1: null, no1: null }, // Asegúrate de que los elementos estén inicializados
+        { c1: null, no1: null },
+        { c1: null, no1: null },
+        { c1: null, no1: null },
+        { c1: null, no1: null },
+    ]);
 
     const charNotas = {
         labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                label: "Quimica",
-                data: [25, 0, 0, 0, 0],
+                label: (conteo[4]?.c1 !== null ? conteo[4].c1 : 'unknown'), 
+                data: [(conteo[4]?.no1 !== null ? conteo[4].no1 : 0), 0, 0, 0, 0],
                 backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
                 borderColor: [ 'rgba(169, 50, 38, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Fisica",
-                data: [0, 50, 0, 0, 0],
+                label: (conteo[3]?.c1 !== null ? conteo[3].c1 : 'unknown'),
+                data: [0, (conteo[3]?.no1 !== null ? conteo[3].no1 : 0), 0, 0, 0],
                 backgroundColor: [ 'rgba(125, 60, 152, 0.7)', ],
                 borderColor: [ 'rgba(125, 60, 152, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Matemáticas",
-                data: [0, 0, 75, 0, 0],
+                label: (conteo[2]?.c1 !== null ? conteo[2].c1 : 'unknown'),
+                data: [0, 0, (conteo[2]?.no1 !== null ? conteo[2].no1 : 0), 0, 0],
                 backgroundColor: [ 'rgba(46, 134, 193, 0.7)', ],
                 borderColor: [ 'rgba(46, 134, 193, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Sociales",
-                data: [0, 0, 0, 45, 0],
+                label: (conteo[1]?.c1 !== null ? conteo[1].c1 : 'unknown'),
+                data: [0, 0, 0, (conteo[1]?.no1 !== null ? conteo[1].no1 : 0), 0],
                 backgroundColor: [ 'rgba(23, 165, 137, 0.7)', ],
                 borderColor: [ 'rgba(23, 165, 137, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Naturales",
-                data: [0, 0, 0, 0, 90],
+                label: (conteo[0]?.c1 !== null ? conteo[0].c1 : 'unknown'),
+                data: [0, 0, 0, 0, (conteo[0]?.no1 !== null ? conteo[0].no1 : 0)],
                 backgroundColor: [ 'rgba(241, 196, 15, 0.7)', ],
                 borderColor: [ 'rgba(241, 196, 15, 1)', ],
                 borderWidth: 1,
@@ -60,29 +63,12 @@ function LongTime() {
     };
     
     const optionsSemester = [
-        { id: '1S', label: '1S' },
-        { id: '2S', label: '2S' },
+        { id: '1s', label: '1s' },
+        { id: '2s', label: '2s' },
     ];
-
-    const optionsCursos = [
-        { id: 'SO1', label: 'SO1' },
-        { id: 'BD1', label: 'BD1' },
-        { id: 'LFP', label: 'LFP' },
-        { id: 'SA', label: 'SA' },
-        { id: 'AYD1', label: 'AYD1' },
-    ];
-
-    const toggleDropdownAprobC = () => {
-        setIsOpenAprobC(!isOpenAprobC);
-    };
 
     const toggleDropdownAprobS = () => {
         setIsOpenAprobS(!isOpenAprobS);
-    };
-
-    const handleOptionClickAprobC = (option) => {
-        setSelectedOptionAprobC(option.label);
-        setIsOpenAprobC(false);
     };
 
     const handleOptionClickAprobS = (option) => {
@@ -90,18 +76,61 @@ function LongTime() {
         setIsOpenAprobS(false);
     };
 
+    const calculateCourses = useCallback(() => {
+        let c1 = 'SO1', c2 = 'BD1', c3 = 'LFP', c4 = 'SA', c5 = 'AYD1';
+        let no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0
+        const values = [];
+        if (selectedOptionAprobS !== '') {
+            redisData.forEach((student) => {
+                if (student.Semestre === selectedOptionAprobS) {
+                    if (student.Curso === 'SO1') { no1++; }
+                    if (student.Curso === 'BD1') { no2++; }
+                    if (student.Curso === 'LFP') { no3++; }
+                    if (student.Curso === 'SA') { no4++; }
+                    if (student.Curso === 'AYD1') { no5++; }
+                }
+            });
+            values.push({ c1, no1 });
+            c1 = c2; no1 = no2;
+            values.push({ c1, no1 });
+            c1 = c3; no1 = no3;
+            values.push({ c1, no1 });
+            c1 = c4; no1 = no4;
+            values.push({ c1, no1 });
+            c1 = c5; no1 = no5;
+            values.push({ c1, no1 });
+            values.sort((a, b) => b.no1 - a.no1);
+        } else {
+            values.push({ c1, no1 });
+            c1 = c2; no1 = no2;
+            values.push({ c1, no1 });
+            c1 = c3; no1 = no3;
+            values.push({ c1, no1 });
+            c1 = c4; no1 = no4;
+            values.push({ c1, no1 });
+            c1 = c5; no1 = no5;
+            values.push({ c1, no1 });
+        }
+        setConteo(values);
+    }, [selectedOptionAprobS, redisData]);
+
+    useEffect(() => {
+        calculateCourses();
+    }, [calculateCourses]);
+
     useEffect(() => {
         const socket = socketIOClient('http://localhost:9800', {
             reconnection: true,
             reconnectionAttempts: 3,
             reconnectionDelay: 1000,
         });
-        socket.on('mysql-data', (data) => {//data es array
+        //socket.on('mysql-data', (data) => {//data es array
             //setMysqlData(data);
-        });
+        //});
         
         socket.on('redis-dot', (data) => {
-            console.log('redis', data); //data[0].Carnet
+            //console.log('redis', data); //data[0].Carnet
+            setRedisData(data);
         })
         
         socket.on('redis-data', (data) => {
@@ -109,10 +138,10 @@ function LongTime() {
             //requestMySQLData();
         });
 
-        const requestMySQLData = () => {
+        //const requestMySQLData = () => {
             //socket.emit('request-mysql-data'); // Agregar un evento personalizado
             //calculateCounts();
-        };
+        //};
 
         const requestRedisData = () => {
             socket.emit('request-redis-data');
@@ -122,13 +151,13 @@ function LongTime() {
         //requestMySQLData(); // Realizar la solicitud al cargar la página o cuando sea necesario
         
         // Definir un temporizador para solicitar MySQL data a intervalos regulares (por ejemplo, cada 30 segundos)
-        const mysqlDataInterval = setInterval(requestMySQLData, 1000);
+        const redisDataInterval = setInterval(requestRedisData, 1000);
 
         return () => {
             socket.off('redis-data');
-            socket.off('mysql-data');
+            //socket.off('mysql-data');
             // Limpiar el temporizador al desmontar el componente
-            clearInterval(mysqlDataInterval);
+            clearInterval(redisDataInterval);
         }
     }, []);
 
@@ -136,35 +165,14 @@ function LongTime() {
         <div id='layoutSidenav_content'>
             <main>
                 <main className="container-w">
-
-
                     <input id="tab4" type="radio" name="tabs" defaultChecked />
                     <label htmlFor="tab4" className="label-type">Redis</label>
-                    <div className='conteo-datos'><b>Cantidad de Datos:</b> 0</div>
+                    <div className='conteo-datos'><b>Cantidad de Datos: </b> { redisData.length}</div>
                     <section id="content4" className="tabs-contentype">
 
                         <div className='container-pies-2'>
                             <div className='container-5'>
                                 <div className='container-4'>
-                                    <div className="Buscador">
-                                        <div className={`droppdown ${isOpenAprobC ? 'active' : ''}`}>
-                                            <div className="sellect" onClick={toggleDropdownAprobC}>
-                                                <span className='name-tipo'><b>{selectedOptionAprobC || 'Cursos'}</b></span>
-                                                <i className={`fa fa-chevron-left ${isOpenAprobC ? 'open' : ''}`}></i>
-                                            </div>
-                                            <ul className={`droppdown-menu ${isOpenAprobC ? 'show' : ''}`}>
-                                                {optionsCursos.map((option) => (
-                                                    <li
-                                                    key={option.id}
-                                                    onClick={() => handleOptionClickAprobC(option)}
-                                                    className={selectedOptionAprobC === option.label ? 'selected' : ''}
-                                                    >
-                                                    {option.label}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
                                     <div className="Buscador">
                                         <div className={`droppdown ${isOpenAprobS ? 'active' : ''}`}>
                                             <div className="sellect" onClick={toggleDropdownAprobS}>
@@ -190,10 +198,7 @@ function LongTime() {
                                 </div>
                             </div>
                         </div>
-                        
-                        
                     </section>
-
                 </main>
             </main>
         </div>

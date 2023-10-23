@@ -11355,7 +11355,7 @@ table {
   background: #212529;
   border-radius: 5px;
   width: 95%;
-  height: 70vh;
+  height: 71vh;
 }
 
 .conteo-datos {
@@ -11405,7 +11405,7 @@ table {
 }
 
 .spooses {
-  width: 72%;
+  width: 80%;
   height: 82%;
   margin-top: 20px;
   margin-left: auto;
@@ -11428,6 +11428,12 @@ table {
 .bar-char-alumno-container {
   width: 80%;
   height: 90%;
+  margin: auto;
+}
+
+.bar-char-alumno-container-2 {
+  width: 80%;
+  height: 100%;
   margin: auto;
 }
 
