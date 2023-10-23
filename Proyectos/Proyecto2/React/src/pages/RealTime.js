@@ -11,8 +11,14 @@ function RealTime() {
     //const [datacpu, setdatacpu] = useRef([]);
     //const [ramUsada, setRamUsada] = useState(0);
     //const [cpuUsado, setCPUUsado] = useState(0);
+    //Alumnos que reprueban y aprueban en base a semestre y curso
     const [alumnosApr, setAlumnosApr] = useState(0);
     const [alumnosRep, setAlumnosRep] = useState(0);
+    //Alumnos con mejor promedio
+    const [notasAlumnos, setNotasAlumnos] = useState([]);
+    const [nombAlumnos, setNomAlumnos] = useState([]);
+    //Cantidad de alumnos por curso
+    const [cantAlumnos, setCantAlumnos] = useState([]);
     //Par barra de seleción
     const [isOpenCursos, setIsOpenCursos] = useState(false);
     const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
@@ -51,22 +57,22 @@ function RealTime() {
         labels: ['3°', '2°', '1°'],
         datasets: [
             {
-                label: "Quimica",
-                data: [25, 0, 0],
+                label: nombAlumnos[2],
+                data: [notasAlumnos[2], 0, 0],
                 backgroundColor: [ 'rgba(230, 126, 34, 0.7)', ],
                 borderColor: [ 'rgba(230, 126, 34, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Fisica",
-                data: [0, 50, 0],
+                label: nombAlumnos[1],
+                data: [0, notasAlumnos[1], 0],
                 backgroundColor: [ 'rgba(236, 240, 241, 0.7)', ],
                 borderColor: [ 'rgba(236, 240, 241, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Matemáticas",
-                data: [0, 0, 75],
+                label: nombAlumnos[0],
+                data: [0, 0, notasAlumnos[0]],
                 backgroundColor: [ 'rgba(52, 73, 94, 0.7)', ],
                 borderColor: [ 'rgba(52, 73, 94, 1)', ],
                 borderWidth: 1,
@@ -78,36 +84,36 @@ function RealTime() {
         labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                label: "Quimica",
-                data: [25, 0, 0, 0, 0],
+                label: cantAlumnos[4].c1,
+                data: [cantAlumnos[4].no1, 0, 0, 0, 0],
                 backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
                 borderColor: [ 'rgba(169, 50, 38, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Fisica",
-                data: [0, 50, 0, 0, 0],
+                label: cantAlumnos[3].c1,
+                data: [0, cantAlumnos[3].no1, 0, 0, 0],
                 backgroundColor: [ 'rgba(125, 60, 152, 0.7)', ],
                 borderColor: [ 'rgba(125, 60, 152, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Matemáticas",
-                data: [0, 0, 75, 0, 0],
+                label: cantAlumnos[2].c1,
+                data: [0, 0, cantAlumnos[2].no1, 0, 0],
                 backgroundColor: [ 'rgba(46, 134, 193, 0.7)', ],
                 borderColor: [ 'rgba(46, 134, 193, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Sociales",
-                data: [0, 0, 0, 45, 0],
+                label: cantAlumnos[1].c1,
+                data: [0, 0, 0, cantAlumnos[1].no1, 0],
                 backgroundColor: [ 'rgba(23, 165, 137, 0.7)', ],
                 borderColor: [ 'rgba(23, 165, 137, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Naturales",
-                data: [0, 0, 0, 0, 90],
+                label: cantAlumnos[0].c1,
+                data: [0, 0, 0, 0, cantAlumnos[0].no1],
                 backgroundColor: [ 'rgba(241, 196, 15, 0.7)', ],
                 borderColor: [ 'rgba(241, 196, 15, 1)', ],
                 borderWidth: 1,
@@ -178,22 +184,74 @@ function RealTime() {
                 }
             });
         }
+        setAlumnosApr(pass);
+        setAlumnosRep(fail);
+    }, [selectedOptionAprobC, selectedOptionAprobS, mysqlData]);
+    
+    const calculateCursos = useCallback(() => {
+        let c1 = 'SO1', c2 = 'BD1', c3 = 'LFP', c4 = 'SA', c5 = 'AYD1';
+        let no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0
+        const values = [];
+        if (selectedOptionCursos !== '') {
+            mysqlData.forEach((student) => {
+                if (student.Semestre === selectedOptionCursos) {
+                    if (student.Curso === 'SO1') { no1++; }
+                    if (student.Curso === 'BD1') { no2++; }
+                    if (student.Curso === 'LFP') { no3++; }
+                    if (student.Curso === 'SA') { no4++; }
+                    if (student.Curso === 'AYD1') { no5++; }
+                }
+            });
+        }
+        values.push({ c1, no1 });
+        c1 = c2; no1 = no2;
+        values.push({ c1, no1 });
+        c1 = c3; no1 = no3;
+        values.push({ c1, no1 });
+        c1 = c4; no1 = no4;
+        values.push({ c1, no1 });
+        c1 = c5; no1 = no5;
+        values.push({ c1, no1 });
+        values.sort((a, b) => b.no1 - a.no1);
+        //console.log(values);
+        setCantAlumnos(values);
+    }, [selectedOptionCursos, mysqlData]);
+
+    const calculateNotes = useCallback(() => {
         if (selectedOptionAlumno !== '') {
             const list_estudiantes = [];
+            const list_2 = [];
+            const list_3 = [];
             mysqlData.forEach((student) => {
                 if (student.Semestre === selectedOptionAlumno) {
                     list_estudiantes.push(student);
                 }
             });
-            console.log(list_estudiantes)
+            list_estudiantes.sort((a, b) => b.Nota - a.Nota); //ordenar lista
+            for (var i = 0; i < 3; i++) {
+                list_2.push(list_estudiantes[i].Nota)
+                list_3.push(list_estudiantes[i].Nombre)
+            }
+            setNotasAlumnos(list_2);
+            setNomAlumnos(list_3);
+            //console.log(list_estudiantes) //list_estudiantes[0].Carnet
+        } else {
+            setNotasAlumnos([0, 0, 0]);
+            setNomAlumnos(['undefined', 'undefined', 'undefined']);
         }
-        setAlumnosApr(pass);
-        setAlumnosRep(fail);
-    }, [selectedOptionAprobC, selectedOptionAprobS, selectedOptionAlumno, mysqlData]);
+    }, [selectedOptionAlumno, mysqlData]);
 
     useEffect(() => {
         calculateCounts();
-    });
+    }, [calculateCounts]);
+
+    useEffect(() => {
+        calculateNotes();
+    }, [calculateNotes]);
+
+    useEffect(() => {
+        calculateCursos();
+    }, [calculateCursos]);
 
     useEffect(() => {
         const socket = socketIOClient('http://localhost:9800', {
