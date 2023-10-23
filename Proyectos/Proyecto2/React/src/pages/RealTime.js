@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-//import axios from 'axios';
 import PieChartCPU from '../graphs/PieChartCPU'
 import BarCharAlumnos from '../graphs/BarCharAlumnos';
 import BarCharCursos from '../graphs/BarCharCursos';
@@ -7,10 +6,6 @@ import BarCharCursos from '../graphs/BarCharCursos';
 import socketIOClient from 'socket.io-client';
 
 function RealTime() {
-    //const [dataram, setdataram] = useRef([]);
-    //const [datacpu, setdatacpu] = useRef([]);
-    //const [ramUsada, setRamUsada] = useState(0);
-    //const [cpuUsado, setCPUUsado] = useState(0);
     //Alumnos que reprueban y aprueban en base a semestre y curso
     const [alumnosApr, setAlumnosApr] = useState(0);
     const [alumnosRep, setAlumnosRep] = useState(0);
@@ -90,7 +85,6 @@ function RealTime() {
         labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                //(alumnosApr !== 0 ? alumnosApr : 0)
                 label: (cantAlumnos[4]?.c1 !== null ? cantAlumnos[4].c1 : 'unknown'), 
                 data: [(cantAlumnos[4]?.no1 !== null ? cantAlumnos[4].no1 : 0), 0, 0, 0, 0],
                 backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
@@ -230,7 +224,6 @@ function RealTime() {
             c1 = c5; no1 = no5;
             values.push({ c1, no1 });
         }
-        //console.log(values);
         setCantAlumnos(values);
     }, [selectedOptionCursos, mysqlData]);
 
@@ -251,7 +244,6 @@ function RealTime() {
             }
             setNotasAlumnos(list_2);
             setNomAlumnos(list_3);
-            //console.log(list_estudiantes) //list_estudiantes[0].Carnet
         } else {
             setNotasAlumnos([0, 0, 0]);
             setNomAlumnos(['undefined', 'undefined', 'undefined']);

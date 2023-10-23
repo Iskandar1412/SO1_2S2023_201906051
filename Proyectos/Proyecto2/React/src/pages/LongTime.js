@@ -1,18 +1,21 @@
 // npm install socket.io-client
 
-import React, { useState, Component } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 //import React from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import BarCharNotas from '../graphs/BarCharNotas';
 import socketIOClient from 'socket.io-client';
 
 
 function LongTime() {
-    const [longerRAM, setLongerRAM] = useState([]);
-    const [libreRAM, setLibreRAM] = useState([]);
-    const [longerCPU, setLongerCPU] = useState([]);
-    const [libreCPU, setLibreCPU] = useState([]);
-    const [labelText, setLabelText] = useState([]);
+    
+    
+    //Par barra de seleción
+    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
+    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
+
+    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
+    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
 
 
     const charNotas = {
@@ -55,13 +58,7 @@ function LongTime() {
             },
         ],
     };
-    //Par barra de seleción
-    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
-    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
-
-    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
-    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
-
+    
     const optionsSemester = [
         { id: '1S', label: '1S' },
         { id: '2S', label: '2S' },
@@ -85,63 +82,55 @@ function LongTime() {
 
     const handleOptionClickAprobC = (option) => {
         setSelectedOptionAprobC(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAprobC(false);
-        //handleProcesos()
     };
 
     const handleOptionClickAprobS = (option) => {
         setSelectedOptionAprobS(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAprobS(false);
-        //handleProcesos()
     };
 
-    const handleGraphs = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3200/registros-por-equipo?nombreEquipo=${selectedOptionAprobC}`);
-            const valor = response.data;
-            const valor1 = valor.registros;
+    useEffect(() => {
+        const socket = socketIOClient('http://localhost:9800', {
+            reconnection: true,
+            reconnectionAttempts: 3,
+            reconnectionDelay: 1000,
+        });
+        socket.on('mysql-data', (data) => {//data es array
+            //setMysqlData(data);
+        });
+        
+        socket.on('redis-dot', (data) => {
+            console.log('redis', data); //data[0].Carnet
+        })
+        
+        socket.on('redis-data', (data) => {
+            requestRedisData();
+            //requestMySQLData();
+        });
 
-            //console.log(valor1);
-            const JsonFechas = [];
-            const JsonRAM = [];
-            const JsonCPU = [];
-            const JsonLRAM = [];
-            const JsonLCPU = [];
-            valor1.forEach((x) => {
-                const { Porcentaje_RAM, UsoCPU, fecha_registro } = x;
-                JsonFechas.push(fecha_registro);
-                JsonRAM.push(Porcentaje_RAM);
-                const PorcentajeResRAM = 100-Porcentaje_RAM;
-                JsonLRAM.push(PorcentajeResRAM);
-                JsonCPU.push(UsoCPU);
-                const PorcentajeResCPU = 100-UsoCPU;
-                JsonLCPU.push(PorcentajeResCPU);
-            });
-            //console.log(JsonLRAM);
-            setLabelText(JsonFechas)
-            setLongerRAM(JsonRAM)
-            setLongerCPU(JsonCPU)
-            setLibreRAM(JsonLRAM)
-            setLibreCPU(JsonLCPU)
-            //console.log(JsonLCPU);
-            //console.log(JsonCPU);
-        } catch (e) {
-            console.log('Error en la busqueda del equipo', e);
+        const requestMySQLData = () => {
+            //socket.emit('request-mysql-data'); // Agregar un evento personalizado
+            //calculateCounts();
+        };
+
+        const requestRedisData = () => {
+            socket.emit('request-redis-data');
         }
-    };
 
-    //mensaje
-    const [isSuccess, setIsSuccess] = useState(false);
-    const handleSuccess = () => {
-        setIsSuccess(true);
-        setTimeout(() => {
-            setIsSuccess(false);
-        }, 3000)
-    }
+        requestRedisData();
+        //requestMySQLData(); // Realizar la solicitud al cargar la página o cuando sea necesario
+        
+        // Definir un temporizador para solicitar MySQL data a intervalos regulares (por ejemplo, cada 30 segundos)
+        const mysqlDataInterval = setInterval(requestMySQLData, 1000);
+
+        return () => {
+            socket.off('redis-data');
+            socket.off('mysql-data');
+            // Limpiar el temporizador al desmontar el componente
+            clearInterval(mysqlDataInterval);
+        }
+    }, []);
 
     return (
         <div id='layoutSidenav_content'>
