@@ -18,7 +18,13 @@ function RealTime() {
     const [notasAlumnos, setNotasAlumnos] = useState([]);
     const [nombAlumnos, setNomAlumnos] = useState([]);
     //Cantidad de alumnos por curso
-    const [cantAlumnos, setCantAlumnos] = useState([]);
+    const [cantAlumnos, setCantAlumnos] = useState([
+        { c1: null, no1: null }, // Asegúrate de que los elementos estén inicializados
+        { c1: null, no1: null },
+        { c1: null, no1: null },
+        { c1: null, no1: null },
+        { c1: null, no1: null },
+    ]);
     //Par barra de seleción
     const [isOpenCursos, setIsOpenCursos] = useState(false);
     const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
@@ -84,36 +90,37 @@ function RealTime() {
         labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                label: cantAlumnos[4].c1,
-                data: [cantAlumnos[4].no1, 0, 0, 0, 0],
+                //(alumnosApr !== 0 ? alumnosApr : 0)
+                label: (cantAlumnos[4]?.c1 !== null ? cantAlumnos[4].c1 : 'unknown'), 
+                data: [(cantAlumnos[4]?.no1 !== null ? cantAlumnos[4].no1 : 0), 0, 0, 0, 0],
                 backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
                 borderColor: [ 'rgba(169, 50, 38, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: cantAlumnos[3].c1,
-                data: [0, cantAlumnos[3].no1, 0, 0, 0],
+                label: (cantAlumnos[3]?.c1 !== null ? cantAlumnos[3].c1 : 'unknown'),
+                data: [0, (cantAlumnos[3]?.no1 !== null ? cantAlumnos[3].no1 : 0), 0, 0, 0],
                 backgroundColor: [ 'rgba(125, 60, 152, 0.7)', ],
                 borderColor: [ 'rgba(125, 60, 152, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: cantAlumnos[2].c1,
-                data: [0, 0, cantAlumnos[2].no1, 0, 0],
+                label: (cantAlumnos[2]?.c1 !== null ? cantAlumnos[2].c1 : 'unknown'),
+                data: [0, 0, (cantAlumnos[2]?.no1 !== null ? cantAlumnos[2].no1 : 0), 0, 0],
                 backgroundColor: [ 'rgba(46, 134, 193, 0.7)', ],
                 borderColor: [ 'rgba(46, 134, 193, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: cantAlumnos[1].c1,
-                data: [0, 0, 0, cantAlumnos[1].no1, 0],
+                label: (cantAlumnos[1]?.c1 !== null ? cantAlumnos[1].c1 : 'unknown'),
+                data: [0, 0, 0, (cantAlumnos[1]?.no1 !== null ? cantAlumnos[1].no1 : 0), 0],
                 backgroundColor: [ 'rgba(23, 165, 137, 0.7)', ],
                 borderColor: [ 'rgba(23, 165, 137, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: cantAlumnos[0].c1,
-                data: [0, 0, 0, 0, cantAlumnos[0].no1],
+                label: (cantAlumnos[0]?.c1 !== null ? cantAlumnos[0].c1 : 'unknown'),
+                data: [0, 0, 0, 0, (cantAlumnos[0]?.no1 !== null ? cantAlumnos[0].no1 : 0)],
                 backgroundColor: [ 'rgba(241, 196, 15, 0.7)', ],
                 borderColor: [ 'rgba(241, 196, 15, 1)', ],
                 borderWidth: 1,
@@ -202,17 +209,27 @@ function RealTime() {
                     if (student.Curso === 'AYD1') { no5++; }
                 }
             });
+            values.push({ c1, no1 });
+            c1 = c2; no1 = no2;
+            values.push({ c1, no1 });
+            c1 = c3; no1 = no3;
+            values.push({ c1, no1 });
+            c1 = c4; no1 = no4;
+            values.push({ c1, no1 });
+            c1 = c5; no1 = no5;
+            values.push({ c1, no1 });
+            values.sort((a, b) => b.no1 - a.no1);
+        } else {
+            values.push({ c1, no1 });
+            c1 = c2; no1 = no2;
+            values.push({ c1, no1 });
+            c1 = c3; no1 = no3;
+            values.push({ c1, no1 });
+            c1 = c4; no1 = no4;
+            values.push({ c1, no1 });
+            c1 = c5; no1 = no5;
+            values.push({ c1, no1 });
         }
-        values.push({ c1, no1 });
-        c1 = c2; no1 = no2;
-        values.push({ c1, no1 });
-        c1 = c3; no1 = no3;
-        values.push({ c1, no1 });
-        c1 = c4; no1 = no4;
-        values.push({ c1, no1 });
-        c1 = c5; no1 = no5;
-        values.push({ c1, no1 });
-        values.sort((a, b) => b.no1 - a.no1);
         //console.log(values);
         setCantAlumnos(values);
     }, [selectedOptionCursos, mysqlData]);
