@@ -1,0 +1,24 @@
+{
+  "name": "nodeapp",
+  "version": "1.0.0",
+  "description": "iskandar-node-application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "iskandar",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.7",
+    "@grpc/proto-loader": "^0.7.10",
+    "axios": "^1.5.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "ioredis": "^5.3.2",
+    "mysql2": "^3.6.2",
+    "protobufjs": "^7.2.5",
+    "redis": "^4.6.10",
+    "socket.io": "^4.7.2"
+  }
+}

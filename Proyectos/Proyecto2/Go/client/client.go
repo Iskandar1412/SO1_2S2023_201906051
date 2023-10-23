@@ -108,7 +108,7 @@ func main() {
 		})
 	})
 
-	app.Post("/insert", insertData)
+	app.Post("/agregarAlumno", insertData)
 
 	err := app.Listen(":3255")
 	if err != nil {

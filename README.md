@@ -22,7 +22,7 @@
 |CARPETA|MD|Fecha Entrega|Prorroga|
 |:-:|:-:|:-:|:-:|
 |[P1](./Proyectos/Proyecto1/)|[View](./Proyectos/Reportes/Proyecto1/)|21/Septiembre/2023|24/Septiembre/2023|
-|[P2](./Proyectos/Proyecto2/)|[View](./Proyectos/Reportes/)|31/Octubre/2023|-|
+|[P2](./Proyectos/Proyecto2/)|[View](./Proyectos/Reportes/Proyecto2/)|31/Octubre/2023|-|
 
 ### Enunciados
 

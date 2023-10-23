@@ -1,23 +1,41 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useCallback } from 'react';
 import PieChartCPU from '../graphs/PieChartCPU'
 import BarCharAlumnos from '../graphs/BarCharAlumnos';
 import BarCharCursos from '../graphs/BarCharCursos';
 //import PieChartRAM from '../graphs/PieChartRAM';
-
+import socketIOClient from 'socket.io-client';
 
 function RealTime() {
-    //const [dataram, setdataram] = useRef([]);
-    //const [datacpu, setdatacpu] = useRef([]);
-    //const [ramUsada, setRamUsada] = useState(0);
-    //const [cpuUsado, setCPUUsado] = useState(0);
+    //Alumnos que reprueban y aprueban en base a semestre y curso
+    const [alumnosApr, setAlumnosApr] = useState(0);
+    const [alumnosRep, setAlumnosRep] = useState(0);
+    //Alumnos con mejor promedio
+    const [notasAlumnos, setNotasAlumnos] = useState([]);
+    const [nombAlumnos, setNomAlumnos] = useState([]);
+    //Cantidad de alumnos por curso
+    const [cantAl, setCantAl] = useState([]);
+    const [nomCur, setNomCur] = useState([]);
+    //Par barra de seleción
+    const [isOpenCursos, setIsOpenCursos] = useState(false);
+    const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
+    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
+    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
+    
+    const [selectedOptionCursos, setSelectedOptionCursos] = useState('');
+    const [selectedOptionAlumno, setSelectedOptionAlumno] = useState('');
+    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
+    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
+    
+    //items para procesos
+    const [items, setItems] = useState(null);
+    const [mysqlData, setMysqlData] = useState([]);
     
     const charDataCPU = {
         labels: ['Aprobados', 'Reprobados'],
         datasets: [
             {
-                label: 'Grafica Alumnos',
-                data: [10, 20],
+                label: 'Grafica Alumnos [' + (selectedOptionAprobC !== '' ? selectedOptionAprobC : '') + ' - ' + (selectedOptionAprobS !== '' ? selectedOptionAprobS : '') + ']',
+                data: [(alumnosApr !== 0 ? alumnosApr : 0), (alumnosRep !== 0 ? alumnosRep : 0)],
                 backgroundColor: [
                     'rgba(23, 165, 137, 0.5)',
                     'rgba(185, 35, 23, 0.5)',
@@ -31,26 +49,26 @@ function RealTime() {
         ]
     }; 
 
-    const charAlumnos = {
+    const charCursos = {
         labels: ['3°', '2°', '1°'],
         datasets: [
             {
-                label: "Quimica",
-                data: [25, 0, 0],
+                label: nomCur[2],
+                data: [cantAl[2], 0, 0],
                 backgroundColor: [ 'rgba(230, 126, 34, 0.7)', ],
                 borderColor: [ 'rgba(230, 126, 34, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Fisica",
-                data: [0, 50, 0],
+                label: nomCur[1],
+                data: [0, cantAl[1], 0],
                 backgroundColor: [ 'rgba(236, 240, 241, 0.7)', ],
                 borderColor: [ 'rgba(236, 240, 241, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Matemáticas",
-                data: [0, 0, 75],
+                label: nomCur[0],
+                data: [0, 0, cantAl[0]],
                 backgroundColor: [ 'rgba(52, 73, 94, 0.7)', ],
                 borderColor: [ 'rgba(52, 73, 94, 1)', ],
                 borderWidth: 1,
@@ -58,40 +76,40 @@ function RealTime() {
         ],
     };
 
-    const charCursos = {
+    const charAlumnos = {
         labels: ['5°', '4°', '3°', '2°', '1°'],
         datasets: [
             {
-                label: "Quimica",
-                data: [25, 0, 0, 0, 0],
+                label: nombAlumnos[4], 
+                data: [notasAlumnos[4], 0, 0, 0, 0],
                 backgroundColor: [ 'rgba(169, 50, 38, 0.7)', ],
                 borderColor: [ 'rgba(169, 50, 38, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Fisica",
-                data: [0, 50, 0, 0, 0],
+                label: nombAlumnos[3],
+                data: [0, notasAlumnos[3], 0, 0, 0],
                 backgroundColor: [ 'rgba(125, 60, 152, 0.7)', ],
                 borderColor: [ 'rgba(125, 60, 152, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Matemáticas",
-                data: [0, 0, 75, 0, 0],
+                label: nombAlumnos[2],
+                data: [0, 0, notasAlumnos[2], 0, 0],
                 backgroundColor: [ 'rgba(46, 134, 193, 0.7)', ],
                 borderColor: [ 'rgba(46, 134, 193, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Sociales",
-                data: [0, 0, 0, 45, 0],
+                label: nombAlumnos[1],
+                data: [0, 0, 0, notasAlumnos[1], 0],
                 backgroundColor: [ 'rgba(23, 165, 137, 0.7)', ],
                 borderColor: [ 'rgba(23, 165, 137, 1)', ],
                 borderWidth: 1,
             },
             {
-                label: "Naturales",
-                data: [0, 0, 0, 0, 90],
+                label: nombAlumnos[0],
+                data: [0, 0, 0, 0, notasAlumnos[0]],
                 backgroundColor: [ 'rgba(241, 196, 15, 0.7)', ],
                 borderColor: [ 'rgba(241, 196, 15, 1)', ],
                 borderWidth: 1,
@@ -99,50 +117,9 @@ function RealTime() {
         ],
     };
 
-    //console.log("CHart data:" , charDataCPU);
-    
-    const [contentPost, setcontentPost] = useState([]);
-    const handleText = (e) => {
-        setcontentPost(e.target.value);
-    };
-
-    const handlePost = async () => {
-        //console.log(contentPost);
-        //e.preventDefault();
-        const data = {
-            pid: contentPost
-        }
-        //const valor = contentPost; //valor del input
-        try {
-            const response = await fetch(`http://localhost:3200/kill-proccess?equipo=${selectedOptionCursos}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }, body: JSON.stringify(data),
-            });
-            if (response.ok) {
-                const result = await response.json();
-                console.log(result);
-            } else {
-                console.log('Error en la solicitud', response.statusText);
-            }
-        } catch (err) { console.log('Error en la solicitud al backend (NodeJS):', err) }
-    };
-
-    //Par barra de seleción
-    const [isOpenCursos, setIsOpenCursos] = useState(false);
-    const [isOpenAlumnos, setIsOpenAlumnos] = useState(false);
-    const [isOpenAprobC, setIsOpenAprobC] = useState(false);
-    const [isOpenAprobS, setIsOpenAprobS] = useState(false);
-    
-    const [selectedOptionCursos, setSelectedOptionCursos] = useState('');
-    const [selectedOptionAlumno, setSelectedOptionAlumno] = useState('');
-    const [selectedOptionAprobC, setSelectedOptionAprobC] = useState('');
-    const [selectedOptionAprobS, setSelectedOptionAprobS] = useState('');
-    
     const optionsSemester = [
-        { id: '1S', label: '1S' },
-        { id: '2S', label: '2S' },
+        { id: '1s', label: '1s' },
+        { id: '2s', label: '2s' },
     ];
 
     const optionsCursos = [
@@ -169,81 +146,163 @@ function RealTime() {
         setIsOpenAprobS(!isOpenAprobS);
     };
 
-
     const handleOptionClickCursos = (option) => {
         setSelectedOptionCursos(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenCursos(false);
-        //handleProcesos()
     };
 
     const handleOptionClickAlumnos = (option) => {
         setSelectedOptionAlumno(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAlumnos(false);
-        //handleProcesos()
     };
 
     const handleOptionClickAprobC = (option) => {
         setSelectedOptionAprobC(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAprobC(false);
-        //handleProcesos()
     };
 
     const handleOptionClickAprobS = (option) => {
         setSelectedOptionAprobS(option.label);
-        //console.log(option)
-        //handleSuccess()
         setIsOpenAprobS(false);
-        //handleProcesos()
     };
-
-    //mensaje
-    const [isSuccess, setIsSuccess] = useState(false);
-    const handleSuccess = () => {
-        setIsSuccess(true);
-        setTimeout(() => {
-            setIsSuccess(false);
-        }, 3000)
-    }
-
-    //items para procesos
-    const [items, setItems] = useState(null);
-    const [procesos, setProcesos] = useState([]);
     
-    const fetchData = useCallback(async () => {
-        if (!selectedOptionCursos) {
-            //console.log('vacio')
-            return;
+    const calculateCounts = useCallback(() => {
+        let pass = 0;
+        let fail = 0;
+        if (selectedOptionAprobC !== '' && selectedOptionAprobS !== '') {
+            mysqlData.forEach((student) => {
+                if (student.Curso === selectedOptionAprobC && student.Semestre === selectedOptionAprobS) {
+                    if (student.Nota >= 61) {
+                        pass ++;
+                    } else {
+                        fail ++;
+                    }
+                }
+            });
         }
-        try {
-            const response = await axios.get(`http://localhost:3200/live?eQuipo=${selectedOptionCursos}`);
-            const data = response.data;
-            const proceso_val = data.CPU.Procesos;
-            //setCPUUsado(data.CPU.Uso_de_CPU);
-            //setRamUsada(data.RAM.Uso_ram[0].Porcentaje_en_uso);
-            console.log(data.RAM);
-            setProcesos(proceso_val)
-            //console.log(data.CPU.Uso_de_CPU, data.RAM.Porcentaje_en_uso)
-        } catch (e) {
-            console.log('Error en la obtención de datos en tiempo real', e);
+        setAlumnosApr(pass);
+        setAlumnosRep(fail);
+    }, [selectedOptionAprobC, selectedOptionAprobS, mysqlData]);
+    
+    const calculateCursos = useCallback(() => {
+        let c1 = 'SO1', c2 = 'BD1', c3 = 'LFP', c4 = 'SA', c5 = 'AYD1';
+        let no1 = 0, no2 = 0, no3 = 0, no4 = 0, no5 = 0
+        const values = [];
+        const val2 = [];
+        const val3 = []
+        if (selectedOptionCursos !== '') {
+            mysqlData.forEach((student) => {
+                if (student.Semestre === selectedOptionCursos) {
+                    if (student.Curso === 'SO1') { no1++; }
+                    if (student.Curso === 'BD1') { no2++; }
+                    if (student.Curso === 'LFP') { no3++; }
+                    if (student.Curso === 'SA') { no4++; }
+                    if (student.Curso === 'AYD1') { no5++; }
+                }
+            });
+            values.push({ c1, no1 });
+            c1 = c2; no1 = no2;
+            values.push({ c1, no1 });
+            c1 = c3; no1 = no3;
+            values.push({ c1, no1 });
+            c1 = c4; no1 = no4;
+            values.push({ c1, no1 });
+            c1 = c5; no1 = no5;
+            values.push({ c1, no1 });
+            values.sort((a, b) => b.no1 - a.no1);
+            for(var i = 0; i < 5; i++) {
+                //console.log(values[i]);
+                val2.push(values[i].no1);
+                val3.push(values[i].c1);
+            }
+            setCantAl(val2);
+            setNomCur(val3);
+        } else {
+            setCantAl([0, 0, 0, 0, 0]);
+            setNomCur(['undefined', 'undefined', 'undefined', 'undefined', 'undefined']);
         }
-    }, [selectedOptionCursos]);
+        //setCantAlumnos(values);
+    }, [selectedOptionCursos, mysqlData]);
+
+    const calculateNotes = useCallback(() => {
+        if (selectedOptionAlumno !== '') {
+            const list_estudiantes = [];
+            const list_2 = [];
+            const list_3 = [];
+            mysqlData.forEach((student) => {
+                if (student.Semestre === selectedOptionAlumno) {
+                    list_estudiantes.push(student);
+                }
+            });
+            list_estudiantes.sort((a, b) => b.Nota - a.Nota); //ordenar lista
+            for (var i = 0; i < 5; i++) {
+                list_2.push(list_estudiantes[i].Nota)
+                list_3.push(list_estudiantes[i].Nombre)
+            }
+            setNotasAlumnos(list_2);
+            setNomAlumnos(list_3);
+        } else {
+            setNotasAlumnos([0, 0, 0, 0, 0]);
+            setNomAlumnos(['undefined', 'undefined', 'undefined', 'undefined', 'undefined']);
+        }
+    }, [selectedOptionAlumno, mysqlData]);
 
     useEffect(() => {
-        fetchData();
-        const intervalId = setInterval(fetchData, 5000);
-        return () => clearInterval(intervalId);
-    }, [selectedOptionCursos, fetchData]);
+        calculateCounts();
+    }, [calculateCounts]);
 
-    const handleProcesos = async () => {
-        fetchData();
-    };
+    useEffect(() => {
+        calculateNotes();
+    }, [calculateNotes]);
 
+    useEffect(() => {
+        calculateCursos();
+    }, [calculateCursos]);
+
+    useEffect(() => {
+        const socket = socketIOClient('http://localhost:9800', {
+            reconnection: true,
+            reconnectionAttempts: 3,
+            reconnectionDelay: 1000,
+        });
+        socket.on('mysql-data', (data) => {//data es array
+            setMysqlData(data);
+        });
+        
+        socket.on('redis-dot', (data) => {
+            //console.log('redis', data); //data[0].Carnet
+        })
+        
+        socket.on('redis-data', (data) => {
+            //requestRedisData();
+            requestMySQLData();
+        });
+
+        const requestMySQLData = () => {
+            socket.emit('request-mysql-data'); // Agregar un evento personalizado
+            //calculateCounts();
+        };
+
+        const requestRedisData = () => {
+            socket.emit('request-redis-data');
+        }
+
+        requestRedisData();
+        requestMySQLData(); // Realizar la solicitud al cargar la página o cuando sea necesario
+        
+        // Definir un temporizador para solicitar MySQL data a intervalos regulares (por ejemplo, cada 30 segundos)
+        const mysqlDataInterval = setInterval(requestMySQLData, 1000);
+
+        return () => {
+            socket.off('redis-data');
+            socket.off('mysql-data');
+            // Limpiar el temporizador al desmontar el componente
+            clearInterval(mysqlDataInterval);
+        }
+    }, []);
+
+    
+    
     const toggleItemExpansion = (itemID) => {
         setItems(prevId => (prevId === itemID ? null : itemID));
     };
@@ -255,13 +314,11 @@ function RealTime() {
                     <input id="tab1" type="radio" name="tabs" defaultChecked />
                     <label htmlFor="tab1" className="label-type">MySQL</label>
                     <section id="content1" className="tabs-contentype">
-                        
                         <div className='tab-section-2'>
                             <div className='tab-content'>
                                 <div className='content-text'>
                                     <div className='lista-procesos'>
                                         <div className='list-item header'>
-                                            
                                             <span>Carnet</span>
                                             <span>Nombre</span>
                                             <span>Curso</span>
@@ -269,20 +326,20 @@ function RealTime() {
                                             <span>Semestre</span>
                                             <span>Year</span>
                                         </div>
-                                        {procesos.map(proceso =>
+                                        {mysqlData.map((item, index) => (
                                             <div
-                                                key={proceso.Proceso}
-                                                className={`list-item ${items === proceso.Proceso ? 'expanded' : ''}`}
-                                                onClick={() => toggleItemExpansion(proceso.Proceso)}
+                                                key={index}
+                                                className={`list-item ${items === item.Carnet ? 'expanded' : ''}`}
+                                                onClick={() => toggleItemExpansion(item.Carnet)}
                                             >
-                                                <span>{ proceso.Proceso }</span>
-                                                <span>{ proceso.PID }</span>
-                                                <span>{ proceso.UID }</span>
-                                                <span>{ proceso.Estado }</span>
-                                                <span>{ proceso.Memoria_virtual }</span>
-                                                <span>{ proceso.Memoria_fisica }</span>
+                                                <span>{ item.Carnet }</span>
+                                                <span>{ item.Nombre }</span>
+                                                <span>{ item.Curso }</span>
+                                                <span>{ item.Nota }</span>
+                                                <span>{ item.Semestre }</span>
+                                                <span>{ item.Year }</span>
                                             </div>
-                                        )}
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -379,13 +436,7 @@ function RealTime() {
                                 </div>
                             </div>
                         </div>
-                        
-
-                        
-                        
                     </section>
-
-                    
                 </main>
             </main>
         </div>

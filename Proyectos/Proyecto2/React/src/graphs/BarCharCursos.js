@@ -24,6 +24,7 @@ chartJS.register (
 );
 
 const options = {
+    indexAxis:'y',
     responsive: true,
     plugins: {
         title: {
