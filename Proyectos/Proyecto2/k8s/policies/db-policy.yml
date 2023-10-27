@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-access-policy
+spec:
+  podSelector:
+    matchLabels:
+      role: database
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            app: node
+      - podSelector:
+          matchLabels:
+            app: react-api
+      - podSelector:
+          matchLabels:
+            app: server
+
+
+# kubectl apply -f ./policies/ingress-policy.yml -n proyecto2
+# kubectl get ./policies/ingress-policy -n proyecto2

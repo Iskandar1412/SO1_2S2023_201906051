@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            cpu: "1"
+          requests:
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+spec:
+  selector:
+    app: redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+  type: LoadBalancer
+
+
+# - VER SERVICIOS SU TIPO Y EL CLUSTER CON IP EXTERNO Y PUERTO
+# kubectl get svc -n proyecto2-1
+# kubectl get services -n proyecto2-1
+# - PARA EXPONER LOS PUERTOS DE REDIS Y VER LA DB
+# kubectl port-forward service/redis-service 6379:6379 -n proyecto2-1
+# kubectl port-forward service/redis-insight-service 8001:8001 -n proyecto2-1
+# EN HOST CUANDO PIDE SE PONE redis-service (desde redisinsight 0.0.0.0:8001)
+# - BORRAR CONFIGURACIONES
+# kubectl delete -f ./deployments/deployment-redis.yml -n proyecto2-1
+# - AGREGAR CONFIGURACIONES
+# kubectl apply -f ./deployments/. -n proyecto2-1
+
+# kubectl apply -f ./deployments/deployment-redis.yml -n proyecto2
+# kubectl delete -f ./deployments/deployment-redis.yml -n proyecto2

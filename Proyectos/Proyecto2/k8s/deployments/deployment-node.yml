@@ -1,0 +1,44 @@
+# Service node
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-service
+spec:
+  selector:
+    app: node
+  ports:
+    - port: 3500
+      targetPort: 3500
+  type: LoadBalancer
+---
+# Deployment server go
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-deployment
+spec: 
+  selector:
+    matchLabels:
+      app: node
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: node
+    spec:
+      containers:
+        - name: node-container
+          image: iskandar1412/node-socket:v1
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+          ports:
+            - containerPort: 3500
+
+# sudo docker build -t iskandar1412/node-socket:v1 .
+# sudo docker tag iskandar1412/node-socket:v1 iskandar1412/node-socket:v1
+# sudo docker push iskandar1412/node-socket:v1
+
+# kubectl apply -f ./deployments/deployment-node.yml -n proyecto2
+# kubectl delete -f ./deployments/deployment-node.yml -n proyecto2

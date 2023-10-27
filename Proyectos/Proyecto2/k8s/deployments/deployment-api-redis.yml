@@ -1,0 +1,44 @@
+# Service api redis python
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-redis-service
+spec:
+  selector:
+    app: api-redis
+  ports:
+    - port: 7980
+      targetPort: 7980
+  type: LoadBalancer
+---
+# Deployment api redis python
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-redis-deployment
+spec: 
+  selector:
+    matchLabels:
+      app: api-redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api-redis
+    spec:
+      containers:
+        - name: api-redis-container
+          image: iskandar1412/api-redis:v1
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+          ports:
+            - containerPort: 7980
+
+# sudo docker build -t iskandar1412/api-redis:v1 .
+# sudo docker tag iskandar1412/api-redis:v1 iskandar1412/api-redis:v1
+# sudo docker push iskandar1412/api-redis:v1
+
+# kubectl apply -f ./deployments/deployment-api-redis.yml -n proyecto2
+# kubectl delete -f ./deployments/deployment-api-redis.yml -n proyecto2
