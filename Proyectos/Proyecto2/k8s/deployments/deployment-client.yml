@@ -1,0 +1,44 @@
+# Service client go
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-service
+spec:
+  selector:
+    app: client
+  ports:
+    - port: 3255
+      targetPort: 3255
+  type: LoadBalancer
+---
+# Deployment client go
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec: 
+  selector:
+    matchLabels:
+      app: client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client-container
+          image: iskandar1412/client-go:v1
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+          ports:
+            - containerPort: 3256
+
+# sudo docker build -t iskandar1412/client-go:v1 .
+# sudo docker tag iskandar1412/client-go:v1 iskandar1412/server-go:v1
+# sudo docker push iskandar1412/client-go:v1
+
+# kubectl apply -f ./deployments/deployment-client.yml -n proyecto2
+# kubectl delete -f ./deployments/deployment-client.yml -n proyecto2
