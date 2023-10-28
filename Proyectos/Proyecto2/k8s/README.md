@@ -49,26 +49,71 @@
     - kubectl create ns proyecto2
   - kubectl get nodes -o wide //para ver los puertos de los gkes
 
+## Comandos Kubernetes
 
-
-## Correr archivos yml
+### Agregar Configuraciones
 
 - kubectl apply -f <ruta-archivo> -n <namespace> //se puede usar para la ruta el /. asi pone todos
   - kubectl apply -f ./deployments/. -n proyecto2
 
-## Quitar
+### Quitar Configuraciones
 
 - kubectl delete -f <ruta-archivo> -n <namespace> //se puede usar para la ruta el /. asi pone todos
   - kubectl apply -f ./deployments/. -n proyecto2
 
-## Ver servicios 
+### Editar Configuraciones
+
+- kubectl edit <tipo-objeto> <nombre-objeto> -n <namespace>
+
+### Ver servicios 
 
 - kubectl get services -n <namespace>
 
-## Exponer puertos de servicios de tipo ClusterIP
+### Exponer puertos de servicios de tipo ClusterIP
 
 - kubectl port-foward service/<nombre-servicio> <puerto>:<puerto> -n <namespace>
 
-## Ver puertos de cluster
+### Ver puertos de cluster
 
 - kubectl get nodes -o wide
+
+### Ver todos los servicios de un namespace
+
+- kubectl get all -n <namespace>
+
+### Ver los ingress de un namespace
+
+- kubectl get ing -n <namespace>
+
+## Instalar Nginx y Configurar
+
+- kubectl create ns nginx-ingress
+- helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+- helm repo update
+- helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
+- kubectl get services -n nginx-ingress
+
+## Usar Cloud Run
+
+### Primero ir a Container Registry
+
+- Abrir Shell
+  - docker pull <usr-dockerhub>/<nombre-proyecto>:<tag>
+    - docker pull iskandar1412/react-p2:v1
+  - docker tag <usr-dockerhub>/<nombre-proyecto>:<tag> gcr.io/<ID-Proyecto>/<cualquier-nombre>
+      - El ID del proyecto esta a la par del logo de gcloud donde dicce my-proyect o algo asi, click y compiar id
+    - docker tag iskandar1412/react-p2:v1 gcr.io/compact-gadget-397419/frontp2:v1
+  - gcloud auth list
+  - gcloud config list
+  - gcloud auth configure-docker
+  - gcloud auth login
+  - docker push grc.io/<ID-Proyecto>/<cualquier-nombre>
+    - docker push gcr.io/compact-gadget-397419/frontp2:v1
+
+### Ir a Cloud Run
+
+- `Crear nuevo servicio`
+  - `URL de la imagen del contenedor` -> seleccionar
+    - `Container Registry`
+      - Desplegar la imagen que uno busca
+        - Seleccionar

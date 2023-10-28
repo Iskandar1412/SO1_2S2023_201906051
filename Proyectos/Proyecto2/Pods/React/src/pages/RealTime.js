@@ -118,8 +118,8 @@ function RealTime() {
     };
 
     const optionsSemester = [
-        { id: '1s', label: '1s' },
-        { id: '2s', label: '2s' },
+        { id: '1S', label: '1S' },
+        { id: '2S', label: '2S' },
     ];
 
     const optionsCursos = [

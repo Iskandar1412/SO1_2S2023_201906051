@@ -14,3 +14,8 @@ CMD ["npm", "start"]
 
 #sudo docker build --tag prueba_p1 .
 #sudo docker run -p 3000:3000 prueba_p1
+
+
+# sudo docker build -t iskandar1412/react-p2:v1 .
+# sudo docker tag iskandar1412/react-p2:v1 iskandar1412/react-p2:v1
+# sudo docker push iskandar1412/react-p2:v1

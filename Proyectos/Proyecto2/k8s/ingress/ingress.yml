@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  anotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: GET, POST
+  spec:
+    rules:
+    - host: <ip-link>.nip.io
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: client-service
+              port:
+                number: 3256
+    - host: <ip-link>.nip.io
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: api-redis-service
+              port:
+                number: 7980
+---
+apiVersion: split.smi-spec.io/v1alpha
+kind: TrafficSplit
+metadata:
+  name: split-service
+spec:
+  service: traffic-service
+  backends:
+  - service: api-redis-service
+    weight: 50
+  - service: client-service
+    weight: 50      
