@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: node-container
-          image: iskandar1412/node-socket:v1
+          image: iskandar1412/node-socket:v2
           imagePullPolicy: Always
           resources:
             requests:

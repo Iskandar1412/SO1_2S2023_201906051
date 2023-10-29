@@ -71,7 +71,8 @@
 
 ### Exponer puertos de servicios de tipo ClusterIP
 
-- kubectl port-foward service/<nombre-servicio> <puerto>:<puerto> -n <namespace>
+- kubectl port-forward service/<nombre-servicio> <puerto>:<puerto> -n <namespace>
+  - kubectl port-forward service/redis-service 6379:6379 -n proyecto2
 
 ### Ver puertos de cluster
 
@@ -84,6 +85,11 @@
 ### Ver los ingress de un namespace
 
 - kubectl get ing -n <namespace>
+
+## Ingresar a Redis cualquier IP
+
+- redis-cli -h <ip> -p 6379
+  - redis-cli -h 34.134.109.230 -p 6379
 
 ## Instalar Nginx y Configurar
 
@@ -107,7 +113,7 @@
   - gcloud config list
   - gcloud auth configure-docker
   - gcloud auth login
-  - docker push grc.io/<ID-Proyecto>/<cualquier-nombre>
+  - docker push gcr.io/<ID-Proyecto>/<cualquier-nombre>
     - docker push gcr.io/compact-gadget-397419/frontp2:v1
 
 ### Ir a Cloud Run
@@ -117,3 +123,25 @@
     - `Container Registry`
       - Desplegar la imagen que uno busca
         - Seleccionar
+      - Se puede cambiar region
+    - `Autenticación`
+      - Seleccionar `Permitir invocaciones sin autenticar`
+  - `Crear`
+
+## Instalación Helm
+
+- curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+- chmod 700 get_helm.sh
+- ./get_helm.sh
+- helm version
+
+## Instalación Istio
+
+- `https://github.com/istio/istio/releases`
+- curl -L https://github.com/istio/istio/releases/download/1.19.3/istio-1.19.3-linux-amd64.tar.gz -o istio-1.19.3-linux-amd64.tar.gz
+- tar -zxvf istio-1.19.3-linux-amd64.tar.gz
+- mv istio-1.19.3 ~/
+  - Abrir terminal y `nano ~/.bashrc` y agregar lo siguiente
+    - export PATH=~/istio-1.19.3/bin:$PATH
+  - Reiniciar terminal
+- istioctl version

@@ -119,7 +119,7 @@ function LongTime() {
     }, [calculateCourses]);
 
     useEffect(() => {
-        const socket = socketIOClient('http://34.134.29.202:3500', {
+        const socket = socketIOClient('http://34.172.224.220:3500', {
             reconnection: true,
             reconnectionAttempts: 10,
             reconnectionDelay: 1000,
