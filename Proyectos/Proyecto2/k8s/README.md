@@ -26,7 +26,20 @@
   - `reiniciar terminal`
 - gcloud --version
 - gloud components install kubectl
+- gcloud components update
 - kubectl version
+
+## Ver proyecto que se esta usando (kubernetes)
+
+- kubectl config current-context
+
+## Inisiar seción GCloud
+
+- gcloud auth login
+
+## Lista de cliente GCloud
+
+- gcloud auth list
 
 ## Creación Clustern en Kubernetes Engine (Google Cloud)
 
@@ -94,7 +107,7 @@
 ## Instalar Nginx y Configurar
 
 - kubectl create ns nginx-ingress
-- helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+- helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx -n nginx-ingress
 - helm repo update
 - helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
 - kubectl get services -n nginx-ingress
@@ -135,7 +148,7 @@
 - ./get_helm.sh
 - helm version
 
-## Instalación Istio
+## Instalación Istio (No se uso para este proyecto)
 
 - `https://github.com/istio/istio/releases`
 - curl -L https://github.com/istio/istio/releases/download/1.19.3/istio-1.19.3-linux-amd64.tar.gz -o istio-1.19.3-linux-amd64.tar.gz

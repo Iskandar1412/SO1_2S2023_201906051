@@ -40,13 +40,15 @@ class Traffic_Generator(HttpUser):
         data = self.reader.getData()
         print('Sending data to client') 
         if data is not None:
-            res = self.client.post("/insert", json=data)
+            res = self.client.post("/agregarAlumno", json=data)
             response = res.json()
             print(response)
         else:
             print('Empty')
             self.stop(True)
  
+# IP-Nginx: 35.202.6.186.nip.io
+# kubectl port-forward service/redis-service 6379:6379 -n proyecto2
 # sudo apt install python3.10-venv           
 # python3 -m venv venv
 # source venv/bin/activate
