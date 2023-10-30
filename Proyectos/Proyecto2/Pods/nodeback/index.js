@@ -109,6 +109,10 @@ db.connect((err) => {
     }
 });
 
+db.on('error', (err) => {
+    console.error('Error consulta con MySQL:', err);
+});
+
 let activeSockets = 0; // Contador de conexiones activas
 
 io.on('connection', async (socket) => {
@@ -136,15 +140,6 @@ io.on('connection', async (socket) => {
         }
     });
 
-    redisSubscriber.subscribe('redis-local');
-    redisSubscriber.on('message', (channel, message) => {
-        if (channel === 'redis-local') {
-            const jsonData = JSON.parse(message);
-            socket.emit('redis-local', jsonData);
-        }
-        redisSubscriber.unsubscribe('redis-local');
-    });
-
     socket.on('request-mysql-data', () => {
         const query = "SELECT * FROM Estudiante";
         db.query(query, (error, results) => {
@@ -154,6 +149,14 @@ io.on('connection', async (socket) => {
                 socket.emit('mysql-data', results);
             }
         });
+    });
+
+    redisSubscriber.subscribe('redis-local');
+    redisSubscriber.on('message', (channel, message) => {
+        if (channel === 'redis-local') {
+            const jsonData = JSON.parse(message);
+            socket.emit('redis-local', jsonData);
+        }
     });
 });
 

@@ -10,7 +10,7 @@ def submit_grade():
         nombre = f'Alumno {i}'#.format(random.randint(1, 1000000))
         curso = random.choice(['SO1', 'BD1', 'LFP', 'SA', 'AYD1'])
         nota = random.randint(40, 100)
-        semestre = random.choice(['1s', '2s'])
+        semestre = random.choice(['1S', '2S'])
         year = 2023
         
         data = {
