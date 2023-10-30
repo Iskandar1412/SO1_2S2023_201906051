@@ -118,8 +118,8 @@ function RealTime() {
     };
 
     const optionsSemester = [
-        { id: '1s', label: '1s' },
-        { id: '2s', label: '2s' },
+        { id: '1S', label: '1S' },
+        { id: '2S', label: '2S' },
     ];
 
     const optionsCursos = [
@@ -286,7 +286,7 @@ function RealTime() {
     }, [calculateCursos]);
 
     useEffect(() => {
-        const socket = socketIOClient('http://34.134.29.202:3500', {
+        const socket = socketIOClient('http://34.172.224.220:3500', {
             reconnection: true,
             reconnectionAttempts: 3,
             reconnectionDelay: 1000,
@@ -295,9 +295,9 @@ function RealTime() {
             setMysqlData(data);
         });
         
-        socket.on('redis-dot', (data) => {
-            //console.log('redis', data); //data[0].Carnet
-        })
+        //socket.on('redis-dot', (data) => {
+        //    //console.log('redis', data); //data[0].Carnet
+        //})
         
         socket.on('redis-local', (data) => {
             //requestRedisData();
