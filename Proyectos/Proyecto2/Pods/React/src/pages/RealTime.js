@@ -286,7 +286,7 @@ function RealTime() {
     }, [calculateCursos]);
 
     useEffect(() => {
-        const socket = socketIOClient('http://34.172.224.220:3500', {
+        const socket = socketIOClient('http://35.239.19.205:3500', {
             reconnection: true,
             reconnectionAttempts: 3,
             reconnectionDelay: 1000,

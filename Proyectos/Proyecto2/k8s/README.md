@@ -23,9 +23,10 @@
 
 - curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-367.0.0-linux-x86_64.tar.gz
 - tar -xzvf <imagen>.tar.gz
+- ./google-gcloud-sdk/install.sh
   - `reiniciar terminal`
 - gcloud --version
-- gloud components install kubectl
+- gcloud components install kubectl
 - gcloud components update
 - kubectl version
 
